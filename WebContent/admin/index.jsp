@@ -13,7 +13,9 @@
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
-	<%= username %>
+	<div class="container">
+		<h1>Welcome back, <%= username %>!</h1>
+	</div>
 	<%@ include file="../footer.html"%>
 </body>
 </html>
