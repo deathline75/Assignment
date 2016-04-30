@@ -1,6 +1,13 @@
 body {
 	font-family: 'Lato', sans-serif;
 }
+.ice-view-all a{
+	color: #333;
+}
+.ice-view-all a:hover {
+	color: #333;
+	text-decoration: none;
+}
 .ice-nav {
 	border-radius: 0;
 	background-color: #4FC3F7; 
@@ -8,11 +15,20 @@ body {
 .ice-nav a:hover {
 	color: #000;
 }
+.ice-nav-ul > li > a {
+	text-shadow: initial;
+	color: #222;
+}
 .ice-nav-ul > li > a:hover{
 	background-color: #29B6F6;
+	text-shadow: initial;
+}
+.navbar-brand {
+	text-shadow: initial;
+	color: #222;
 }
 a {
-	color: #011;
+	color: #000;
 }
 .ice-header {
 	margin-top: 20px;
