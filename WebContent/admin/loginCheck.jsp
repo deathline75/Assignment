@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	<%@page import="java.sql.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,25 +8,35 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%@ page import="java.sql.*"%>
-	<%@ page import="java.util.*"%>
 	<%
-		String sUserName = request.getParameter("txtUserName");
-		String sPasswd = request.getParameter("txtPassword");
-		Class.forName("org.gjt.mm.mysql.Driver").newInstance();
-		String url = "jdbc:mysql://188.166.238.151/ead";
-		Connection connection = DriverManager.getConnection(url, "root", "iloveeadxoxo");
-		String sql = "select * from user where username='" + sUserName + "' and userpwd = '" + sPasswd + "'";
-		Statement stmt = connection.createStatement();
-		ResultSet rs = stmt.executeQuery(sql);
-		if (rs.next()) {
-			out.println("Login success");
-		} else {
-			out.println("Login Fail");
+		String id = request.getParameter("txtUserName");
+		String password = request.getParameter("txtPassword");
+		try {
+
+			//Load Driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//Define Connection
+			String connURL = "jdbc:mysql://localhost/ead?user=root&password=iloveeadxoxo";
+			//Establish connection
+			Connection conn = DriverManager.getConnection(connURL);
+			//String sqlStr ="select * from login where where userid='"+id+"'and password'"+password+"'";
+			String sqlStr = "Select * from user where username=? and password=?";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sqlStr);
+
+			pstmt.setString(1, id);
+			pstmt.setString(2, password);
+
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				response.sendRedirect("adminIndex.jsp");
+			} else {
+				response.sendRedirect("login.jsp");
+			}
+			conn.close(); 
+		} catch (Exception e) {
+			out.print(e);
 		}
-		rs.close();
-		stmt.close();
-		connection.close();
 	%>
 </body>
 </html>
