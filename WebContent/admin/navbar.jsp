@@ -13,7 +13,7 @@ if (session.getAttribute("username") != null)
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href=".">ICE Administration Page</a>
+      <a class="navbar-brand" href=".">SP Games Store Administration Page</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
