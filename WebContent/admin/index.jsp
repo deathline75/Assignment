@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="head.html"%>
-<title>ICE Administration</title>
+<title>SP Games Store Administration</title>
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>

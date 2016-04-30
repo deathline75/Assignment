@@ -6,14 +6,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="head.html"%>
 
-<title>Welcome to ICE</title>
+<title>Welcome to SP Games Store</title>
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
 	<div class="container">
 		<div class="page-header ice-header">
 			<h1>
-				Welcome to ICE Games Store! <small>We sell games I guess...</small>
+				Welcome to SP Games Store! <small>We sell games I guess...</small>
 			</h1>
 		</div>
 		<div id="ice-carousel-index" class="carousel slide"

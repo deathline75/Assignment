@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%@ include file="head.html"%>
 
-<title>Games | ICE Gaming Store</title>
+<title>Games | SP Games Store</title>
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>

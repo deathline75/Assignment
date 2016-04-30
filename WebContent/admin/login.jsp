@@ -26,7 +26,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="head.html"%>
 
-<title>Admin Login | ICE</title>
+<title>Admin Login | SP Games Store</title>
 </head>
 <body>
 	<nav class="navbar navbar-default ice-nav">

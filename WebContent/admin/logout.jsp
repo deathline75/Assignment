@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%
-	session.removeAttribute("username");
+	session.invalidate();
+	Cookie token = new Cookie("token", null);
+	token.setMaxAge(0);
+	response.addCookie(token);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -9,7 +12,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta http-equiv="Refresh" content="5;url=../">
 <%@ include file="head.html"%>
-<title>Logout | ICE Administration</title>
+<title>Logout | SP Games Store Administration</title>
 </head>
 <body>
 	<nav class="navbar navbar-default ice-nav">
@@ -23,7 +26,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href=".">ICE Administration Page</a>
+			<a class="navbar-brand" href=".">SP Games Administration Page</a>
 		</div>
 		<!-- /.navbar-collapse -->
 	</div>
