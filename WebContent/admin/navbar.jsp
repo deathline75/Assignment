@@ -3,7 +3,7 @@ String username = "";
 if (session.getAttribute("username") != null)
 	username = (String) session.getAttribute("username");
 %>
-<nav class="navbar ice-nav">
+<nav class="navbar navbar-fixed-top ice-nav">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
