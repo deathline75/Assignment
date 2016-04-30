@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default ice-nav">
+<nav class="navbar ice-nav">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -13,7 +13,7 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav ice-nav-ul">
         <li><a href="games.jsp">Games</a></li>
         <li><a href="#">Link</a></li>
         <li class="dropdown">
