@@ -10,6 +10,7 @@ public class Game {
 	private Timestamp releaseDate;
 	private String description;
 	private double price;
+	private String imgLocation;
 	private boolean preowned;
 	private boolean supportWin;
 	private boolean supportMac;
@@ -18,7 +19,7 @@ public class Game {
 	private boolean supportPs4;
 	private boolean supportWiiu;
 	
-	public Game(int id, String title, String company, Timestamp releaseDate, String description, double price,
+	public Game(int id, String title, String company, Timestamp releaseDate, String description, double price, String imgLocation,
 			boolean preowned, boolean supportWin, boolean supportMac, boolean supportXbox, boolean supportLinux,
 			boolean supportPs4, boolean supportWiiu) {
 		super();
@@ -28,6 +29,7 @@ public class Game {
 		this.releaseDate = releaseDate;
 		this.description = description;
 		this.price = price;
+		this.imgLocation = imgLocation;
 		this.preowned = preowned;
 		this.supportWin = supportWin;
 		this.supportMac = supportMac;
@@ -54,6 +56,9 @@ public class Game {
 	}
 	public double getPrice() {
 		return price;
+	}
+	public String getImgLocation() {
+		return imgLocation;
 	}
 	public boolean isPreowned() {
 		return preowned;

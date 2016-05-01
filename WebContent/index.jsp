@@ -2,7 +2,16 @@
 	pageEncoding="ISO-8859-1"%>
 	<%@ page import="com.ice.*" %>
 	<%@ page import="java.sql.*" %>
+	<%@ page import="java.util.*" %>
 	<%! connectToMysql connection = new connectToMysql(MyConstants.url); %>
+	<%
+		Vector<Game> games = new Vector<Game>();
+		ResultSet rs = connection.query("SELECT * FROM game");
+		while (rs.next()) {
+			games.add(new Game(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getString(5), rs.getDouble(6), rs.getString(7), rs.getBoolean(8), rs.getBoolean(9), rs.getBoolean(10), rs.getBoolean(11), rs.getBoolean(12), rs.getBoolean(13), rs.getBoolean(14)));
+		}
+		connection.close();
+	%>
 	
 <!-- TODO: REMOVE ALL STYLE TAGS AND MIGRATE THEM TO CSS FILES. -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -96,157 +105,107 @@
 			<div class="tab-content">
 				    <div role="tabpanel" class="tab-pane active" id="all">
 				    	<ul class="media-list">
+				    		<% for (int i = 0; i < (games.size() > 5 ? 5 : games.size()); i++) { 
+				    			Game game = games.get(i);
+				    		%>
 				    		<li class="media">
 				    			<div class="media-left">
 				    				<img src="http://placehold.it/128x64" alt="...">
 				    			</div>
 				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
+				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
+				    				<p><%= game.getDescription().substring(0, (game.getDescription().length() > 200 ? 200 : game.getDescription().length())) %></p>
 				    			</div>
 				    		</li>
+				    		<%	} %>
 				    	</ul>
 				    </div>
     				<div role="tabpanel" class="tab-pane" id="pc">
 				    	<ul class="media-list">
+				    		<% for (int i = 0, y = (games.size() > 5 ? 5 : games.size()); i < y; i++) { 
+				    			Game game = games.get(i);
+				    			if (!game.isSupportLinux() && !game.isSupportMac() && !game.isSupportWin()) {
+				    				if (games.size() - i > y - i && games.size() > 5)
+				    					y++;
+				    				continue;
+				    			}
+				    		%>
 				    		<li class="media">
 				    			<div class="media-left">
 				    				<img src="http://placehold.it/128x64" alt="...">
 				    			</div>
 				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
+				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
+				    				<p><%= game.getDescription().substring(0, (game.getDescription().length() > 200 ? 200 : game.getDescription().length())) %></p>
 				    			</div>
 				    		</li>
-				    		<li class="media">
-				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
-				    			</div>
-				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
-				    			</div>
-				    		</li>
+				    		<%	} %>
 				    	</ul>
 				    </div>
     				<div role="tabpanel" class="tab-pane" id="ps4">
 				    	<ul class="media-list">
+				    		<% for (int i = 0, y = (games.size() > 5 ? 5 : games.size()); i < y; i++) { 
+				    			Game game = games.get(i);
+				    			if (!game.isSupportPs4()) {
+				    				if (games.size() - i > y - i && games.size() > 5)
+				    					y++;
+				    				continue;
+				    			}
+				    		%>
 				    		<li class="media">
 				    			<div class="media-left">
 				    				<img src="http://placehold.it/128x64" alt="...">
 				    			</div>
 				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
+				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
+				    				<p><%= game.getDescription().substring(0, (game.getDescription().length() > 200 ? 200 : game.getDescription().length())) %></p>
 				    			</div>
 				    		</li>
-				    		<li class="media">
-				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
-				    			</div>
-				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
-				    			</div>
-				    		</li>
-				    		<li class="media">
-				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
-				    			</div>
-				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
-				    			</div>
-				    		</li>
+				    		<%	} %>
 				    	</ul>
     				</div>
     				<div role="tabpanel" class="tab-pane" id="xbone">
 				    	<ul class="media-list">
+				    		<% for (int i = 0, y = (games.size() > 5 ? 5 : games.size()); i < y; i++) { 
+				    			Game game = games.get(i);
+				    			if (!game.isSupportXbox()) {
+				    				if (games.size() - i > y - i && games.size() > 5)
+				    					y++;
+				    				continue;
+				    			}
+				    		%>
 				    		<li class="media">
 				    			<div class="media-left">
 				    				<img src="http://placehold.it/128x64" alt="...">
 				    			</div>
 				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
+				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
+				    				<p><%= game.getDescription().substring(0, (game.getDescription().length() > 200 ? 200 : game.getDescription().length())) %></p>
 				    			</div>
 				    		</li>
-				    		<li class="media">
-				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
-				    			</div>
-				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
-				    			</div>
-				    		</li>
-				    		<li class="media">
-				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
-				    			</div>
-				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
-				    			</div>
-				    		</li>
-				    		<li class="media">
-				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
-				    			</div>
-				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
-				    			</div>
-				    		</li>
+				    		<%	} %>
 				    	</ul>
 				    </div>
     				<div role="tabpanel" class="tab-pane" id="wiiu">
 				    	<ul class="media-list">
+				    		<% for (int i = 0, y = (games.size() > 5 ? 5 : games.size()); i < y; i++) { 
+				    			Game game = games.get(i);
+				    			if (!game.isSupportWiiu()) {
+				    				if (games.size() - i > y - i && games.size() > 5)
+				    					y++;
+				    				continue;
+				    			}
+				    		%>
 				    		<li class="media">
 				    			<div class="media-left">
 				    				<img src="http://placehold.it/128x64" alt="...">
 				    			</div>
 				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
+				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
+				    				<p><%= game.getDescription().substring(0, (game.getDescription().length() > 200 ? 200 : game.getDescription().length())) %></p>
 				    			</div>
 				    		</li>
-				    		<li class="media">
-				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
-				    			</div>
-				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
-				    			</div>
-				    		</li>
-				    		<li class="media">
-				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
-				    			</div>
-				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
-				    			</div>
-				    		</li>
-				    		<li class="media">
-				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
-				    			</div>
-				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
-				    			</div>
-				    		</li>
-				    		<li class="media">
-				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
-				    			</div>
-				    			<div class="media-body">
-				    				<h4 class="media-heading">Game Name</h4>
-				    				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
-				    			</div>
-				    		</li>
+				    		<%	} %>
 				    	</ul>
 				    </div>
 			</div>
