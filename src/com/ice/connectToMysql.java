@@ -49,6 +49,51 @@ public class connectToMysql {
         return rs;  
     }  
     
+    
+    private PreparedStatement prepareStatement(String sql, Object... values) {
+		try {
+    		connect();
+			PreparedStatement ps = conn.prepareStatement(sql);		
+			
+			for (int i = 0; i < values.length; i++) {
+				if (values[i] instanceof Integer) 
+					ps.setInt(i + 1, (int) values[i]);
+				else if (values[i] instanceof Double)
+					ps.setDouble(i + 1, (double) values[i]); 
+				else if (values[i] instanceof String)
+					ps.setString(i + 1, (String) values[i]);
+				else if (values[i] instanceof Time)
+					ps.setTime(i + 1, (Time) values[i]);
+				else if (values[i] instanceof Timestamp)
+					ps.setTimestamp(i + 1, (Timestamp) values[i]);
+				else if (values[i] instanceof Boolean)
+					ps.setBoolean(i + 1, (boolean) values[i]);
+				else if (values[i] instanceof Float)
+					ps.setFloat(i + 1, (float) values[i]);
+				else if (values[i] instanceof Date)
+					ps.setDate(i + 1, (Date) values[i]);
+				else if (values[i] instanceof byte[])
+					ps.setBytes(i + 1, (byte[]) values[i]);
+				else if (values[i] instanceof Long) 
+					ps.setLong(i + 1, (long) values[i]);
+				else if (values[i] instanceof Short)
+					ps.setShort(i + 1, (short) values[i]);
+				else if (values[i] instanceof BigDecimal)
+					ps.setBigDecimal(i + 1, (BigDecimal) values[i]);
+				else if (values[i] instanceof InputStream)
+					ps.setBinaryStream(i + 1, (InputStream) values[i]);
+				else
+					ps.setObject(i + 1, values[i]);
+			}
+
+			return ps;
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+    }
+    
     /**
      * Query anything with extra security using prepared statements.
      * @param sql SQL statement to query
@@ -57,46 +102,29 @@ public class connectToMysql {
      */
     public ResultSet preparedQuery(String sql, Object... values) {
     	try {
-    		connect();
-			pstmt = conn.prepareStatement(sql);
-			
-			for (int i = 0; i < values.length; i++) {
-				if (values[i] instanceof Integer) 
-					pstmt.setInt(i + 1, (int) values[i]);
-				else if (values[i] instanceof Double)
-					pstmt.setDouble(i + 1, (double) values[i]); 
-				else if (values[i] instanceof String)
-					pstmt.setString(i + 1, (String) values[i]);
-				else if (values[i] instanceof Time)
-					pstmt.setTime(i + 1, (Time) values[i]);
-				else if (values[i] instanceof Timestamp)
-					pstmt.setTimestamp(i + 1, (Timestamp) values[i]);
-				else if (values[i] instanceof Boolean)
-					pstmt.setBoolean(i + 1, (boolean) values[i]);
-				else if (values[i] instanceof Float)
-					pstmt.setFloat(i + 1, (float) values[i]);
-				else if (values[i] instanceof Date)
-					pstmt.setDate(i + 1, (Date) values[i]);
-				else if (values[i] instanceof byte[])
-					pstmt.setBytes(i + 1, (byte[]) values[i]);
-				else if (values[i] instanceof Long) 
-					pstmt.setLong(i + 1, (long) values[i]);
-				else if (values[i] instanceof Short)
-					pstmt.setShort(i + 1, (short) values[i]);
-				else if (values[i] instanceof BigDecimal)
-					pstmt.setBigDecimal(i + 1, (BigDecimal) values[i]);
-				else if (values[i] instanceof InputStream)
-					pstmt.setBinaryStream(i + 1, (InputStream) values[i]);
-				else
-					pstmt.setObject(i + 1, values[i]);
-			}
-			
+			pstmt = prepareStatement(sql, values);
 			rs = pstmt.executeQuery();
-		} catch (SQLException | ClassNotFoundException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
     	// Incredibly dangerous
 		return rs;
+    }
+    
+    /**
+     * Update / Insert / Delete anything with extra security using prepared statements
+     * @param sql SQL statement to execute
+     * @param values Values to substitude into the prepared statement
+     * @return (-1) for unable to connect or instantiate SQL, (0) for returning nothing, or the amount of rows updated.
+     */
+    public int preparedUpdate(String sql, Object... values) {
+    	try {
+			pstmt = prepareStatement(sql, values);
+			return pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return -1;
     }
 
 }
