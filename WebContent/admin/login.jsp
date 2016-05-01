@@ -12,7 +12,7 @@
 		String id = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		ConnectToMySQL connection = new ConnectToMySQL(MyConstants.url);
+		connectToMysql connection = new connectToMysql(MyConstants.url);
 		String sql = "select * from user where userName='" + id + "' and userPwd='" + password + "'";
 		ResultSet rs = connection.query(sql);
 		
@@ -20,7 +20,7 @@
 			out.println("Login Success!");
 			connection.close();
 			if (VerifyUtils.verify(request.getParameter("g-recaptcha-response"))) {
-				session.setAttribute("username", "admin");
+				session.setAttribute("username", id);
 				response.sendRedirect(".");
 			} else {
 				failed = "Retry your captcha.";

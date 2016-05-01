@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.*;
 
-public class ConnectToMySQL {
+public class connectToMysql {
 	private Connection conn;
 	private String connectionURL;
 	private ResultSet rs;
@@ -15,7 +15,7 @@ public class ConnectToMySQL {
 	 * Connect to a MySQL server
 	 * @param connectionURL The connection string to connect to MySQL
 	 */
-	public ConnectToMySQL(String connectionURL) {
+	public connectToMysql(String connectionURL) {
 		this.connectionURL = connectionURL;
 	}
 
