@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
+	<%@ page import="com.ice.*" %>
+	<%@ page import="java.sql.*" %>
+	<%! connectToMysql connection = new connectToMysql(MyConstants.url); %>
+	
 <!-- TODO: REMOVE ALL STYLE TAGS AND MIGRATE THEM TO CSS FILES. -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
