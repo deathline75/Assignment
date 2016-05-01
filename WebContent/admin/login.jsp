@@ -14,10 +14,10 @@
 		connectToMysql connection = new connectToMysql(MyConstants.url);
 		ResultSet rs = connection.preparedQuery("Select * from user where username=? and userpwd=?",username,password);
 		if (rs.next()) {
-			out.println("Login Success!");
-			connection.preparedUpdate("update user set lastLogin='2016-01-30' where username=admin");
 			connection.close();
 			if (VerifyUtils.verify(request.getParameter("g-recaptcha-response"))) {
+				System.out.println(connection.preparedUpdate("update user set lastLogin='2016-01-30' where username=?", username));
+				connection.close();
 				session.setAttribute("username", username);
 				response.sendRedirect(".");
 			} else {
