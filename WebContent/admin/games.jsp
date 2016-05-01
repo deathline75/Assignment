@@ -8,6 +8,10 @@
 
 	connectToMysql connection = new connectToMysql(MyConstants.url);
 %>
+<%
+	String gameid = request.getParameter("gameid");
+%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -50,12 +54,47 @@
 					<td><%=rs.getString(2)%></td>
 					<td><%=rs.getString(3)%></td>
 					<td><%=rs.getDouble(4)%></td>
-					<td><a href="#" role="button" class="btn btn-primary btn-xs">Edit</a>
-					<a href="#" role="button" class="btn btn-danger btn-xs">Delete</a></td>
+					<td><a href="./games.jsp?gameid=<%=rs.getInt(1)%>"
+						role="button" class="btn btn-info btn-xs" data-toggle="modal"
+						data-target="#myModal">Info</a> <a href="#" role="button"
+						class="btn btn-primary btn-xs">Edit</a> <a href="#" role="button"
+						class="btn btn-danger btn-xs">Delete</a>
+						</div></td>
 				</tr>
 				<%
 					}
+					//connection.close();
 				%>
+				<%
+					ResultSet rs1 = connection.preparedQuery("SELECT gameTitle,description FROM game where gameid=?", gameid);
+					System.out.print(gameid);
+					if (rs1.next()) {
+						String gameTitle = rs.getString("gameTitle");
+						System.out.print(gameTitle);
+					}
+				%>
+				<!-- Modal -->
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+					aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+							</div>
+							<div class="modal-body">...</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary">Save
+									changes</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</tbody>
 		</table>
 	</div>
