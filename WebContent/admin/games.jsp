@@ -7,8 +7,6 @@
 		response.sendRedirect("login.jsp");
 
 	connectToMysql connection = new connectToMysql(MyConstants.url);
-%>
-<%
 	String gameid = request.getParameter("gameid");
 %>
 
@@ -63,13 +61,13 @@
 				</tr>
 				<%
 					}
-					//connection.close();
-				%>
-				<%
+					connection.close();
+					
+					System.out.println(gameid);
+					
 					ResultSet rs1 = connection.preparedQuery("SELECT gameTitle,description FROM game where gameid=?", gameid);
-					System.out.print(gameid);
 					if (rs1.next()) {
-						String gameTitle = rs.getString("gameTitle");
+						String gameTitle = rs1.getString("gameTitle");
 						System.out.print(gameTitle);
 					}
 				%>

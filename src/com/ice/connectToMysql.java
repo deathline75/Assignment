@@ -7,9 +7,6 @@ import java.sql.*;
 public class connectToMysql {
 	private Connection conn;
 	private String connectionURL;
-	private ResultSet rs;
-	private PreparedStatement pstmt;
-	private Statement stat = null;
 	
 	/**
 	 * Connect to a MySQL server
@@ -38,9 +35,10 @@ public class connectToMysql {
 	 * @return The ResultSet for the query
 	 */
     public ResultSet query(String sql){  
+    	ResultSet rs = null;
         try{  
         	connect();
-            stat = conn.createStatement();  
+            Statement stat = conn.createStatement();  
             rs = stat.executeQuery(sql);  
         }catch(Exception ex){  
             ex.printStackTrace();  
@@ -101,8 +99,9 @@ public class connectToMysql {
      * @return The ResultSet for the query
      */
     public ResultSet preparedQuery(String sql, Object... values) {
+    	ResultSet rs = null;
     	try {
-			pstmt = prepareStatement(sql, values);
+			PreparedStatement pstmt = prepareStatement(sql, values);
 			rs = pstmt.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -119,7 +118,7 @@ public class connectToMysql {
      */
     public int preparedUpdate(String sql, Object... values) {
     	try {
-			pstmt = prepareStatement(sql, values);
+    		PreparedStatement pstmt = prepareStatement(sql, values);
 			return pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
