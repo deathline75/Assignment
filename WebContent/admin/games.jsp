@@ -32,7 +32,7 @@
 			</form>
 		</div>
 		<div class="col-sm-1" style="margin: 20px 0 10px;">
-			<a href="#" role="button" class="btn btn-primary">Add Game</a>
+			<a href="./addGame.jsp" role="button" class="btn btn-primary">Add Game</a>
 		</div>
 		<table class="table table-striped">
 			<thead>
