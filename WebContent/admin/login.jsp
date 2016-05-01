@@ -16,7 +16,6 @@
 		if (rs.next()) {
 			connection.close();
 			if (VerifyUtils.verify(request.getParameter("g-recaptcha-response"))) {
-				System.out.println(connection.preparedUpdate("update user set lastLogin='2016-01-30' where username=?", username));
 				connection.close();
 				session.setAttribute("username", username);
 				response.sendRedirect(".");
