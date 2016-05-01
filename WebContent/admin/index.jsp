@@ -37,6 +37,7 @@
 				java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String currentTime = sdf.format(date);
 				connection.preparedUpdate("update user set lastLogin=? where username=?", date, username);
+				connection.close();
 			%>
 		</div>
 	</div>
