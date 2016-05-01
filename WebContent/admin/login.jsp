@@ -26,20 +26,6 @@
 			failed = "Invalid username or password.";
 			connection.close();
 		}
-		
-		/* Error on validation of wrong password, it displays Retry your captcha instead. Need modification*/
-		
-		
-		/* 		if (request.getParameter("username").equals("admin")
-						&& request.getParameter("password").equals("password")) {
-					if (VerifyUtils.verify(request.getParameter("g-recaptcha-response"))) {
-						session.setAttribute("username", "admin");
-						response.sendRedirect(".");
-					} else {
-						failed = "Retry your captcha.";
-					}
-				} else
-					failed = "Wrong username or password!"; */
 	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

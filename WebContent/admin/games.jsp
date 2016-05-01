@@ -33,11 +33,11 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<td>#</td>
-					<td>Game Title</td>
-					<td>Company</td>
-					<td>Price</td>
-					<td>Edit Data</td>
+					<th>#</th>
+					<th>Game Title</th>
+					<th>Company</th>
+					<th>Price</th>
+					<th>Edit Data</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -50,7 +50,8 @@
 					<td><%=rs.getString(2)%></td>
 					<td><%=rs.getString(3)%></td>
 					<td><%=rs.getDouble(4)%></td>
-					<td><a href="#" role="button" class="btn btn-primary btn-xs">Edit</a> <a href="#" role="button" class="btn btn-danger btn-xs">Delete</a></td>
+					<td><a href="#" role="button" class="btn btn-primary btn-xs">Edit</a>
+					<a href="#" role="button" class="btn btn-danger btn-xs">Delete</a></td>
 				</tr>
 				<%
 					}
