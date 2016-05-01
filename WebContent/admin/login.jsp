@@ -9,18 +9,15 @@
 	if (request.getParameter("g-recaptcha-response") == "") {
 		failed = "Retry your captcha.";
 	} else if (request.getParameter("username") != null && request.getParameter("password") != null) {
-		String id = request.getParameter("username");
+		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		
 		connectToMysql connection = new connectToMysql(MyConstants.url);
-		String sql = "select * from user where userName='" + id + "' and userPwd='" + password + "'";
-		ResultSet rs = connection.query(sql);
-		
+		ResultSet rs = connection.preparedQuery("Select * from users where username=? and password=?",username,password);
 		if (rs.next()) {
 			out.println("Login Success!");
 			connection.close();
 			if (VerifyUtils.verify(request.getParameter("g-recaptcha-response"))) {
-				session.setAttribute("username", id);
+				session.setAttribute("username", username);
 				response.sendRedirect(".");
 			} else {
 				failed = "Retry your captcha.";

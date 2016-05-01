@@ -22,7 +22,6 @@ public class connectToMysql {
 	private void connect() throws SQLException, ClassNotFoundException{
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(connectionURL);
-			System.out.print("Success");
 	}
 	
 	public void close() {
