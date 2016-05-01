@@ -12,9 +12,10 @@
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		connectToMysql connection = new connectToMysql(MyConstants.url);
-		ResultSet rs = connection.preparedQuery("Select * from users where username=? and password=?",username,password);
+		ResultSet rs = connection.preparedQuery("Select * from user where username=? and userpwd=?",username,password);
 		if (rs.next()) {
 			out.println("Login Success!");
+			connection.preparedUpdate("update user set lastLogin='2016-01-30' where username=admin");
 			connection.close();
 			if (VerifyUtils.verify(request.getParameter("g-recaptcha-response"))) {
 				session.setAttribute("username", username);
