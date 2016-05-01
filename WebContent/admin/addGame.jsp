@@ -4,80 +4,83 @@
 <%@ page import="com.ice.*"%>
 
 <%
-	String gameTitle = request.getParameter("gameTitle");
-	String company = request.getParameter("company");
-	String releaseDate = request.getParameter("releaseDate");
-	String description = request.getParameter("description");
-	String price = request.getParameter("price");
-	String imgLocation = request.getParameter("imgLocation");
-	String preOwned = request.getParameter("preOwned");
-	if (preOwned != null) {
-		//out.println("Clicked");
-		preOwned = "1";
-	} else {
-		preOwned = "0";
-		//out.println("Not clicked");
+	int result = -10;
+	if (request.getParameter("continue") != null || request.getParameter("redirect") != null) {
+		System.out.println("asdadasd");
+		String gameTitle = request.getParameter("gameTitle");
+		String company = request.getParameter("company");
+		String releaseDate = request.getParameter("releaseDate");
+		String description = request.getParameter("description");
+		String price = request.getParameter("price");
+		String imgLocation = request.getParameter("imgLocation");
+		String preOwned = request.getParameter("preOwned");
+		if (preOwned != null) {
+			//out.println("Clicked");
+			preOwned = "1";
+		} else {
+			preOwned = "0";
+			//out.println("Not clicked");
+		}
+		String supportWin = request.getParameter("supportWin");
+		if (supportWin != null) {
+			//out.println("Clicked");
+			supportWin = "1";
+		} else {
+			supportWin = "0";
+			//out.println("Not clicked");
+		}
+		String supportMac = request.getParameter("supportMac");
+		if (supportMac != null) {
+			//out.println("Clicked");
+			supportMac = "1";
+		} else {
+			supportMac = "0";
+			//out.println("Not clicked");
+		}
+		String supportXBOX = request.getParameter("supportXBOX");
+		if (supportXBOX != null) {
+			//out.println("Clicked");
+			supportXBOX = "1";
+		} else {
+			supportXBOX = "0";
+			//out.println("Not clicked");
+		}
+		String supportLinux = request.getParameter("supportLinux");
+		if (supportLinux != null) {
+			//out.println("Clicked");
+			supportLinux = "1";
+		} else {
+			supportLinux = "0";
+			//out.println("Not clicked");
+		}
+		String supportPS4 = request.getParameter("supportPS4");
+		if (supportPS4 != null) {
+			//out.println("Clicked");
+			supportPS4 = "1";
+		} else {
+			supportPS4 = "0";
+			//out.println("Not clicked");
+		}
+		String supportWIIU = request.getParameter("supportWIIU");
+		if (supportWIIU != null) {
+			//out.println("Clicked");
+			supportWIIU = "1";
+		} else {
+			supportWIIU = "0";
+			//out.println("Not clicked");
+		}
+		connectToMysql connection = new connectToMysql(MyConstants.url);
+		//connection.preparedUpdate("insert into game(gametitle) values(?),",gameTitle);
+		result = connection.preparedUpdate(
+				"insert into game(gametitle,company,releaseDate,description,price,imgLocation,preowned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU) values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+				gameTitle, company, releaseDate, description, price, imgLocation, preOwned, supportWin, supportMac,
+				supportXBOX, supportLinux, supportPS4, supportWIIU);
+		if (result > 0 && request.getParameter("redirect") != null)
+			response.sendRedirect("games.jsp");
+			
+		connection.close();
 	}
-	String supportWin = request.getParameter("supportWin");
-	if (supportWin != null) {
-		//out.println("Clicked");
-		supportWin = "1";
-	} else {
-		supportWin = "0";
-		//out.println("Not clicked");
-	}
-	String supportMac = request.getParameter("supportMac");
-	if (supportMac != null) {
-		//out.println("Clicked");
-		supportMac = "1";
-	} else {
-		supportMac = "0";
-		//out.println("Not clicked");
-	}
-	String supportXBOX = request.getParameter("supportXBOX");
-	if (supportXBOX != null) {
-		//out.println("Clicked");
-		supportXBOX = "1";
-	} else {
-		supportXBOX = "0";
-		//out.println("Not clicked");
-	}
-	String supportLinux = request.getParameter("supportLinux");
-	if (supportLinux != null) {
-		//out.println("Clicked");
-		supportLinux = "1";
-	} else {
-		supportLinux = "0";
-		//out.println("Not clicked");
-	}
-	String supportPS4 = request.getParameter("supportPS4");
-	if (supportPS4 != null) {
-		//out.println("Clicked");
-		supportPS4 = "1";
-	} else {
-		supportPS4 = "0";
-		//out.println("Not clicked");
-	}
-	String supportWIIU = request.getParameter("supportWIIU");
-	if (supportWIIU != null) {
-		//out.println("Clicked");
-		supportWIIU = "1";
-	} else {
-		supportWIIU = "0";
-		//out.println("Not clicked");
-	}
-%>
-
-
-
-<%
-	connectToMysql connection = new connectToMysql(MyConstants.url);
-	//connection.preparedUpdate("insert into game(gametitle) values(?),",gameTitle);
-	connection.preparedUpdate(
-			"insert into game(gametitle,company,releaseDate,description,price,imgLocation,preowned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU) values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
-			gameTitle, company, releaseDate, description, price, imgLocation, preOwned, supportWin, supportMac,
-			supportXBOX, supportLinux, supportPS4, supportWIIU);
-	connection.close();
+	
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -91,27 +94,107 @@
 	<%@ include file="navbar.jsp"%>
 
 	<div class="container">
-		<h1 class="col-sm-8" style="padding: 0;">Add Game</h1>
-		<div class="col-sm-3" style="margin: 20px 0 10px;"></div>
+		<%
+			if (result > 0) {
+				out.println("<div class=\"alert alert-success\" role=\"alert\"><strong>Success!</strong> The new game has been added.</div>");
+			} else if (result > -2) {
+				out.println("<div class=\"alert alert-danger\" role=\"alert\"><strong>Oh no!</strong> An erorr occurred while trying to add the new game.</div>");
+			}
+		%>
+		<div class="page-header ice-header">
+			<h1>Add a Game</h1>
+		</div>
+		<form class="form-horizontal" method="post">
+			<div class="form-group">
+				<label for="gametitle" class="col-sm-2 control-label">Game Title: </label>
+    			<div class="col-sm-4">
+      				<input type="text" class="form-control" id="gametitle" placeholder="Game Title" name="gameTitle" />
+    			</div>
+			</div>
+			<div class="form-group">
+				<label for="gamecompany" class="col-sm-2 control-label">Company: </label>
+    			<div class="col-sm-4">
+      				<input type="text" class="form-control" id="gamecompany" placeholder="Company" name="company" />
+    			</div>
+			</div>
+			<div class="form-group">
+				<label for="gamereleasedate" class="col-sm-2 control-label">Release Date: </label>
+    			<div class="col-sm-2">
+      				<input type="date" class="form-control" id="gamereleasedate" placeholder="Release Date" name="releaseDate" />
+    			</div>
+			</div>
+			<div class="form-group">
+				<label for="gamedescription" class="col-sm-2 control-label">Description: </label>
+    			<div class="col-sm-7">
+      				<textarea class="form-control" id="gamedescription" placeholder="Description" name="description" rows="4"></textarea>
+    			</div>
+			</div>
+			<div class="form-group">
+				<label for="gameprice" class="col-sm-2 control-label">Price: </label>
+    			<div class="col-sm-2 input-group" style="padding: 0 15px;">
+    				<span class="input-group-addon">$</span>
+      				<input type="number" class="form-control" id="gameprice" placeholder="59.90" name="price" />
+    			</div>
+			</div>
+			<div class="form-group">
+				<label for="gameimglocation" class="col-sm-2 control-label">Image Location: </label>
+    			<div class="col-sm-4">
+      				<input type="text" class="form-control" id="gameimglocation" placeholder="/img/games/game.png" name="imgLocation" />
+    			</div>
+			</div>
+			<div class="form-group">
+        		<label class="col-sm-2 control-label" for="gamepreownedgame"> Preowned Game:</label>
+        		<div class="control-label col-sm-1" style="text-align: left;">
+        			<input type="checkbox" name="preOwned" id="gamepreownedgame"> 
+    			</div>
+  			</div>
+			<div class="form-group">
+        		<label class="col-sm-2 control-label"> Platforms:</label>
+        		<div class="col-sm-10 container-fluid" style="padding: 0;">
+        			<div class="control-label col-sm-2" style="text-align: left;">
+        				<label>
+  							<input type="checkbox" value="windows" name="supportWin"> Windows
+						</label>
+					</div>
+					<div class="control-label col-sm-2" style="text-align: left;">
+						<label>
+  							<input type="checkbox" value="osx" name="supportMac"> OS X
+						</label>
+					</div>
+					<div class="control-label col-sm-2" style="text-align: left;">
+						<label>
+  							<input type="checkbox" value="linux" name="supportLinux"> Linux
+						</label>
+    				</div>
+    			</div>
+    			<div class="col-sm-offset-2 col-sm-10 container-fluid" style="padding: 0;">
+    				<div class="control-label col-sm-2" style="text-align: left;">
+    			    	<label>
+  							<input type="checkbox" value="xbone" name="supportXBOX"> Xbox One
+						</label>
+					</div>
+					<div class="control-label col-sm-2" style="text-align: left;">
+						<label>
+	  						<input type="checkbox" value="ps4" name="supportPS4"> Playstation 4
+						</label>
+					</div>
+					<div class="control-label col-sm-2" style="text-align: left;">
+						<label>
+  							<input type="checkbox" value="wiiu" name="supportWIIU"> Wii-U
+						</label>
+    				</div>
+    			</div>
+  			</div>
+  			<div class="form-group">
+    			<div class="col-sm-offset-2 col-sm-1">
+      				<button type="submit" class="btn btn-primary" name="redirect">Add Game</button>
+    			</div>
+       			<div class="col-sm-9">
+      				<button type="submit" class="btn btn-default" name="continue">Keep Adding Games</button>
+    			</div>
+  			</div>
+		</form>
 	</div>
-
-	<form method="post">
-		Game Title:<input type="text" name="gameTitle"> <br />
-		Company:<input type="text" name="company"> <br />
-		releaseDate:<input type="text" name="releaseDate"> <br />
-		Description:<input type="text" name="description"> <br />
-		Price:<input type="text" name="price"> <br /> imgLocation:<input
-			type="text" name="imgLocation"> <br /> Preowned:<input
-			type="checkbox" name="preOwned"> <br /> Platform: win:<input
-			type="checkbox" name="supportWin"><br /> Mac:<input
-			type="checkbox" name="supportMac"><br /> Xbox:<input
-			type="checkbox" name="supportXBOX"><br /> Linux:<input
-			type="checkbox" name="supportLinux"><br /> PS4:<input
-			type="checkbox" name="supportPS4"><br /> WIIU:<input
-			type="checkbox" name="supportWIIU"><br /> <input
-			type="submit" value="kelvinsuckaTRANNYDICK">
-
-	</form>
 
 
 	<%@ include file="../footer.html"%>
