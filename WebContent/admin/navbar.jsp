@@ -13,7 +13,7 @@ if (session.getAttribute("username") != null)
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href=".">SP Games Store Administration Page</a>
+      <a class="navbar-brand" href=".">SP Games Store Admin</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -22,8 +22,7 @@ if (session.getAttribute("username") != null)
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Games <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">View Games</a></li>
-            <li><a href="addGame.jsp">Add Games</a></li>
+            <li><a href="games.jsp">View / Add Games</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#">View / Add Genres</a></li>
           </ul>
