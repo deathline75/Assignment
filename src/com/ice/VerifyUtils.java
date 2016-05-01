@@ -57,6 +57,7 @@ public class VerifyUtils {
  
            // Response code return from server.
            int responseCode = conn.getResponseCode();
+           System.out.println("responseCode=" + responseCode);
  
  
            // Get the InputStream from Connection to read data sent from the server.
@@ -66,6 +67,7 @@ public class VerifyUtils {
            CaptchaResponse response = gson.fromJson(new InputStreamReader(is, "UTF-8"), CaptchaResponse.class);
  
            // ==> {"success": true}
+           System.out.println("Response: " + response.success);
            return response.success;
        } catch (Exception e) {
            e.printStackTrace();

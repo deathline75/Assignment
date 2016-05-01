@@ -12,13 +12,18 @@
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		
 		ConnectToMySQL connection = new ConnectToMySQL(MyConstants.url);
+=======
+>>>>>>> parent of c753e4d... Modified ConnectToMySQL
 		String sql = "select * from user where userName='" + id + "' and userPwd='" + password + "'";
-		ResultSet rs = connection.query(sql);
 		
+		
+		ResultSet rs = connectToMysql.query(sql);
 		if (rs.next()) {
 			out.println("Login Success!");
+<<<<<<< HEAD
 			connection.close();
 =======
 		String sql = "select * from user where username='" + username + "' and userPwd='" + password + "'";
@@ -26,15 +31,14 @@
 		ResultSet rs = connectToMysql.query(sql);
 		if (rs.next()) {
 >>>>>>> 0f1a0b1612e590ebc365919429752dd85d4bb6b4
+=======
+>>>>>>> parent of c753e4d... Modified ConnectToMySQL
 			if (VerifyUtils.verify(request.getParameter("g-recaptcha-response"))) {
 				session.setAttribute("username", username);
 				response.sendRedirect(".");
-			} else {
-				failed = "Retry your captcha.";
 			}
 		} else {
-			failed = "Invalid username or password.";
-			connection.close();
+			failed = "Retry your captcha.";
 		}
 		
 		/* Error on validation of wrong password, it displays Retry your captcha instead. Need modification*/

@@ -23,7 +23,7 @@ if (session.getAttribute("username") != null)
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Games <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#">View Games</a></li>
-            <li><a href="addGame.jsp">Add Games</a></li>
+            <li><a href="#">Add Games</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#">View / Add Genres</a></li>
           </ul>

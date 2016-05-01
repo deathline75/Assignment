@@ -10,7 +10,7 @@
 </head>
 <body>
 	<%
-/* 		String id = request.getParameter("username");
+		String id = request.getParameter("username");
 		String password = request.getParameter("password");
 		
 		String sql = "select * from user where userName='" + id + "' and userPwd='" + password + "'";
@@ -21,7 +21,7 @@
 			out.println("Login Success!");
 		} else {
 			out.println("Login Failed!");
-		} */
+		}
 	%>
 </body>
 </html>
