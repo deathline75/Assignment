@@ -3,7 +3,6 @@ package com.ice;
 import java.sql.*;
 
 public class connectToMysql {
-	public static String url = "jdbc:mysql://188.166.238.151/ead?user=root&password=iloveeadxoxo";
 	public static Connection conn;
 	public static ResultSet rs;
 	public static String sqlStr;
@@ -13,7 +12,7 @@ public class connectToMysql {
 	public static Connection connect() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(url);
+			conn = DriverManager.getConnection(MyConstants.url);
 			System.out.print("Success");
 		} catch (Exception e) {
 			System.out.print(e);
