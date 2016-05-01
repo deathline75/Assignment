@@ -9,9 +9,8 @@
 	if (request.getParameter("g-recaptcha-response") == "") {
 		failed = "Retry your captcha.";
 	} else if (request.getParameter("username") != null && request.getParameter("password") != null) {
-		String username = request.getParameter("username");
+		String id = request.getParameter("username");
 		String password = request.getParameter("password");
-<<<<<<< HEAD
 		
 		ConnectToMySQL connection = new ConnectToMySQL(MyConstants.url);
 		String sql = "select * from user where userName='" + id + "' and userPwd='" + password + "'";
@@ -20,14 +19,8 @@
 		if (rs.next()) {
 			out.println("Login Success!");
 			connection.close();
-=======
-		String sql = "select * from user where username='" + username + "' and userPwd='" + password + "'";
-
-		ResultSet rs = connectToMysql.query(sql);
-		if (rs.next()) {
->>>>>>> 0f1a0b1612e590ebc365919429752dd85d4bb6b4
 			if (VerifyUtils.verify(request.getParameter("g-recaptcha-response"))) {
-				session.setAttribute("username", username);
+				session.setAttribute("username", "admin");
 				response.sendRedirect(".");
 			} else {
 				failed = "Retry your captcha.";
@@ -38,9 +31,6 @@
 		}
 		
 		/* Error on validation of wrong password, it displays Retry your captcha instead. Need modification*/
-		/* Login page display wrong name*/
-		
-		
 		
 		
 		/* 		if (request.getParameter("username").equals("admin")
