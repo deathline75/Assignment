@@ -16,11 +16,11 @@
 			//Load Driver
 			Class.forName("com.mysql.jdbc.Driver");
 			//Define Connection
-			String connURL = "jdbc:mysql://localhost/ead?user=root&password=iloveeadxoxo";
+			String connURL = "jdbc:mysql://188.166.238.151/ead?user=root&password=iloveeadxoxo";
 			//Establish connection
 			Connection conn = DriverManager.getConnection(connURL);
 			//String sqlStr ="select * from login where where userid='"+id+"'and password'"+password+"'";
-			String sqlStr = "Select * from user where username=? and password=?";
+			String sqlStr = "Select * from user where username=? and userpwd=?";
 			
 			PreparedStatement pstmt = conn.prepareStatement(sqlStr);
 

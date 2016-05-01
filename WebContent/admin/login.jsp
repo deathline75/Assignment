@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="com.ice.*" %>
+<%@ page import="com.ice.*"%>
 <%
 	if (session.getAttribute("username") != null)
 		response.sendRedirect(".");
@@ -16,8 +16,8 @@
 			} else {
 				failed = "Retry your captcha.";
 			}
-		} else 
-		failed = "Wrong username or password!";
+		} else
+			failed = "Wrong username or password!";
 	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -40,7 +40,8 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href=".">SP Games Store Administration Page</a>
+			<a class="navbar-brand" href=".">SP Games Store Administration
+				Page</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -85,7 +86,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="g-recaptcha col-sm-offset-1" data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ" style="margin-bottom: 15px"></div>
+			<div class="g-recaptcha col-sm-offset-1"
+				data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ"
+				style="margin-bottom: 15px"></div>
 			<div class="form-group">
 				<div class="col-sm-offset-1 col-sm-10">
 					<button type="submit" class="btn btn-default">Sign in</button>
