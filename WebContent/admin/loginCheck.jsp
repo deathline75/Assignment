@@ -10,13 +10,13 @@
 </head>
 <body>
 	<%
-		String id = request.getParameter("txtUserName");
-		String password = request.getParameter("txtPassword");
-		//Load Driver
-		connectToMysql.connect();
+		String id = request.getParameter("username");
+		String password = request.getParameter("password");
+		
 		String sql = "select * from user where userName='" + id + "' and userPwd='" + password + "'";
-		//"Select * from user where username="+id + " and password= " +password);
+		
 		ResultSet rs = connectToMysql.query(sql);
+		
 		if (rs.next()) {
 			out.println("Login Success!");
 		} else {
