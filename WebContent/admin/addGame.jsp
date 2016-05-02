@@ -4,82 +4,8 @@
 <%@ page import="com.ice.*"%>
 
 <%
-	int result = -10;
-	if (request.getParameter("continue") != null || request.getParameter("redirect") != null) {
-		System.out.println("asdadasd");
-		String gameTitle = request.getParameter("gameTitle");
-		String company = request.getParameter("company");
-		String releaseDate = request.getParameter("releaseDate");
-		String description = request.getParameter("description");
-		String price = request.getParameter("price");
-		String imgLocation = request.getParameter("imgLocation");
-		String preOwned = request.getParameter("preOwned");
-		if (preOwned != null) {
-			//out.println("Clicked");
-			preOwned = "1";
-		} else {
-			preOwned = "0";
-			//out.println("Not clicked");
-		}
-		String supportWin = request.getParameter("supportWin");
-		if (supportWin != null) {
-			//out.println("Clicked");
-			supportWin = "1";
-		} else {
-			supportWin = "0";
-			//out.println("Not clicked");
-		}
-		String supportMac = request.getParameter("supportMac");
-		if (supportMac != null) {
-			//out.println("Clicked");
-			supportMac = "1";
-		} else {
-			supportMac = "0";
-			//out.println("Not clicked");
-		}
-		String supportXBOX = request.getParameter("supportXBOX");
-		if (supportXBOX != null) {
-			//out.println("Clicked");
-			supportXBOX = "1";
-		} else {
-			supportXBOX = "0";
-			//out.println("Not clicked");
-		}
-		String supportLinux = request.getParameter("supportLinux");
-		if (supportLinux != null) {
-			//out.println("Clicked");
-			supportLinux = "1";
-		} else {
-			supportLinux = "0";
-			//out.println("Not clicked");
-		}
-		String supportPS4 = request.getParameter("supportPS4");
-		if (supportPS4 != null) {
-			//out.println("Clicked");
-			supportPS4 = "1";
-		} else {
-			supportPS4 = "0";
-			//out.println("Not clicked");
-		}
-		String supportWIIU = request.getParameter("supportWIIU");
-		if (supportWIIU != null) {
-			//out.println("Clicked");
-			supportWIIU = "1";
-		} else {
-			supportWIIU = "0";
-			//out.println("Not clicked");
-		}
-		connectToMysql connection = new connectToMysql(MyConstants.url);
-		//connection.preparedUpdate("insert into game(gametitle) values(?),",gameTitle);
-		result = connection.preparedUpdate(
-				"insert into game(gametitle,company,releaseDate,description,price,imgLocation,preowned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU) values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
-				gameTitle, company, releaseDate, description, price, imgLocation, preOwned, supportWin, supportMac,
-				supportXBOX, supportLinux, supportPS4, supportWIIU);
-		if (result > 0 && request.getParameter("redirect") != null)
-			response.sendRedirect("games.jsp");
-			
-		connection.close();
-	}
+	if (session.getAttribute("username") == null)
+		response.sendRedirect("login.jsp");
 	
 %>
 
@@ -95,16 +21,19 @@
 
 	<div class="container">
 		<%
-			if (result > 0) {
+		if (request.getAttribute("result") != null) {
+			int result = (int) request.getAttribute("result");
+ 			if (result > 0) {
 				out.println("<div class=\"alert alert-success\" role=\"alert\"><strong>Success!</strong> The new game has been added.</div>");
 			} else if (result > -2) {
 				out.println("<div class=\"alert alert-danger\" role=\"alert\"><strong>Oh no!</strong> An erorr occurred while trying to add the new game.</div>");
-			}
+			} 
+		}
 		%>
 		<div class="page-header ice-header">
 			<h1>Add a Game</h1>
 		</div>
-		<form class="form-horizontal" method="post">
+		<form class="form-horizontal" method="post" enctype="multipart/form-data" action="AddGame">
 			<div class="form-group">
 				<label for="gametitle" class="col-sm-2 control-label">Game Title: </label>
     			<div class="col-sm-4">
@@ -139,7 +68,7 @@
 			<div class="form-group">
 				<label for="gameimglocation" class="col-sm-2 control-label">Image Location: </label>
     			<div class="col-sm-4">
-      				<input type="text" class="form-control" id="gameimglocation" placeholder="/img/games/game.png" name="imgLocation" />
+    				<input type="file" style="padding-top: 7px;" id="gameimglocation" name="imgLocation" accept="image/*">
     			</div>
 			</div>
 			<div class="form-group">

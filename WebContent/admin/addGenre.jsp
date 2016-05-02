@@ -4,6 +4,9 @@
 <%@ page import="com.ice.*"%>
 
 <%
+	if (session.getAttribute("username") == null)
+		response.sendRedirect("login.jsp");
+
 	int result = -10;
 	if (request.getParameter("continue") != null || request.getParameter("redirect") != null) {
 		String genreTitle = request.getParameter("genreTitle");
