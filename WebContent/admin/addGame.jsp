@@ -27,7 +27,9 @@
 				out.println("<div class=\"alert alert-success\" role=\"alert\"><strong>Success!</strong> The new game has been added.</div>");
 			} else if (result > -2) {
 				out.println("<div class=\"alert alert-danger\" role=\"alert\"><strong>Oh no!</strong> An erorr occurred while trying to add the new game.</div>");
-			} 
+			} else if (result > -3) {
+				out.println("<div class=\"alert alert-danger\" role=\"alert\">Please fill in all the required fields.</div>");
+			}
 		}
 		%>
 		<div class="page-header ice-header">
@@ -35,31 +37,31 @@
 		</div>
 		<form class="form-horizontal" method="post" enctype="multipart/form-data" action="AddGame">
 			<div class="form-group">
-				<label for="gametitle" class="col-sm-2 control-label">Game Title: </label>
+				<label for="gametitle" class="col-sm-2 control-label">Game Title*: </label>
     			<div class="col-sm-4">
       				<input type="text" class="form-control" id="gametitle" placeholder="Game Title" name="gameTitle" />
     			</div>
 			</div>
 			<div class="form-group">
-				<label for="gamecompany" class="col-sm-2 control-label">Company: </label>
+				<label for="gamecompany" class="col-sm-2 control-label">Company*: </label>
     			<div class="col-sm-4">
       				<input type="text" class="form-control" id="gamecompany" placeholder="Company" name="company" />
     			</div>
 			</div>
 			<div class="form-group">
-				<label for="gamereleasedate" class="col-sm-2 control-label">Release Date: </label>
+				<label for="gamereleasedate" class="col-sm-2 control-label">Release Date*: </label>
     			<div class="col-sm-2">
       				<input type="date" class="form-control" id="gamereleasedate" placeholder="Release Date" name="releaseDate" />
     			</div>
 			</div>
 			<div class="form-group">
-				<label for="gamedescription" class="col-sm-2 control-label">Description: </label>
+				<label for="gamedescription" class="col-sm-2 control-label">Description*: </label>
     			<div class="col-sm-7">
       				<textarea class="form-control" id="gamedescription" placeholder="Description" name="description" rows="4"></textarea>
     			</div>
 			</div>
 			<div class="form-group">
-				<label for="gameprice" class="col-sm-2 control-label">Price: </label>
+				<label for="gameprice" class="col-sm-2 control-label">Price*: </label>
     			<div class="col-sm-2 input-group" style="padding: 0 15px;">
     				<span class="input-group-addon">$</span>
       				<input type="number" class="form-control" id="gameprice" placeholder="59.90" name="price" />

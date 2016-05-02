@@ -37,75 +37,32 @@ public class AddGame extends HttpServlet {
 		
 	}
 
+	private boolean checkInput(HttpServletRequest request) {
+		return request.getParameter("gameTitle") != null && request.getParameter("company") != null 
+				&& request.getParameter("releaseDate") != null && request.getParameter("price") != null;
+	}
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int result = -10;
-		if (request.getParameter("continue") != null || request.getParameter("redirect") != null) {
+		int result = -2;
+		if ((request.getParameter("continue") != null || request.getParameter("redirect") != null) && checkInput(request)) {
+			
 			String gameTitle = request.getParameter("gameTitle");
 			String company = request.getParameter("company");
 			String releaseDate = request.getParameter("releaseDate");
 			String description = request.getParameter("description");
 			String price = request.getParameter("price");
 			Part imgLocation = request.getPart("imgLocation");
+			String preOwned = request.getParameter("preOwned") == null ? "0" : "1";
+			String supportWin = request.getParameter("supportWin") == null ? "0" : "1";
+			String supportMac = request.getParameter("supportMac") == null ? "0" : "1";
+			String supportXBOX = request.getParameter("supportXBOX") == null ? "0" : "1";
+			String supportLinux = request.getParameter("supportLinux") == null ? "0" : "1";
+			String supportPS4 = request.getParameter("supportPS4") == null ? "0" : "1";
+			String supportWIIU = request.getParameter("supportWIIU") == null ? "0" : "1";
 			
-			String preOwned = request.getParameter("preOwned");
-			if (preOwned != null) {
-				//out.println("Clicked");
-				preOwned = "1";
-			} else {
-				preOwned = "0";
-				//out.println("Not clicked");
-			}
-			String supportWin = request.getParameter("supportWin");
-			if (supportWin != null) {
-				//out.println("Clicked");
-				supportWin = "1";
-			} else {
-				supportWin = "0";
-				//out.println("Not clicked");
-			}
-			String supportMac = request.getParameter("supportMac");
-			if (supportMac != null) {
-				//out.println("Clicked");
-				supportMac = "1";
-			} else {
-				supportMac = "0";
-				//out.println("Not clicked");
-			}
-			String supportXBOX = request.getParameter("supportXBOX");
-			if (supportXBOX != null) {
-				//out.println("Clicked");
-				supportXBOX = "1";
-			} else {
-				supportXBOX = "0";
-				//out.println("Not clicked");
-			}
-			String supportLinux = request.getParameter("supportLinux");
-			if (supportLinux != null) {
-				//out.println("Clicked");
-				supportLinux = "1";
-			} else {
-				supportLinux = "0";
-				//out.println("Not clicked");
-			}
-			String supportPS4 = request.getParameter("supportPS4");
-			if (supportPS4 != null) {
-				//out.println("Clicked");
-				supportPS4 = "1";
-			} else {
-				supportPS4 = "0";
-				//out.println("Not clicked");
-			}
-			String supportWIIU = request.getParameter("supportWIIU");
-			if (supportWIIU != null) {
-				//out.println("Clicked");
-				supportWIIU = "1";
-			} else {
-				supportWIIU = "0";
-				//out.println("Not clicked");
-			}
 			connectToMysql connection = new connectToMysql(MyConstants.url);
 			//connection.preparedUpdate("insert into game(gametitle) values(?),",gameTitle);
 			result = connection.preparedUpdate(

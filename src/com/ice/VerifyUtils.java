@@ -55,10 +55,6 @@ public class VerifyUtils {
            outStream.flush();
            outStream.close();
  
-           // Response code return from server.
-           int responseCode = conn.getResponseCode();
- 
- 
            // Get the InputStream from Connection to read data sent from the server.
            InputStream is = conn.getInputStream();
  
