@@ -60,12 +60,6 @@
 				<% } connection.close(); %>
 			</tbody>
 		</table>
-		<%
-/* 		ResultSet rs1 = connection.preparedQuery("SELECT gameTitle,description FROM game where gameid=?", gameid);
-		if (rs1.next()) {
-			String gameTitle = rs1.getString("gameTitle");
-		} */
-		%>
 		<script>
 		$(document).ready(function() {
 			$('#ice-modal').on('show.bs.modal', function (event) {
