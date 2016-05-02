@@ -30,7 +30,7 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 			</form>
 		</div>
 		<div class="col-sm-1" style="margin: 20px 0 10px;">
-			<a href="./addGame.jsp" role="button" class="btn btn-primary">Add Genre</a>
+			<a href="./addGenre.jsp" role="button" class="btn btn-primary">Add Genre</a>
 		</div>
 		<table class="table table-striped">
 			<thead>
