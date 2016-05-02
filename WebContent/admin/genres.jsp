@@ -37,6 +37,7 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 				<tr>
 					<th>#</th>
 					<th>GenreName</th>
+					<th>Edit Data</th>
 				</tr>
 			</thead>
 			<tbody>

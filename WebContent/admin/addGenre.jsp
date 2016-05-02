@@ -46,7 +46,7 @@
 			<div class="form-group">
 				<label for="genreTitle" class="col-sm-2 control-label">Genre Title: </label>
     			<div class="col-sm-4">
-      				<input type="text" class="form-control" id="genretitle" placeholder="Genre Title" name="genreTitle" />
+      				<input type="text" class="form-control" id="genretitle" placeholder="Genre Title" name="genreTitle" autofocus/>
     			</div>
 			</div>
   			<div class="form-group">
