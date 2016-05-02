@@ -6,7 +6,6 @@
 <%
 	int result = -10;
 	if (request.getParameter("continue") != null || request.getParameter("redirect") != null) {
-		System.out.println("asdadasd");
 		String gameTitle = request.getParameter("gameTitle");
 		String company = request.getParameter("company");
 		String releaseDate = request.getParameter("releaseDate");
@@ -14,67 +13,13 @@
 		String price = request.getParameter("price");
 		String imgLocation = request.getParameter("imgLocation");
 		String preOwned = request.getParameter("preOwned");
-		if (preOwned != null) {
-			//out.println("Clicked");
-			preOwned = "1";
-		} else {
-			preOwned = "0";
-			//out.println("Not clicked");
-		}
-		String supportWin = request.getParameter("supportWin");
-		if (supportWin != null) {
-			//out.println("Clicked");
-			supportWin = "1";
-		} else {
-			supportWin = "0";
-			//out.println("Not clicked");
-		}
-		String supportMac = request.getParameter("supportMac");
-		if (supportMac != null) {
-			//out.println("Clicked");
-			supportMac = "1";
-		} else {
-			supportMac = "0";
-			//out.println("Not clicked");
-		}
-		String supportXBOX = request.getParameter("supportXBOX");
-		if (supportXBOX != null) {
-			//out.println("Clicked");
-			supportXBOX = "1";
-		} else {
-			supportXBOX = "0";
-			//out.println("Not clicked");
-		}
-		String supportLinux = request.getParameter("supportLinux");
-		if (supportLinux != null) {
-			//out.println("Clicked");
-			supportLinux = "1";
-		} else {
-			supportLinux = "0";
-			//out.println("Not clicked");
-		}
-		String supportPS4 = request.getParameter("supportPS4");
-		if (supportPS4 != null) {
-			//out.println("Clicked");
-			supportPS4 = "1";
-		} else {
-			supportPS4 = "0";
-			//out.println("Not clicked");
-		}
-		String supportWIIU = request.getParameter("supportWIIU");
-		if (supportWIIU != null) {
-			//out.println("Clicked");
-			supportWIIU = "1";
-		} else {
-			supportWIIU = "0";
-			//out.println("Not clicked");
-		}
 		connectToMysql connection = new connectToMysql(MyConstants.url);
 		//connection.preparedUpdate("insert into game(gametitle) values(?),",gameTitle);
-		result = connection.preparedUpdate(
+/* 		result = connection.preparedUpdate(
 				"insert into game(gametitle,company,releaseDate,description,price,imgLocation,preowned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU) values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
 				gameTitle, company, releaseDate, description, price, imgLocation, preOwned, supportWin, supportMac,
-				supportXBOX, supportLinux, supportPS4, supportWIIU);
+				supportXBOX, supportLinux, supportPS4, supportWIIU); */
+				
 		if (result > 0 && request.getParameter("redirect") != null)
 			response.sendRedirect("games.jsp");
 			
@@ -106,9 +51,9 @@
 		</div>
 		<form class="form-horizontal" method="post">
 			<div class="form-group">
-				<label for="gametitle" class="col-sm-2 control-label">Game Title: </label>
+				<label for="gametitle" class="col-sm-2 control-label">Genre Title: </label>
     			<div class="col-sm-4">
-      				<input type="text" class="form-control" id="gametitle" placeholder="Game Title" name="gameTitle" />
+      				<input type="text" class="form-control" id="genretitle" placeholder="Genre Title" name="genreTitle" />
     			</div>
 			</div>
 			<div class="form-group">

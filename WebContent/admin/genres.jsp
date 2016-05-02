@@ -32,11 +32,10 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 		<div class="col-sm-1" style="margin: 20px 0 10px;">
 			<a href="./addGame.jsp" role="button" class="btn btn-primary">Add Genre</a>
 		</div>
-		<table class="table table-hover">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>GenreID</th>
 					<th>GenreName</th>
 				</tr>
 			</thead>
@@ -48,10 +47,9 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 				%>
 				<tr>
 					<td><%=rs.getInt(1)%></td>
-					<td><%=rs.getString(2)%></td>
-					<td><a href="#"
-						class="btn btn-info btn-xs" data-toggle="modal"
-						data-target="#myModal">Info</a> <a href="#" role="button"
+					<td class="col-md-6"><%=rs.getString(2)%></td>
+					<td class="col-md-2">
+						<a href="#" role="button"
 						class="btn btn-primary btn-xs">Edit</a> <a href="#" role="button"
 						class="btn btn-danger btn-xs">Delete</a>
 						</div></td>
