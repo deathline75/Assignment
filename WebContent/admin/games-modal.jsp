@@ -4,9 +4,6 @@
 <%@ page import="com.ice.*"%>
 <%@ page import="java.util.*"%>
 <%
-	Enumeration<String> headers = request.getHeaderNames();
-	while (headers.hasMoreElements())
-		System.out.println(headers.nextElement());
 	String action = request.getParameter("action");
 	String gameid = request.getParameter("gameid");
 	System.out.println(gameid);
@@ -45,7 +42,7 @@
 </div>
 <div class="modal-body">
 
-
+	<div id="ViewInfo" style="display:none">
 	<span class="label label-default">Description:</span> <br />
 	<%=description%>
 	<br /> <span class="label label-primary">Company:</span> <br />
@@ -75,9 +72,18 @@
 			if (supportWIIU.equals("1"))
 				out.print("<span class=\"label label-info\">WIIU</span> ");
 	%>
+	</div>
+	
+		<%if(action.equals("View")){ 
+	out.print("<script>document.getElementById(\"ViewInfo\").style.display=\"\";</script>");
+		
+	}
+	
+	%>
 
 </div>
 <div class="modal-footer">
+
 	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
 </div>

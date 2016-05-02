@@ -53,7 +53,7 @@
 					<td><%=rs.getDouble(4)%></td>
 					<td>
 						<a href="#" class="btn btn-info btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="View" data-gameid="<%=rs.getInt(1)%>">Info</a> 
-						<a href="#" role="button" class="btn btn-primary btn-xs">Edit</a>
+						<a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="Edit" data-gameid="<%=rs.getInt(1)%>">Edit</a>
 						<a href="#" role="button" class="btn btn-danger btn-xs">Delete</a>
 					</td>
 				</tr>
@@ -66,12 +66,10 @@
     			var button = $(event.relatedTarget);
     			var action = button.data("action");
     			var gameid = button.data("gameid");
-    			
     			var modal = $(this);
     			var xhttp = new XMLHttpRequest();
     			xhttp.onreadystatechange = function() {
 					if (xhttp.readyState == 4 && xhttp.status == 200) {
-
     			    	console.log(xhttp.responseText);
     			    	modal.find(".modal-content").html(xhttp.responseText);
     			    }
