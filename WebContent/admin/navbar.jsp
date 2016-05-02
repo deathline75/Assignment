@@ -24,7 +24,7 @@ if (session.getAttribute("username") != null)
           <ul class="dropdown-menu">
             <li><a href="games.jsp">View / Add Games</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">View / Add Genres</a></li>
+            <li><a href="genres.jsp">View / Add Genres</a></li>
           </ul>
         </li>
       </ul>
