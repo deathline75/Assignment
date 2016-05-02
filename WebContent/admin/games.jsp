@@ -52,7 +52,9 @@
 					<td><%=rs.getString(2)%></td>
 					<td><%=rs.getString(3)%></td>
 					<td><%=rs.getDouble(4)%></td>
-					<td><a href="./games.jsp?gameid=<%=rs.getInt(1)%>"class="btn btn-info btn-xs">Info</a> <a href="#" role="button"
+					<td>
+					<a href="./games.jsp?gameid=<%=rs.getInt(1)%>"class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">Info</a>
+					<a href="#" role="button"
 						class="btn btn-primary btn-xs">Edit</a> <a href="#" role="button"
 						class="btn btn-danger btn-xs">Delete</a>
 						</div></td>
@@ -74,6 +76,7 @@
 				
 			</tbody>
 		</table>
+		
 	</div>
 	<%@ include file="../footer.html"%>
 </body>
