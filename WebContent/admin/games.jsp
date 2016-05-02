@@ -52,28 +52,49 @@
 					<td><%=rs.getString(2)%></td>
 					<td><%=rs.getString(3)%></td>
 					<td><%=rs.getDouble(4)%></td>
-					<td><a href="./games.jsp?gameid=<%=rs.getInt(1)%>"class="btn btn-info btn-xs">Info</a> <a href="#" role="button"
-						class="btn btn-primary btn-xs">Edit</a> <a href="#" role="button"
-						class="btn btn-danger btn-xs">Delete</a>
-						</div></td>
+					<td>
+						<a href="#" class="btn btn-info btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="info" data-gameid="<%=rs.getInt(1)%>">Info</a> 
+						<a href="#" role="button" class="btn btn-primary btn-xs">Edit</a>
+						<a href="#" role="button" class="btn btn-danger btn-xs">Delete</a>
+					</td>
 				</tr>
-				<%
-					}
-					connection.close();
-					
-				
-					
-					ResultSet rs1 = connection.preparedQuery("SELECT gameTitle,description FROM game where gameid=?", gameid);
-					if (rs1.next()) {
-						String gameTitle = rs1.getString("gameTitle");
-						System.out.print(gameTitle);
-						System.out.println(gameid);
-					}
-					
-				%>
-				
+				<% } connection.close(); %>
 			</tbody>
 		</table>
+		<%
+		ResultSet rs1 = connection.preparedQuery("SELECT gameTitle,description FROM game where gameid=?", gameid);
+		if (rs1.next()) {
+			String gameTitle = rs1.getString("gameTitle");
+			System.out.print(gameTitle);
+			System.out.println(gameid);
+		}
+		%>
+		<div class="modal fade" id="ice-modal" tabindex="-1" role="dialog" aria-labelledby="iceModalLabel">
+  			<div class="modal-dialog" role="document">
+    			<div class="modal-content">
+      				<div class="modal-header">
+        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        				<h4 class="modal-title" id="exampleModalLabel">View Data</h4>
+      				</div>
+<!--       				<div class="modal-body">
+        				<form>
+          					<div class="form-group">
+            					<label for="recipient-name" class="control-label">Recipient:</label>
+            					<input type="text" class="form-control" id="recipient-name">
+          					</div>
+          					<div class="form-group">
+            					<label for="message-text" class="control-label">Message:</label>
+            					<textarea class="form-control" id="message-text"></textarea>
+          					</div>
+        				</form>
+      				</div>
+      				<div class="modal-footer">
+        				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        				<button type="button" class="btn btn-primary">Send message</button>
+      				</div> -->
+    			</div>
+  			</div>
+		</div>
 	</div>
 	<%@ include file="../footer.html"%>
 </body>
