@@ -4,6 +4,7 @@
 <%@ page import="com.ice.*"%>
 <%@ page import="java.util.*"%>
 <%
+
 	String action = request.getParameter("action");
 	String gameid = request.getParameter("gameid");
 	connectToMysql connection = new connectToMysql(MyConstants.url);
@@ -171,10 +172,11 @@
 	<%
 		} else if (action.equalsIgnoreCase("delete")) {
 	%>
+	<form action="deleteGame.jsp" method="post">
 	<p>
 		Are you sure you want to delete <b><%=gameTitle%></b> ?
 	</p>
-
+	</form>
 	<%
 		}
 	%>
@@ -189,7 +191,7 @@
 	<%
 		} else if (action.equalsIgnoreCase("delete")) {
 	%>
-	<button type="submit" class="btn btn-danger" name="submit">Delete Game</button>
+	<button type="submit" class="btn btn-danger" name="submit" id="ice-edit">Delete Game</button>
 	<%
 		}
 	%>
@@ -198,3 +200,17 @@
 		}
 	%>
 </div>
+
+		<script>
+			$(document).ready(function() {
+			$('#ice-edit').on('click', function (event) {
+    			var button = $(event.relatedTarget);
+    			var gameid = <%=gameid%>;
+    			var action = "<%=action%>";  
+    			var xhttp = new XMLHttpRequest();	
+    			xhttp.open("GET", "games-edit.jsp?action=" + action + "&gameid=" +gameid, true);
+    			xhttp.send();
+    		})
+		});
+    		
+    	</script>
