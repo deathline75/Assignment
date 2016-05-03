@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.api;
 
 import java.sql.Timestamp;
 
