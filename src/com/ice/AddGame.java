@@ -38,8 +38,9 @@ public class AddGame extends HttpServlet {
 	}
 
 	private boolean checkInput(HttpServletRequest request) {
-		return request.getParameter("gameTitle") != null && request.getParameter("company") != null 
-				&& request.getParameter("releaseDate") != null && request.getParameter("price") != null;
+		return request.getParameter("gameTitle") != null && request.getParameter("gameTitle").isEmpty() && request.getParameter("company") != null 
+				&& request.getParameter("company").isEmpty() && request.getParameter("releaseDate") != null && request.getParameter("releaseDate").isEmpty() 
+				&& request.getParameter("price") != null && request.getParameter("price").isEmpty();
 	}
 	
 	/**

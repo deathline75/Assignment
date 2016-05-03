@@ -185,13 +185,11 @@
 	<%
 		if (action.equalsIgnoreCase("Edit")) {
 	%>
-	<button type="submit" class="btn btn-primary" data-dismiss="modal"
-		name="submit">Edit Game</button>
+	<button type="submit" class="btn btn-primary" name="submit">Edit Game</button>
 	<%
 		} else if (action.equalsIgnoreCase("delete")) {
 	%>
-	<button type="submit" class="btn btn-primary" data-dismiss="modal"
-		name="submit">Delete Game</button>
+	<button type="submit" class="btn btn-danger" name="submit">Delete Game</button>
 	<%
 		}
 	%>
