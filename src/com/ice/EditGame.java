@@ -40,12 +40,13 @@ public class EditGame extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String gameid = request.getParameter("gameid");
+		System.out.println(gameid);
 		String gameTitle = request.getParameter("gameTitle");
 		String company = request.getParameter("company");
 		String releaseDate = request.getParameter("releaseDate");
 		String description = request.getParameter("description");
 		String price = request.getParameter("price");
-		Part imgLocation = request.getPart("imgLocation");
+		//Part imgLocation = request.getPart("imgLocation");
 		String preOwned = request.getParameter("preOwned") == null ? "0" : "1";
 		String supportWin = request.getParameter("supportWin") == null ? "0" : "1";
 		String supportMac = request.getParameter("supportMac") == null ? "0" : "1";
@@ -57,9 +58,11 @@ public class EditGame extends HttpServlet {
 		connectToMysql connection = new connectToMysql(MyConstants.url);
 
 		connection.preparedUpdate(
-				"update set gameTitle=?,company=?,releaseDate=?,description=?,price=?,preOwned=?,supportWin=?,supportMac=?,supportXBOX=?,supportLinux=?,supportPS4=?,supportWIIU=? where gameid=?",gameTitle,company,releaseDate,description,price,preOwned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU,gameid);
+				"update game set gameTitle=?,company=?,releaseDate=?,description=?,price=?,preOwned=?,supportWin=?,supportMac=?,supportXBOX=?,supportLinux=?,supportPS4=?,supportWIIU=? where gameid=?",gameTitle,company,releaseDate,description,price,preOwned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU,gameid);
 
 		connection.close();
+		
+		response.sendRedirect("games.jsp");
 
 	}
 

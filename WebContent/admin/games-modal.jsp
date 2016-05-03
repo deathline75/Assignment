@@ -72,9 +72,9 @@
 	<%
 		} else if (action.equalsIgnoreCase("edit")) {
 	%>
-	<form class="form-horizontal" method="post"
-		enctype="multipart/form-data">
+	<form class="form-horizontal" method="post" id="EditGame" action="EditGame" >
 		<div class="form-group">
+		<input type="hidden" name="gameid" value="<%=gameid%>" />
 			<label for="gametitle" class="col-sm-3 control-label">Game
 				Title*: </label>
 			<div class="col-sm-8">
@@ -86,7 +86,7 @@
 			<label for="gamecompany" class="col-sm-3 control-label">Company*:
 			</label>
 			<div class="col-sm-8">
-				<input type="text" class="form-control" id="gamecompany"
+				<input type="text" class="form-control" id="company"
 					placeholder="Company" value="<%=company%>" name="company" />
 			</div>
 		</div>
@@ -94,7 +94,7 @@
 			<label for="gamereleasedate" class="col-sm-3 control-label">Release
 				Date*: </label>
 			<div class="col-sm-5">
-				<input type="date" class="form-control" id="gamereleasedate"
+				<input type="date" class="form-control" id="releaseDate"
 					placeholder="Release Date" value="<%=releaseDate%>"
 					name="releaseDate" />
 			</div>
@@ -103,7 +103,7 @@
 			<label for="gamedescription" class="col-sm-3 control-label">Description*:
 			</label>
 			<div class="col-sm-9">
-				<textarea class="form-control" id="gamedescription"
+				<textarea class="form-control" id="description"
 					placeholder="Description" name="description" rows="4"><%=description%> </textarea>
 			</div>
 		</div>
@@ -112,7 +112,7 @@
 			</label>
 			<div class="col-sm-4 input-group" style="padding: 0 15px;">
 				<span class="input-group-addon">$</span> <input type="number"
-					class="form-control" id="gameprice" placeholder="59.90"
+					class="form-control" id="price" placeholder="59.90"
 					value="<%=price%>" name="price" />
 			</div>
 		</div>
@@ -120,7 +120,7 @@
 			<label class="col-sm-3 control-label" for="gamepreownedgame">
 				Preowned Game:</label>
 			<div class="control-label col-sm-1" style="text-align: left;">
-				<input type="checkbox" name="preOwned" id="gamepreownedgame"
+				<input type="checkbox" name="preOwned" id="preOwned"
 					<%=preowned.equals("1") ? "checked" : ""%>>
 			</div>
 		</div>
@@ -128,19 +128,19 @@
 			<label class="col-sm-3 control-label"> Platforms:</label>
 			<div class="col-sm-9 container-fluid" style="padding: 0;">
 				<div class="control-label col-sm-3" style="text-align: left;">
-					<label> <input type="checkbox" value="windows"
+					<label> <input type="checkbox" value="windows" id="supportWin"
 						name="supportWin" <%=supportWin.equals("1") ? "checked" : ""%>>
 						Windows
 					</label>
 				</div>
 				<div class="control-label col-sm-3" style="text-align: left;">
-					<label> <input type="checkbox" value="osx"
+					<label> <input type="checkbox" value="osx" id="supportMac"
 						name="supportMac" <%=supportMac.equals("1") ? "checked" : ""%>>
 						OS X
 					</label>
 				</div>
 				<div class="control-label col-sm-3" style="text-align: left;">
-					<label> <input type="checkbox" value="linux"
+					<label> <input type="checkbox" value="linux" id="supportLinux"
 						name="supportLinux" <%=supportLinux.equals("1") ? "checked" : ""%>>
 						Linux
 					</label>
@@ -149,19 +149,19 @@
 			<div class="col-sm-offset-3 col-sm-9 container-fluid"
 				style="padding: 0;">
 				<div class="control-label col-sm-3" style="text-align: left;">
-					<label> <input type="checkbox" value="xbone"
+					<label> <input type="checkbox" value="xbone" id="supportXBOX"
 						name="supportXBOX" <%=supportXBOX.equals("1") ? "checked" : ""%>>
 						Xbox One
 					</label>
 				</div>
 				<div class="control-label col-sm-3" style="text-align: left;">
-					<label> <input type="checkbox" value="ps4"
+					<label> <input type="checkbox" value="ps4" id="supportPS4"
 						name="supportPS4" <%=supportPS4.equals("1") ? "checked" : ""%>>
 						PS4
 					</label>
 				</div>
 				<div class="control-label col-sm-3" style="text-align: left;">
-					<label> <input type="checkbox" value="wiiu"
+					<label> <input type="checkbox" value="wiiu" id="supportWIIU"
 						name="supportWIIU" <%=supportWIIU.equals("1") ? "checked" : ""%>>
 						Wii-U
 					</label>
@@ -172,9 +172,10 @@
 	<%
 		} else if (action.equalsIgnoreCase("delete")) {
 	%>
-	<form action="deleteGame.jsp" method="post">
+	<form action=DeleteGame method="post" id="deleteGame">
 	<p>
 		Are you sure you want to delete <b><%=gameTitle%></b> ?
+		<input type="hidden" name="gameid" value="<%=gameid%>" />
 	</p>
 	</form>
 	<%
@@ -187,11 +188,11 @@
 	<%
 		if (action.equalsIgnoreCase("Edit")) {
 	%>
-	<button type="submit" class="btn btn-primary" name="submit">Edit Game</button>
+	<button type="submit" class="btn btn-primary" name="submit" form="EditGame">Edit Game</button>
 	<%
 		} else if (action.equalsIgnoreCase("delete")) {
 	%>
-	<button type="submit" class="btn btn-danger" name="submit" id="ice-edit">Delete Game</button>
+	<button type="submit" class="btn btn-danger" name="submit" form="deleteGame">Delete Game</button>
 	<%
 		}
 	%>
@@ -200,17 +201,3 @@
 		}
 	%>
 </div>
-
-		<script>
-			$(document).ready(function() {
-			$('#ice-edit').on('click', function (event) {
-    			var button = $(event.relatedTarget);
-    			var gameid = <%=gameid%>;
-    			var action = "<%=action%>";  
-    			var xhttp = new XMLHttpRequest();	
-    			xhttp.open("GET", "games-edit.jsp?action=" + action + "&gameid=" +gameid, true);
-    			xhttp.send();
-    		})
-		});
-    		
-    	</script>

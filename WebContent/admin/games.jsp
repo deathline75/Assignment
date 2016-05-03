@@ -60,7 +60,6 @@
 				<% } connection.close(); %>
 			</tbody>
 		</table>
-		
 		<script>
 		$(document).ready(function() {
 			$('#ice-modal').on('show.bs.modal', function (event) {
@@ -83,7 +82,6 @@
 		<div class="modal fade" id="ice-modal" tabindex="-1" role="dialog" aria-labelledby="iceModalLabel">
   			<div class="modal-dialog" role="document">
     			<div class="modal-content">
-
     			</div>
   			</div>
 		</div>
