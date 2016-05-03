@@ -54,12 +54,13 @@
 					<td>
 						<a href="#" class="btn btn-info btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="View" data-gameid="<%=rs.getInt(1)%>">Info</a> 
 						<a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="Edit" data-gameid="<%=rs.getInt(1)%>">Edit</a>
-						<a href="#" role="button" class="btn btn-danger btn-xs">Delete</a>
+						<a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="Delete" data-gameid="<%=rs.getInt(1)%>">Delete</a>
 					</td>
 				</tr>
 				<% } connection.close(); %>
 			</tbody>
 		</table>
+		
 		<script>
 		$(document).ready(function() {
 			$('#ice-modal').on('show.bs.modal', function (event) {

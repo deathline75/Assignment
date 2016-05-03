@@ -9,6 +9,12 @@
 	
 %>
 
+<%
+connectToMysql connection = new connectToMysql(MyConstants.url);
+%>
+
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -54,6 +60,22 @@
       				<input type="date" class="form-control" id="gamereleasedate" placeholder="Release Date" name="releaseDate" />
     			</div>
 			</div>
+			
+				<div class="form-group">
+				<label for="sel2" class="col-sm-2 control-label">Genre: </label>
+    			<div class="col-sm-2">
+    				<select multiple class="form-control" id="sel2" name="genre">
+    			<%
+    			ResultSet rs = connection.preparedQuery("SELECT genrename FROM genre");
+    			while (rs.next()) {
+    			%>
+    				<option value=<%=rs.getString(1)%>><%=rs.getString(1)%></option>
+      				<%} %>
+      				</select>
+    			</div>
+				</div>
+			
+			
 			<div class="form-group">
 				<label for="gamedescription" class="col-sm-2 control-label">Description*: </label>
     			<div class="col-sm-7">

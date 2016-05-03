@@ -50,8 +50,9 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 					<td><%=rs.getInt(1)%></td>
 					<td class="col-md-8"><%=rs.getString(2)%></td>
 					<td class="col-md-2">
+						<a href="#" role="button" class="btn btn-primary btn-xs">Edit</a>
+						
 						<a href="#" role="button"
-						class="btn btn-primary btn-xs">Edit</a> <a href="#" role="button"
 						class="btn btn-danger btn-xs">Delete</a>
 						</div></td>
 				</tr>
