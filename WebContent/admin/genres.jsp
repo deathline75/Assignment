@@ -20,7 +20,21 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 <body>
 	<%@ include file="navbar.jsp"%>
 	<div class="container">
-		<h1 class="col-sm-8" style="padding: 0;">Genres Management</h1>
+		<%
+			if (request.getAttribute("result") != null) {
+				int code = (int) request.getAttribute("result");
+				if (code > 0) {
+					out.println("<div class=\"alert alert-success\" role=\"alert\"><strong>Success!</strong> The new genre <strong>'" + request.getParameter("genreTitle") + "'</strong> has been added.</div>");
+				} else if (code > -2) {
+					out.println("<div class=\"alert alert-danger\" role=\"alert\"><strong>Oh no!</strong> An erorr occurred while trying to add the new game.</div>");
+				} else if (code > -3) {
+					out.println("<div class=\"alert alert-danger\" role=\"alert\">Please fill in the field.</div>");
+				} else if (code > -4) {
+					out.println("<div class=\"alert alert-danger\" role=\"alert\"><strong>'" + request.getParameter("genreTitle") + "'</strong> is already in the database.</div>");
+				}
+			}
+		%>
+		<h1 class="col-sm-6" style="padding: 0;">Genres Management</h1>
 		<div class="col-sm-3" style="margin: 20px 0 10px;">
 			<form class="form-inline" role="search">
 				<div class="form-group">
@@ -29,8 +43,13 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 				<button type="submit" class="btn btn-default">Search</button>
 			</form>
 		</div>
-		<div class="col-sm-1" style="margin: 20px 0 10px;">
-			<a href="./addGenre.jsp" role="button" class="btn btn-primary">Add Genre</a>
+		<div class="col-sm-3" style="margin: 20px 0 10px;">
+			<form class="form-inline" method="post" action="AddGenre">
+				<div class="form-group">
+					<input type="text" class="form-control" id="inputAddGenre" placeholder="Genre Name" name="genreTitle">
+				</div> 
+				<button type="submit" class="btn btn-primary" name="a">Add</button>
+			</form>
 		</div>
 		<table class="table table-striped">
 			<thead>
