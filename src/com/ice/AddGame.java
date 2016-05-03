@@ -38,9 +38,9 @@ public class AddGame extends HttpServlet {
 	}
 
 	private boolean checkInput(HttpServletRequest request) {
-		return request.getParameter("gameTitle") != null && request.getParameter("gameTitle").isEmpty() && request.getParameter("company") != null 
-				&& request.getParameter("company").isEmpty() && request.getParameter("releaseDate") != null && request.getParameter("releaseDate").isEmpty() 
-				&& request.getParameter("price") != null && request.getParameter("price").isEmpty();
+		return request.getParameter("gameTitle") != null && !request.getParameter("gameTitle").isEmpty() && request.getParameter("company") != null 
+				&& !request.getParameter("company").isEmpty() && request.getParameter("releaseDate") != null && !request.getParameter("releaseDate").isEmpty() 
+				&& request.getParameter("price") != null && !request.getParameter("price").isEmpty();
 	}
 	
 	/**
@@ -87,16 +87,15 @@ public class AddGame extends HttpServlet {
 						e.printStackTrace();
 					}
 				}
-				if (result > 0 && request.getParameter("redirect") != null)
-					response.sendRedirect("games.jsp");
-					
 			}
 		}
 		
 		request.setAttribute("result", result);
-		RequestDispatcher rd = request.getRequestDispatcher("addGame.jsp");
-		rd.forward(request, response);
-		
+		if (result > 0 && request.getParameter("redirect") != null) {
+			response.sendRedirect("games.jsp");
+		} else {
+			RequestDispatcher rd = request.getRequestDispatcher("addGame.jsp");
+			rd.forward(request, response);
+		}
 	}
-
 }
