@@ -43,10 +43,10 @@ public class EditGame extends HttpServlet {
 			response.sendRedirect("login.jsp");
 		else {
 			String gameid = request.getParameter("gameid");
-			System.out.println(gameid);
 			String gameTitle = request.getParameter("gameTitle");
 			String company = request.getParameter("company");
 			String releaseDate = request.getParameter("releaseDate");
+			String[] genres = request.getParameterValues("genre");
 			String description = request.getParameter("description");
 			String price = request.getParameter("price");
 			//Part imgLocation = request.getPart("imgLocation");
@@ -64,6 +64,15 @@ public class EditGame extends HttpServlet {
 					"update game set gameTitle=?,company=?,releaseDate=?,description=?,price=?,preOwned=?,supportWin=?,supportMac=?,supportXBOX=?,supportLinux=?,supportPS4=?,supportWIIU=? where gameid=?",gameTitle,company,releaseDate,description,price,preOwned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU,gameid);
 
 			connection.close();
+			
+			connection.preparedUpdate("delete from game_genre where gameid=?",gameid);
+			connection.close();
+			
+			for (String s: genres) {
+				int genreid = Integer.parseInt(s);
+				connection.preparedUpdate("INSERT INTO game_genre VALUES (?,?)", gameid, genreid);
+				connection.close();
+			}
 			
 			response.sendRedirect("games.jsp");
 		}

@@ -39,7 +39,7 @@ public class AddGame extends HttpServlet {
 	private boolean checkInput(HttpServletRequest request) {
 		return request.getParameter("gameTitle") != null && !request.getParameter("gameTitle").isEmpty() && request.getParameter("company") != null 
 				&& !request.getParameter("company").isEmpty() && request.getParameter("releaseDate") != null && !request.getParameter("releaseDate").isEmpty() 
-				&& request.getParameter("price") != null && !request.getParameter("price").isEmpty();
+				&& request.getParameter("price") != null && !request.getParameter("price").isEmpty() && request.getParameter("genre") != null && request.getParameterValues("genre") != null;
 	}
 	
 	/**
@@ -55,6 +55,7 @@ public class AddGame extends HttpServlet {
 				String gameTitle = request.getParameter("gameTitle");
 				String company = request.getParameter("company");
 				String releaseDate = request.getParameter("releaseDate");
+				String[] genres = request.getParameterValues("genre");
 				String description = request.getParameter("description");
 				String price = request.getParameter("price");
 				Part imgLocation = request.getPart("imgLocation");
@@ -75,20 +76,34 @@ public class AddGame extends HttpServlet {
 
 				connection.close();
 				
-				if (result > 0) {
-					if (imgLocation.getSize() > 0) {
-						ResultSet rs = connection.preparedQuery("SELECT gameid FROM game WHERE gametitle=?", gameTitle);
+				ResultSet rs = connection.preparedQuery("SELECT gameid FROM game WHERE gametitle=?", gameTitle);
+				try {
+					rs.last();					
+					int gameid = rs.getInt(1);
+					connection.close();
+					
+					for (String s: genres) {
 						try {
-							rs.last();					
-							int gameid = rs.getInt(1);
+							int genreid = Integer.parseInt(s);
+							result = connection.preparedUpdate("INSERT INTO game_genre VALUES (?,?)", gameid, genreid);
 							connection.close();
+						} catch (NumberFormatException ex) {
+							result = -1;
+						}
+						
+						if (result <= 0)
+							break;
+					}
+					
+					if (result > 0) {
+						if (imgLocation.getSize() > 0) {
 							result = connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 0, imgLocation.getInputStream());
 							connection.close();
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
 					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 			

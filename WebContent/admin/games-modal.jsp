@@ -27,6 +27,14 @@
 		String supportWIIU = rs.getString("supportWIIU");
 
 		connection.close();
+		
+		ResultSet genrers = connection.preparedQuery("SELECT * FROM genre WHERE genreid IN (SELECT genreid FROM game_genre WHERE gameid=?)", gameid);
+		Map<Integer, String> genres = new HashMap<Integer, String>();
+		while (genrers.next()) {
+			genres.put(genrers.getInt(1), genrers.getString(2));
+		}
+		connection.close();
+		
 %>
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal"
@@ -41,21 +49,29 @@
 		if (action.equalsIgnoreCase("view")) {
 	%>
 	<p>
-		<span class="label label-primary">Company:</span>
+		<span class="label label-primary">Company:</span> 
 		<%=company%></p>
 	<p>
-		<span class="label label-success">Release Date:</span>
+		<span class="label label-success">Release Date:</span> 
 		<%=releaseDate%></p>
+	<p>
+		<span class="label label-primary">Genres:</span> 
+		<% if (genres.isEmpty()) { %>
+			<span class="label label-danger">No genres found :( </span>
+		<% } else { for (String x : genres.values()) {%>
+			<span class="label label-info"><%= x %></span>
+		<% }} %>
+	</p>
 	<p>
 		<span class="label label-default">Description:</span> <br /><%=description%></p>
 	<p>
 		<span class="label label-info">Price:</span>
 		<%=String.format("$%.2f", Double.parseDouble(price))%></p>
 	<p>
-		<span class="label label-warning">Preowned:</span>
+		<span class="label label-warning">Preowned:</span> 
 		<%=preowned.equals("1") ? "Yes" : "No"%></p>
 	<p>
-		<span class="label label-danger">Supported Platforms:</span>
+		<span class="label label-danger">Supported Platforms:</span> 
 		<%
 			if (supportWin.equals("1"))
 						out.print("<span class=\"label label-info\">Windows</span> ");
@@ -115,6 +131,20 @@
 					placeholder="Release Date" value="<%=releaseDate%>"
 					name="releaseDate" />
 			</div>
+		</div>
+		<div class="form-group">
+			<label for="sel2" class="col-sm-3 control-label">Genre*: </label>
+    		<div class="col-sm-9">
+    			<select multiple="multiple" class="form-control" id="sel2" name="genre">
+    				<% ResultSet rs2 = connection.preparedQuery("SELECT genreid,genrename FROM genre");
+		    		while (rs2.next()) { %>
+    				<option value="<%=rs2.getInt(1)%>" <%= genres.containsKey(rs2.getInt(1)) ? "selected" : "" %>><%=rs2.getString(2)%></option>
+      				<% } %>
+      			</select>
+      			<script>
+      				$('#sel2').select2();
+      			</script>
+    		</div>
 		</div>
 		<div class="form-group">
 			<label for="gamedescription" class="col-sm-3 control-label">Description*:

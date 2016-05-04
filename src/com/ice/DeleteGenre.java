@@ -41,8 +41,10 @@ public class DeleteGenre extends HttpServlet {
 			String genreid = request.getParameter("genreid");
 			
 			connectToMysql connection  = new connectToMysql(MyConstants.url);
+			connection.preparedUpdate("delete from game_genre where genreid=?", genreid);
+			connection.close();
 			connection.preparedUpdate("delete from genre where genreid=?", genreid);
-			
+			connection.close();
 			response.sendRedirect("genres.jsp");
 			
 		}

@@ -60,22 +60,20 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
       				<input type="date" class="form-control" id="gamereleasedate" placeholder="Release Date" name="releaseDate" />
     			</div>
 			</div>
-				<div class="form-group">
-				<label for="sel2" class="col-sm-2 control-label">Genre: </label>
-    				<div class="col-sm-6">
-    					<select multiple="multiple" class="form-control" id="sel2" name="genre">
-    						<% ResultSet rs = connection.preparedQuery("SELECT genreid,genrename FROM genre");
-			    			while (rs.next()) { %>
-    						<option value="<%=rs.getInt(1)%>"><%=rs.getString(2)%></option>
-      						<% } %>
-      					</select>
-      					<script>
-      						$('#sel2').select2();
-      					</script>
-    				</div>
-				</div>
-			
-			
+			<div class="form-group">
+				<label for="sel2" class="col-sm-2 control-label">Genre*: </label>
+    			<div class="col-sm-6">
+    				<select multiple="multiple" class="form-control" id="sel2" name="genre">
+    					<% ResultSet rs = connection.preparedQuery("SELECT genreid,genrename FROM genre");
+			    		while (rs.next()) { %>
+    					<option value="<%=rs.getInt(1)%>"><%=rs.getString(2)%></option>
+      					<% } %>
+      				</select>
+      				<script>
+      					$('#sel2').select2();
+      				</script>
+    			</div>
+			</div>
 			<div class="form-group">
 				<label for="gamedescription" class="col-sm-2 control-label">Description*: </label>
     			<div class="col-sm-7">
