@@ -35,12 +35,17 @@ public class DeleteGenre extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String genreid = request.getParameter("genreid");
-		
-		connectToMysql connection  = new connectToMysql(MyConstants.url);
-		connection.preparedUpdate("delete from genre where genreid=?", genreid);
-		
-		response.sendRedirect("genres.jsp");
+		if (request.getSession().getAttribute("username") == null)
+			response.sendRedirect("login.jsp");
+		else {
+			String genreid = request.getParameter("genreid");
+			
+			connectToMysql connection  = new connectToMysql(MyConstants.url);
+			connection.preparedUpdate("delete from genre where genreid=?", genreid);
+			
+			response.sendRedirect("genres.jsp");
+			
+		}
 	}
 
 }

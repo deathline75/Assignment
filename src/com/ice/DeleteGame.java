@@ -35,16 +35,21 @@ public class DeleteGame extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String gameid = request.getParameter("gameid");
-		
-		connectToMysql connection = new connectToMysql(MyConstants.url);
-		connection.preparedUpdate("delete from game_image where gameid=?",gameid);
-		connection.close();
-		connection.preparedUpdate("delete from game where gameid=?",gameid);
-		
-		connection.close();
-		
-		response.sendRedirect("games.jsp");
+		if (request.getSession().getAttribute("username") == null)
+			response.sendRedirect("login.jsp");
+		else {
+			String gameid = request.getParameter("gameid");
+			
+			connectToMysql connection = new connectToMysql(MyConstants.url);
+			connection.preparedUpdate("delete from game_image where gameid=?",gameid);
+			connection.close();
+			connection.preparedUpdate("delete from game where gameid=?",gameid);
+			
+			connection.close();
+			
+			response.sendRedirect("games.jsp");
+			
+		}
 	}
 
 }
