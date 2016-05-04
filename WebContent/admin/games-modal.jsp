@@ -3,6 +3,8 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="com.ice.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.net.*"%>
+<%@ page import="java.io.*"%>
 <%
 
 	String action = request.getParameter("action");
@@ -70,6 +72,21 @@
 		%>
 	</p>
 	<%
+		// TODO: Cleanup
+		ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=?", gameid);
+		if (imageResult.next()) {
+			byte[] imageIS = imageResult.getBytes(3);
+			String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
+			if (mimeType.startsWith("image")) {
+				String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
+	%>
+	<p>
+		<span class="label label-info">Image:</span> <br />
+		<img src="data:<%= mimeType %>;base64,<%= b64encoded %>" class="img-responsive"/>
+	</p>
+	<%
+			}
+		}
 		} else if (action.equalsIgnoreCase("edit")) {
 	%>
 	<form class="form-horizontal" method="post" id="EditGame" action="EditGame" >

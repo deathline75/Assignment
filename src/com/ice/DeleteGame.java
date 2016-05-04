@@ -38,7 +38,8 @@ public class DeleteGame extends HttpServlet {
 		String gameid = request.getParameter("gameid");
 		
 		connectToMysql connection = new connectToMysql(MyConstants.url);
-		
+		connection.preparedUpdate("delete from game_image where gameid=?",gameid);
+		connection.close();
 		connection.preparedUpdate("delete from game where gameid=?",gameid);
 		
 		connection.close();
