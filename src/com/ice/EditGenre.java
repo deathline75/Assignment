@@ -47,5 +47,6 @@ public class EditGenre extends HttpServlet {
 			response.sendRedirect("genres.jsp");
 			
 	}
+	}
 
 }
