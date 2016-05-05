@@ -88,12 +88,6 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
     			</div>
 			</div>
 			<div class="form-group">
-				<label for="gameimglocation" class="col-sm-2 control-label">Image Location: </label>
-    			<div class="col-sm-4">
-    				<input type="file" style="padding-top: 7px;" id="gameimglocation" name="imgLocation" accept="image/*">
-    			</div>
-			</div>
-			<div class="form-group">
         		<label class="col-sm-2 control-label" for="gamepreownedgame"> Preowned Game:</label>
         		<div class="control-label col-sm-1" style="text-align: left;">
         			<input type="checkbox" name="preOwned" id="gamepreownedgame"> 
@@ -136,6 +130,29 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
     				</div>
     			</div>
   			</div>
+  			<hr />
+			<div class="form-group">
+				<label for="gamethumbnail" class="col-sm-2 control-label">Game Thumbnail: </label>
+    			<div class="col-sm-10">
+    				<input type="file" style="padding-top: 7px;" id="gamethumbnail" name="gamethumbnail" accept="image/*" aria-describedby="helpBlockThumbnail">
+    			</div>
+    			<span id="helpBlockThumbnail" class="help-block col-sm-offset-2 col-sm-10">Recommended dimensions: 128 x 64</span>
+			</div>
+			<div class="form-group">
+				<label for="gamejumbo" class="col-sm-2 control-label">Game Jumbotron: </label>
+    			<div class="col-sm-10">
+    				<input type="file" style="padding-top: 7px;" id="gamejumbo" name="gamejumbo" accept="image/*" aria-describedby="helpBlockJumbo">
+    			</div>
+    			<span id="helpBlockJumbo" class="help-block col-sm-offset-2 col-sm-10">Recommended dimensions: 1920 x 1080</span>
+			</div>
+			<div class="form-group">
+				<label for="gamepromo" class="col-sm-2 control-label">Game Promotion: </label>
+    			<div class="col-sm-10">
+    				<input type="file" style="padding-top: 7px;" id="gamepromo" name="gamepromo" accept="image/*" aria-describedby="helpBlockPromo">
+    			</div>
+    			<span id="helpBlockPromo" class="help-block col-sm-offset-2 col-sm-10">Recommended dimensions: 350 x 350</span>
+			</div>
+			<hr />
   			<div class="form-group">
     			<div class="col-sm-offset-2 col-sm-1">
       				<button type="submit" class="btn btn-primary" name="redirect">Add Game</button>

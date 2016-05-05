@@ -58,7 +58,6 @@ public class AddGame extends HttpServlet {
 				String[] genres = request.getParameterValues("genre");
 				String description = request.getParameter("description");
 				String price = request.getParameter("price");
-				Part imgLocation = request.getPart("imgLocation");
 				String preOwned = request.getParameter("preOwned") == null ? "0" : "1";
 				String supportWin = request.getParameter("supportWin") == null ? "0" : "1";
 				String supportMac = request.getParameter("supportMac") == null ? "0" : "1";
@@ -66,6 +65,9 @@ public class AddGame extends HttpServlet {
 				String supportLinux = request.getParameter("supportLinux") == null ? "0" : "1";
 				String supportPS4 = request.getParameter("supportPS4") == null ? "0" : "1";
 				String supportWIIU = request.getParameter("supportWIIU") == null ? "0" : "1";
+				Part gameThumbnail = request.getPart("gamethumbnail");
+				Part gameJumbo = request.getPart("gamejumbo");
+				Part gamePromo = request.getPart("gamepromo");
 				
 				connectToMysql connection = new connectToMysql(MyConstants.url);
 				//connection.preparedUpdate("insert into game(gametitle) values(?),",gameTitle);
@@ -96,8 +98,16 @@ public class AddGame extends HttpServlet {
 					}
 					
 					if (result > 0) {
-						if (imgLocation.getSize() > 0) {
-							result = connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 0, imgLocation.getInputStream());
+						if (gameThumbnail.getSize() > 0) {
+							result = connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 0, gameThumbnail.getInputStream());
+							connection.close();
+						}
+						if (gameJumbo.getSize() > 0) {
+							result = connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 1, gameJumbo.getInputStream());
+							connection.close();
+						}
+						if (gamePromo.getSize() > 0) {
+							result = connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 2, gamePromo.getInputStream());
 							connection.close();
 						}
 					}
