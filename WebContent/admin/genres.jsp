@@ -64,18 +64,18 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 				
 					ResultSet rs = connection.preparedQuery("SELECT genreid,genrename FROM genre");
 					while (rs.next()) {
+						int genreid = rs.getInt(1);
 				%>
 				<tr>
 					<td><%=rs.getInt(1)%></td>
 					<td class="col-md-8"><%=rs.getString(2)%></td>
 					<td class="col-md-2">
-						<a href="#" role="button" class="btn btn-primary btn-xs">Edit</a>
-						<form id="deleteGenre">
-						<%-- <input type="hidden" name=<%genreid %>> --%>
-						<a href="#" role="button" class="btn btn-danger btn-xs">Delete</a>
+						 <button type="submit" class="btn btn-primary btn-xs" name="submit" form="deleteGenre<%=genreid%>">Edit</button>
+						<form action="DeleteGenre" method="post" id="deleteGenre<%=genreid %>">
+						 <input type="hidden" value="<%=genreid%>" name="genreid">
+						 <button type="submit" class="btn btn-danger btn-xs" name="submit" form="deleteGenre<%=genreid%>">Delete</button>
 						</form>
-						
-						</div></td>
+						</td>
 				</tr>
 				<%
 					}

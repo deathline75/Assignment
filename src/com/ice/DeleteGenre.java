@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class DeleteGenre
  */
-@WebServlet("/DeleteGenre")
+@WebServlet("/admin/DeleteGenre")
 public class DeleteGenre extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -39,7 +39,7 @@ public class DeleteGenre extends HttpServlet {
 			response.sendRedirect("login.jsp");
 		else {
 			String genreid = request.getParameter("genreid");
-			
+			System.out.println(genreid);
 			connectToMysql connection  = new connectToMysql(MyConstants.url);
 			connection.preparedUpdate("delete from game_genre where genreid=?", genreid);
 			connection.close();
