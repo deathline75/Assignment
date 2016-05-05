@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class DeleteGenre
+ * Servlet implementation class EditGenre
  */
-@WebServlet("/admin/DeleteGenre")
-public class DeleteGenre extends HttpServlet {
+@WebServlet("/EditGenre")
+public class EditGenre extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteGenre() {
+    public EditGenre() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,15 +39,13 @@ public class DeleteGenre extends HttpServlet {
 			response.sendRedirect("login.jsp");
 		else {
 			String genreid = request.getParameter("genreid");
-			String genrename = request.getParameter("genrename");
 			connectToMysql connection  = new connectToMysql(MyConstants.url);
-			connection.preparedUpdate("update game_genre set genreid=?,genrename=? where genreid=?", genreid,genreid,genrename);
+			connection.preparedUpdate("delete from game_genre where genreid=?", genreid);
 			connection.close();
-			connection.preparedUpdate("update genre set genreid=?,genrename=? where genreid=?", genreid,genreid,genrename);
+			connection.preparedUpdate("delete from genre where genreid=?", genreid);
 			connection.close();
 			response.sendRedirect("genres.jsp");
 			
-		}
 	}
 
 }

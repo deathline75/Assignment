@@ -67,8 +67,8 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 						int genreid = rs.getInt(1);
 				%>
 				<tr>
-					<td class="col-md-1"><%=rs.getInt(1)%></td>
-					<td class="col-md-9"><%=rs.getString(2)%></td>
+					<td class="col-md-1" class="genreEdit"><%=rs.getInt(1)%></td>
+					<td class="col-md-9" class="genreEdit"><%=rs.getString(2)%></td>
 					<td class="col-md-2">
 						 <button type="submit" class="btn btn-primary btn-xs" name="submit" form="deleteGenre<%=genreid%>">Edit</button>
 						 <form action="DeleteGenre" style="display: inline" method="post" id="deleteGenre<%=genreid %>">
@@ -84,7 +84,6 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 
 			</tbody>
 		</table>
-
 	</div>
 
 	<%@ include file="../footer.html"%>
