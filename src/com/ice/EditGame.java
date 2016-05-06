@@ -2,6 +2,7 @@ package com.ice;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import javax.servlet.http.Part;
  * Servlet implementation class EditGame
  */
 @WebServlet("/admin/EditGame")
+@MultipartConfig
 public class EditGame extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -57,6 +59,9 @@ public class EditGame extends HttpServlet {
 			String supportLinux = request.getParameter("supportLinux") == null ? "0" : "1";
 			String supportPS4 = request.getParameter("supportPS4") == null ? "0" : "1";
 			String supportWIIU = request.getParameter("supportWIIU") == null ? "0" : "1";
+			Part gameThumbnail = request.getPart("gamethumbnail");
+			Part gameJumbo = request.getPart("gamejumbo");
+			Part gamePromo = request.getPart("gamepromo");
 
 			connectToMysql connection = new connectToMysql(MyConstants.url);
 
@@ -71,6 +76,25 @@ public class EditGame extends HttpServlet {
 			for (String s: genres) {
 				int genreid = Integer.parseInt(s);
 				connection.preparedUpdate("INSERT INTO game_genre VALUES (?,?)", gameid, genreid);
+				connection.close();
+			}
+			
+			if (gameThumbnail.getSize() > 0) {
+				connection.preparedUpdate("delete from game_image where gameid=? and imageuse=0",gameid);
+				connection.close();
+				connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 0, gameThumbnail.getInputStream());
+				connection.close();
+			}
+			if (gameJumbo.getSize() > 0) {
+				connection.preparedUpdate("delete from game_image where gameid=? and imageuse=1",gameid);
+				connection.close();
+				connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 1, gameJumbo.getInputStream());
+				connection.close();
+			}
+			if (gamePromo.getSize() > 0) {
+				connection.preparedUpdate("delete from game_image where gameid=? and imageuse=2",gameid);
+				connection.close();
+				connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 2, gamePromo.getInputStream());
 				connection.close();
 			}
 			

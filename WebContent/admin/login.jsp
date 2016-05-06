@@ -16,7 +16,6 @@
 		if (rs.next()) {
 			connection.close();
 			if (VerifyUtils.verify(request.getParameter("g-recaptcha-response"))) {
-				connection.close();
 				session.setAttribute("username", username);
 				response.sendRedirect(".");
 			} else {

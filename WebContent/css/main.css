@@ -76,8 +76,28 @@ a {
 .ice-genre {
 	border: 1px solid gray;
 	text-align: center;
-	padding: 100px 15px;
 }
 .ice-genre:hover {
 	background-color: rgba(0, 0, 0, 0.1);
+}
+.ice-genre > a {
+	display: block;
+	padding: 100px 15px;
+}
+.ice-genre > a:hover {
+	text-decoration: none;
+}
+.media-heading {
+	margin-bottom: 0;
+	font-weight: bold;
+}
+.media-body > p {
+	margin: 0px;
+}
+.label > a {
+	color: white;
+}
+.label > a:hover {
+	color: white;
+	text-decoration: none;
 }

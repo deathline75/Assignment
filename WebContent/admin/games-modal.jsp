@@ -80,7 +80,7 @@
 					if (supportXBOX.equals("1"))
 						out.print("<span class=\"label label-info\">XBOX</span> ");
 					if (supportLinux.equals("1"))
-						out.print("<span class=\"label label-info\">Linux</span>");
+						out.print("<span class=\"label label-info\">Linux</span> ");
 					if (supportPS4.equals("1"))
 						out.print("<span class=\"label label-info\">PS4</span> ");
 					if (supportWIIU.equals("1"))
@@ -88,24 +88,24 @@
 		%>
 	</p>
 	<%
-		// TODO: Cleanup
-		ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=?", gameid);
-		if (imageResult.next()) {
-			byte[] imageIS = imageResult.getBytes(3);
-			String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
-			if (mimeType.startsWith("image")) {
-				String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
+			// TODO: Cleanup
+			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=?", gameid);
+			if (imageResult.next()) {
+				byte[] imageIS = imageResult.getBytes(3);
+				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
+				if (mimeType.startsWith("image")) {
+					String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
 	%>
 	<p>
 		<span class="label label-info">Image:</span> <br />
 		<img src="data:<%= mimeType %>;base64,<%= b64encoded %>" class="img-responsive"/>
 	</p>
 	<%
+				}
 			}
-		}
 		} else if (action.equalsIgnoreCase("edit")) {
 	%>
-	<form class="form-horizontal" method="post" id="EditGame" action="EditGame" >
+	<form class="form-horizontal" method="post" id="EditGame" action="EditGame" enctype="multipart/form-data" >
 		<div class="form-group">
 		<input type="hidden" name="gameid" value="<%=gameid%>" />
 			<label for="gametitle" class="col-sm-3 control-label">Game
@@ -215,6 +215,28 @@
 				</div>
 			</div>
 		</div>
+		<hr />
+			<div class="form-group">
+				<label for="gamethumbnail" class="col-sm-3 control-label">Game Thumbnail: </label>
+    			<div class="col-sm-9">
+    				<input type="file" style="padding-top: 7px;" id="gamethumbnail" name="gamethumbnail" accept="image/*" aria-describedby="helpBlockThumbnail">
+    			</div>
+    			<span id="helpBlockThumbnail" class="help-block col-sm-offset-3 col-sm-9">Recommended dimensions: 128 x 64. Will not override if no upload.</span>
+			</div>
+			<div class="form-group">
+				<label for="gamejumbo" class="col-sm-3 control-label">Game Jumbotron: </label>
+    			<div class="col-sm-9">
+    				<input type="file" style="padding-top: 7px;" id="gamejumbo" name="gamejumbo" accept="image/*" aria-describedby="helpBlockJumbo">
+    			</div>
+    			<span id="helpBlockJumbo" class="help-block col-sm-offset-3 col-sm-9">Recommended dimensions: 1920 x 1080. Will not override if no upload.</span>
+			</div>
+			<div class="form-group">
+				<label for="gamepromo" class="col-sm-3 control-label">Game Promotion: </label>
+    			<div class="col-sm-9">
+    				<input type="file" style="padding-top: 7px;" id="gamepromo" name="gamepromo" accept="image/*" aria-describedby="helpBlockPromo">
+    			</div>
+    			<span id="helpBlockPromo" class="help-block col-sm-offset-3 col-sm-9">Recommended dimensions: 350 x 350. Will not override if no upload.</span>
+			</div>
 	</form>
 	<%
 		} else if (action.equalsIgnoreCase("delete")) {

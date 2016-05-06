@@ -4,12 +4,28 @@
 	<%@ page import="com.ice.api.*" %>
 	<%@ page import="java.sql.*" %>
 	<%@ page import="java.util.*" %>
+	<%@ page import="java.net.*"%>
+	<%@ page import="java.io.*"%>
 	<%! connectToMysql connection = new connectToMysql(MyConstants.url); %>
 	<%
 		Vector<Game> games = new Vector<Game>();
 		ResultSet rs = connection.query("SELECT * FROM game");
 		while (rs.next()) {
 			games.add(new Game(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getString(5), rs.getDouble(6), rs.getString(7), rs.getBoolean(8), rs.getBoolean(9), rs.getBoolean(10), rs.getBoolean(11), rs.getBoolean(12), rs.getBoolean(13), rs.getBoolean(14)));
+		}
+		connection.close();
+		
+		Map<Integer, String> genres = new HashMap<Integer, String>();
+		ResultSet rs1 = connection.query("SELECT * FROM genre");
+		while(rs1.next()) {
+			genres.put(rs1.getInt(1), rs1.getString(2));
+		}
+		connection.close();
+		
+		Vector<Genre> topgenres = new Vector<Genre>();
+		ResultSet rs2 = connection.query("SELECT g.genreid, g.genrename FROM genre g, game_genre gg WHERE g.genreid = gg.genreid GROUP BY gg.genreid ORDER BY count(gg.genreid) DESC LIMIT 8");
+		while (rs2.next()) {
+			topgenres.add(new Genre(rs2.getInt(1), rs2.getString(2)));
 		}
 		connection.close();
 	%>
@@ -69,31 +85,12 @@
 		<div class="page-header">
 			<h2>Top Genres</h2>
 		</div>
+		<% for (Genre g: topgenres) {%>
 		<div class="col-sm-3 col-xs-6 ice-genre">
-			Horror
+			<a href="genres.jsp?id=<%= g.getId() %>"><%= g.getName() %></a>
 		</div>
-		<div class="col-sm-3 col-xs-6 ice-genre">
-			Adventure
-		</div>
-		<div class="col-sm-3 col-xs-6 ice-genre">
-			Survival
-		</div>
-		<div class="col-sm-3 col-xs-6 ice-genre">
-			First-Person Shooter
-		</div>
-		<div class="col-sm-3 col-xs-6 ice-genre">
-			Casual
-		</div>
-		<div class="col-sm-3 col-xs-6 ice-genre">
-			Massively Multiplayer
-		</div>
-		<div class="col-sm-3 col-xs-6 ice-genre">
-			Simulation
-		</div>
-		<div class="col-sm-3 col-xs-6 ice-genre">
-			Role-Playing Games
-		</div>
-		<p class="text-right ice-view-all"><strong><a href="#">>>> View all genres</a></strong></p>
+		<% } %>
+		<p class="text-right ice-view-all"><strong><a href="genres.jsp">>>> View all genres</a></strong></p>
 		</div>
 		<div class="col-sm-8" style="padding:0;">
 			<ul class="nav nav-tabs" id="popular-games" role="tablist" style="margin-bottom: 15px">
@@ -111,11 +108,47 @@
 				    		%>
 				    		<li class="media">
 				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
+				    			<%
+				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
+				    			String imgSrc = "http://placehold.it/150x64";
+				    			if (imageResult.next()) {
+				    				byte[] imageIS = imageResult.getBytes(3);
+				    				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
+				    				if (mimeType.startsWith("image")) {
+				    					String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
+				    					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
+				    				}
+				    			}
+				    			%>
+				    				<img src="<%= imgSrc %>" alt="..." width="150" height="64">
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
-				    				<p><%= game.getDescription().substring(0, (game.getDescription().length() > 200 ? 200 : game.getDescription().length())) %></p>
+				    				<p> Platforms: 
+										<%
+										if (game.isSupportWin())
+											out.print("<span class=\"label label-info\">Windows</span> ");
+				    					if (game.isSupportMac())
+											out.print("<span class=\"label label-info\">OS X</span> ");
+				    					if (game.isSupportLinux())
+											out.print("<span class=\"label label-info\">Linux</span> ");
+										if (game.isSupportXbox())
+											out.print("<span class=\"label label-info\">Xbox One</span> ");
+										if (game.isSupportPs4())
+											out.print("<span class=\"label label-info\">PS4</span> ");
+										if (game.isSupportWiiu())
+											out.print("<span class=\"label label-info\">Wii-U</span> ");
+										%>
+									</p>
+									<p>
+										Genres: 
+										<%
+											ResultSet gameGenres = connection.preparedQuery("SELECT genreid FROM game_genre WHERE gameid=? LIMIT 6", game.getId());
+											while (gameGenres.next()) {
+										%>
+												<span class="label label-primary"><a href="genres.jsp?id=<%= gameGenres.getInt(1) %>"><%= genres.get(gameGenres.getInt(1)) %></a></span>
+										<% } connection.close();%>
+									</p>
 				    			</div>
 				    		</li>
 				    		<%	} %>
@@ -133,11 +166,47 @@
 				    		%>
 				    		<li class="media">
 				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
+				    			<%
+				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
+				    			String imgSrc = "http://placehold.it/150x64";
+				    			if (imageResult.next()) {
+				    				byte[] imageIS = imageResult.getBytes(3);
+				    				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
+				    				if (mimeType.startsWith("image")) {
+				    					String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
+				    					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
+				    				}
+				    			}
+				    			%>
+				    				<img src="<%= imgSrc %>" alt="..." width="150" height="64">
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
-				    				<p><%= game.getDescription().substring(0, (game.getDescription().length() > 200 ? 200 : game.getDescription().length())) %></p>
+				    				<p> Platforms: 
+										<%
+										if (game.isSupportWin())
+											out.print("<span class=\"label label-info\">Windows</span> ");
+				    					if (game.isSupportMac())
+											out.print("<span class=\"label label-info\">OS X</span> ");
+				    					if (game.isSupportLinux())
+											out.print("<span class=\"label label-info\">Linux</span> ");
+										if (game.isSupportXbox())
+											out.print("<span class=\"label label-info\">Xbox One</span> ");
+										if (game.isSupportPs4())
+											out.print("<span class=\"label label-info\">PS4</span> ");
+										if (game.isSupportWiiu())
+											out.print("<span class=\"label label-info\">Wii-U</span> ");
+										%>
+									</p>
+									<p>
+										Genres: 
+										<%
+											ResultSet gameGenres = connection.preparedQuery("SELECT genreid FROM game_genre WHERE gameid=? LIMIT 6", game.getId());
+											while (gameGenres.next()) {
+										%>
+												<span class="label label-primary"><a href="genres.jsp?id=<%= gameGenres.getInt(1) %>"><%= genres.get(gameGenres.getInt(1)) %></a></span>
+										<% } connection.close();%>
+									</p>
 				    			</div>
 				    		</li>
 				    		<%	} %>
@@ -155,11 +224,47 @@
 				    		%>
 				    		<li class="media">
 				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
+				    			<%
+				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0 LIMIT 6", game.getId());
+				    			String imgSrc = "http://placehold.it/150x64";
+				    			if (imageResult.next()) {
+				    				byte[] imageIS = imageResult.getBytes(3);
+				    				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
+				    				if (mimeType.startsWith("image")) {
+				    					String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
+				    					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
+				    				}
+				    			}
+				    			%>
+				    				<img src="<%= imgSrc %>" alt="..." width="150" height="64">
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
-				    				<p><%= game.getDescription().substring(0, (game.getDescription().length() > 200 ? 200 : game.getDescription().length())) %></p>
+				    				<p> Platforms: 
+										<%
+										if (game.isSupportWin())
+											out.print("<span class=\"label label-info\">Windows</span> ");
+				    					if (game.isSupportMac())
+											out.print("<span class=\"label label-info\">OS X</span> ");
+				    					if (game.isSupportLinux())
+											out.print("<span class=\"label label-info\">Linux</span> ");
+										if (game.isSupportXbox())
+											out.print("<span class=\"label label-info\">Xbox One</span> ");
+										if (game.isSupportPs4())
+											out.print("<span class=\"label label-info\">PS4</span> ");
+										if (game.isSupportWiiu())
+											out.print("<span class=\"label label-info\">Wii-U</span> ");
+										%>
+									</p>
+									<p>
+										Genres: 
+										<%
+											ResultSet gameGenres = connection.preparedQuery("SELECT genreid FROM game_genre WHERE gameid=? LIMIT 6", game.getId());
+											while (gameGenres.next()) {
+										%>
+												<span class="label label-primary"><a href="genres.jsp?id=<%= gameGenres.getInt(1) %>"><%= genres.get(gameGenres.getInt(1)) %></a></span>
+										<% } connection.close();%>
+									</p>
 				    			</div>
 				    		</li>
 				    		<%	} %>
@@ -177,11 +282,47 @@
 				    		%>
 				    		<li class="media">
 				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
+				    			<%
+				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
+				    			String imgSrc = "http://placehold.it/150x64";
+				    			if (imageResult.next()) {
+				    				byte[] imageIS = imageResult.getBytes(3);
+				    				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
+				    				if (mimeType.startsWith("image")) {
+				    					String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
+				    					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
+				    				}
+				    			}
+				    			%>
+				    				<img src="<%= imgSrc %>" alt="..." width="150" height="64">
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
-				    				<p><%= game.getDescription().substring(0, (game.getDescription().length() > 200 ? 200 : game.getDescription().length())) %></p>
+				    				<p> Platforms: 
+										<%
+										if (game.isSupportWin())
+											out.print("<span class=\"label label-info\">Windows</span> ");
+				    					if (game.isSupportMac())
+											out.print("<span class=\"label label-info\">OS X</span> ");
+				    					if (game.isSupportLinux())
+											out.print("<span class=\"label label-info\">Linux</span> ");
+										if (game.isSupportXbox())
+											out.print("<span class=\"label label-info\">Xbox One</span> ");
+										if (game.isSupportPs4())
+											out.print("<span class=\"label label-info\">PS4</span> ");
+										if (game.isSupportWiiu())
+											out.print("<span class=\"label label-info\">Wii-U</span> ");
+										%>
+									</p>
+									<p>
+										Genres: 
+										<%
+											ResultSet gameGenres = connection.preparedQuery("SELECT genreid FROM game_genre WHERE gameid=? LIMIT 6", game.getId());
+											while (gameGenres.next()) {
+										%>
+												<span class="label label-primary"><a href="genres.jsp?id=<%= gameGenres.getInt(1) %>"><%= genres.get(gameGenres.getInt(1)) %></a></span>
+										<% } connection.close();%>
+									</p>
 				    			</div>
 				    		</li>
 				    		<%	} %>
@@ -196,14 +337,51 @@
 				    					y++;
 				    				continue;
 				    			}
+
 				    		%>
 				    		<li class="media">
 				    			<div class="media-left">
-				    				<img src="http://placehold.it/128x64" alt="...">
+				    			<%
+				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
+				    			String imgSrc = "http://placehold.it/150x64";
+				    			if (imageResult.next()) {
+				    				byte[] imageIS = imageResult.getBytes(3);
+				    				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
+				    				if (mimeType.startsWith("image")) {
+				    					String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
+				    					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
+				    				}
+				    			}
+				    			%>
+				    				<img src="<%= imgSrc %>" alt="..." width="150" height="64">
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
-				    				<p><%= game.getDescription().substring(0, (game.getDescription().length() > 200 ? 200 : game.getDescription().length())) %></p>
+				    				<p> Platforms: 
+										<%
+										if (game.isSupportWin())
+											out.print("<span class=\"label label-info\">Windows</span> ");
+				    					if (game.isSupportMac())
+											out.print("<span class=\"label label-info\">OS X</span> ");
+				    					if (game.isSupportLinux())
+											out.print("<span class=\"label label-info\">Linux</span> ");
+										if (game.isSupportXbox())
+											out.print("<span class=\"label label-info\">Xbox One</span> ");
+										if (game.isSupportPs4())
+											out.print("<span class=\"label label-info\">PS4</span> ");
+										if (game.isSupportWiiu())
+											out.print("<span class=\"label label-info\">Wii-U</span> ");
+										%>
+									</p>
+									<p>
+										Genres: 
+										<%
+											ResultSet gameGenres = connection.preparedQuery("SELECT genreid FROM game_genre WHERE gameid=? LIMIT 6", game.getId());
+											while (gameGenres.next()) {
+										%>
+												<span class="label label-primary"><a href="genres.jsp?id=<%= gameGenres.getInt(1) %>"><%= genres.get(gameGenres.getInt(1)) %></a></span>
+										<% } connection.close();%>
+									</p>
 				    			</div>
 				    		</li>
 				    		<%	} %>
