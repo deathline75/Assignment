@@ -55,7 +55,7 @@ public class Genres extends HttpServlet {
 		connection.close();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().append(gson.toJson(genres));
+		response.getWriter().append(gson.toJson(new SearchResult(0, null, genres)));
 		
 	}
 
