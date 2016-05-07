@@ -67,8 +67,8 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 						int genreid = rs.getInt(1);
 				%>
 				<tr>
-					<td class="col-md-1" class="genreEdit"><%=rs.getInt(1)%></td>
-					<td class="col-md-9" class="genreEdit"><%=rs.getString(2)%></td>
+					<td class="col-md-1"><%=rs.getInt(1)%></td>
+					<td class="col-md-9" class="genreEdit" uid="<%=rs.getInt(1)%>"><%=rs.getString(2)%></td>
 					<td class="col-md-2">
 						 <button type="submit" class="btn btn-primary btn-xs" name="submit"">Edit</button>
 						 <form action="DeleteGenre" style="display: inline" method="post" id="deleteGenre<%=genreid %>">
@@ -86,7 +86,7 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 		</table>
 	</div>
 <script language="javascript"> 
-function changeTotext(obj) 
+function changeTotext(obj) //2
 { 
     var tdValue = obj.innerText; 
     obj.innerText = ""; 
@@ -98,26 +98,26 @@ function changeTotext(obj)
     obj.appendChild(txt); 
     txt.select();
 } 
-function cancel(obj) 
+function cancel(obj,tableid) //4
 { 
     var txtValue = document.getElementById("_text_000000000_").value; 
     obj.innerText = txtValue; 
-    	alert(txtValue);
+    var tableid = tableid;
         $.ajax({
         	  type: "POST",
         	  url: "EditGenre",
-        	  data: {"genreid":"33",
-        			"genrename":"Hello"  
+        	  data: {"genreid":tableid,
+        			"genrename":txtValue 
         	  },
         	  success: function(data, textStatus, jqXHR) {
         	    console.log("Success!!");
-        	  },
-        	  dataType: dataType
+        	  }
         	}); 
   
 
 } 
-document.ondblclick = function() 
+
+document.ondblclick = function()  //1
 { 
     if (event.srcElement.tagName.toLowerCase() == "td") 
     { 
@@ -125,12 +125,13 @@ document.ondblclick = function()
     } 
      
 } 
-document.onmouseup = function() 
+document.onmouseup = function() //3
 { 
     if (document.getElementById("_text_000000000_") && event.srcElement.id != "_text_000000000_") 
     { 
         var obj = document.getElementById("_text_000000000_").parentElement; 
-        cancel(obj); 
+        var tableid =document.getElementById("_text_000000000_").parentNode.getAttribute("uid");
+        cancel(obj,tableid); 
     }
 } 
    </script>
