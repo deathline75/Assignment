@@ -25,7 +25,7 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 <body>
 	<%@ include file="navbar.jsp"%>
 
-	<div class="container">
+	<div class="container main-content">
 		<%
 		if (request.getAttribute("result") != null) {
 			int result = (int) request.getAttribute("result");

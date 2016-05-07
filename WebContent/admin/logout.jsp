@@ -31,7 +31,7 @@
 		<!-- /.navbar-collapse -->
 	</div>
 	<!-- /.container-fluid --> </nav>
-	<div class="container">
+	<div class="container main-content">
 		<div class="page-header ice-header">
 			<h1>You have successfully logged out. <small>You will be redirected back to the store page.</small></h1>
 		</div>

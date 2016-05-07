@@ -10,7 +10,7 @@
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
-	<div class="container">
+	<div class="container main-content">
 		<dir class="jumbotron">
 			<h1>Coming Soon!</h1>
 			<p>Check back later...</p>

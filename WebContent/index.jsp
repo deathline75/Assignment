@@ -41,7 +41,7 @@
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
-	<div class="container">
+	<div class="container main-content">
 		<div class="page-header ice-header">
 			<h1>
 				Welcome to SP Games Store! <small>We sell games I guess...</small>

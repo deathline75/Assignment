@@ -61,7 +61,7 @@
 		<!-- /.navbar-collapse -->
 	</div>
 	<!-- /.container-fluid --> </nav>
-	<div class="container">
+	<div class="container main-content">
 		<%
 			if (failed != null) {
 				out.println("<div class=\"alert alert-danger\" role=\"alert\">" + failed + "</div>");

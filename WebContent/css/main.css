@@ -101,3 +101,11 @@ a {
 	color: white;
 	text-decoration: none;
 }
+.main-content{
+	min-height: 84.7vh;
+}
+#genrenav {
+}
+#genrenav label {
+	font-weight: normal;
+}

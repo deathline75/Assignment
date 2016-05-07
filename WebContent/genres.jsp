@@ -11,8 +11,10 @@
 <body>
 <%@ include file="navbar.jsp"%>
 <div class="container">
-	<div class="col-md-10">
-		
+	<div class="col-md-10 main-content" id="genrecontent">
+		<div class="page-header">
+			<h1>Browse by Genre</h1>
+		</div>
 	</div>
 	<div class="col-md-2 hidden-xs hidden-sm">
 		<ul id="genrenav" class="nav nav-stacked affix">

@@ -18,7 +18,7 @@
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
-	<div class="container">
+	<div class="container main-content">
 		<h1 class="col-sm-8" style="padding: 0;">Games Management</h1>
 		<div class="col-sm-3" style="margin: 20px 0 10px;">
 			<form class="form-inline" role="search">
