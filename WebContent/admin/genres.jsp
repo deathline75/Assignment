@@ -101,15 +101,21 @@ function changeTotext(obj)
 function cancel(obj) 
 { 
     var txtValue = document.getElementById("_text_000000000_").value; 
-    alert(txtValue);
-    $.ajax({
-    	   type:"post",
-    	  url:"./EditGenre",
-    	   data:{
-    	   genrename:(txtValue)
-    	   }
-    	   });
     obj.innerText = txtValue; 
+    	alert(txtValue);
+        $.ajax({
+        	  type: "POST",
+        	  url: "EditGenre",
+        	  data: {"genreid":"33",
+        			"genrename":"Hello"  
+        	  },
+        	  success: function(data, textStatus, jqXHR) {
+        	    console.log("Success!!");
+        	  },
+        	  dataType: dataType
+        	}); 
+  
+
 } 
 document.ondblclick = function() 
 { 
@@ -127,18 +133,6 @@ document.onmouseup = function()
         cancel(obj); 
     }
 } 
-
-function sub()
-{
-   $.ajax({
-   type:"post",//请求方式
-  url:"/EditGenre",//发送请求地址
-   data:{//发送给数据库的数据
-   genrename:$(txtValue)
-   }
-   });
-  
-}
    </script>
 
 
