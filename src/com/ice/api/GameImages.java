@@ -57,7 +57,7 @@ public class GameImages extends HttpServlet {
 		    				b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
 		    			}
 		    			if (b64encoded != null)
-		    				gameimage.add(new GameImage(rs.getInt(1), rs.getInt(2), b64encoded));
+		    				gameimage.add(new GameImage(rs.getInt(1), rs.getInt(2), mimeType, b64encoded));
 					}
 					if (!gameimage.isEmpty())
 						response.getWriter().append(gson.toJson(new SearchResult(0, null, gameimage)));
