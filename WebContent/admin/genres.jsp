@@ -70,7 +70,7 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 					<td class="col-md-1" class="genreEdit"><%=rs.getInt(1)%></td>
 					<td class="col-md-9" class="genreEdit"><%=rs.getString(2)%></td>
 					<td class="col-md-2">
-						 <button type="submit" class="btn btn-primary btn-xs" name="submit" form="deleteGenre<%=genreid%>">Edit</button>
+						 <button type="submit" class="btn btn-primary btn-xs" name="submit"">Edit</button>
 						 <form action="DeleteGenre" style="display: inline" method="post" id="deleteGenre<%=genreid %>">
 						 	<input type="hidden" value="<%=genreid%>" name="genreid">
 						 	<button type="submit" class="btn btn-danger btn-xs" name="submit" form="deleteGenre<%=genreid%>">Delete</button>
@@ -85,6 +85,64 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 			</tbody>
 		</table>
 	</div>
+<script language="javascript"> 
+function changeTotext(obj) 
+{ 
+    var tdValue = obj.innerText; 
+    obj.innerText = ""; 
+    var txt = document.createElement("input"); 
+    txt.type = "text"; 
+    txt.value = tdValue; 
+    txt.id = "_text_000000000_"; 
+    txt.setAttribute("className","text"); 
+    obj.appendChild(txt); 
+    txt.select();
+} 
+function cancel(obj) 
+{ 
+    var txtValue = document.getElementById("_text_000000000_").value; 
+    alert(txtValue);
+    $.ajax({
+    	   type:"post",
+    	  url:"./EditGenre",
+    	   data:{
+    	   genrename:(txtValue)
+    	   }
+    	   });
+    obj.innerText = txtValue; 
+} 
+document.ondblclick = function() 
+{ 
+    if (event.srcElement.tagName.toLowerCase() == "td") 
+    { 
+        changeTotext(event.srcElement); 
+    } 
+     
+} 
+document.onmouseup = function() 
+{ 
+    if (document.getElementById("_text_000000000_") && event.srcElement.id != "_text_000000000_") 
+    { 
+        var obj = document.getElementById("_text_000000000_").parentElement; 
+        cancel(obj); 
+    }
+} 
+
+function sub()
+{
+   $.ajax({
+   type:"post",//请求方式
+  url:"/EditGenre",//发送请求地址
+   data:{//发送给数据库的数据
+   genrename:$(txtValue)
+   }
+   });
+  
+}
+   </script>
+
+
+
 
 	<%@ include file="../footer.html"%>
 </body>

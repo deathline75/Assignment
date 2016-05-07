@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class EditGenre
  */
-@WebServlet("/EditGenre")
+@WebServlet("/admin/EditGenre")
 public class EditGenre extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -39,12 +39,13 @@ public class EditGenre extends HttpServlet {
 			response.sendRedirect("login.jsp");
 		else {
 			String genreid = request.getParameter("genreid");
+			String genrename = request.getParameter("genrename");
 			connectToMysql connection  = new connectToMysql(MyConstants.url);
-			connection.preparedUpdate("delete from game_genre where genreid=?", genreid);
+			connection.preparedUpdate("update game_genre set genrename=? where genreid=?", genrename,genreid);
 			connection.close();
-			connection.preparedUpdate("delete from genre where genreid=?", genreid);
+			connection.preparedUpdate("update genre set genrename=? where genreid=?", genrename,genreid);
 			connection.close();
-			response.sendRedirect("genres.jsp");
+			//response.sendRedirect("genres.jsp");
 			
 	}
 	}

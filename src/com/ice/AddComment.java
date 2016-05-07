@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class DeleteGenre
+ * Servlet implementation class AddComment
  */
-@WebServlet("/admin/DeleteGenre")
-public class DeleteGenre extends HttpServlet {
+@WebServlet("/AddComment")
+public class AddComment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteGenre() {
+    public AddComment() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,15 +38,17 @@ public class DeleteGenre extends HttpServlet {
 		if (request.getSession().getAttribute("username") == null)
 			response.sendRedirect("login.jsp");
 		else {
-			String genreid = request.getParameter("genreid");
-			connectToMysql connection  = new connectToMysql(MyConstants.url);
-			connection.preparedUpdate("delete from game_genre where genreid=?", genreid);
-			connection.close();
-			connection.preparedUpdate("delete from genre where genreid=?", genreid);
-			connection.close();
-			response.sendRedirect("genres.jsp");
+			String commentId = request.getParameter("commentId");
+			String gameid = request.getParameter("gameid");
+			String comment = request.getParameter("comment");
+			String rating = request.getParameter("rating");
 			
-		}
+			connectToMysql connection  = new connectToMysql(MyConstants.url);
+			connection.preparedUpdate("insert into game_comment VALUES(?,?,?,?) where commentId=?", commentId,gameid,comment,rating,commentId);
+			connection.close();
+			response.sendRedirect("comment.jsp");
+			
+	}
+	}
 	}
 
-}
