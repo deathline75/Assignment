@@ -6,13 +6,15 @@ public class GameComment {
 	private int commentid;
 	private String comment;
 	private short rating;
+	private String author;
 	
-	public GameComment(int gameid, int commentid, String comment, short rating) {
+	public GameComment(int gameid, int commentid, String comment, short rating,String author) {
 		super();
 		this.gameid = gameid;
 		this.commentid = commentid;
 		this.comment = comment;
 		this.rating = rating;
+		this.author = author;
 	}
 	
 	/**
@@ -38,6 +40,10 @@ public class GameComment {
 	 */
 	public short getRating() {
 		return rating;
+	}
+	
+	public String getAuthor(){
+		return author;
 	}
 	
 }

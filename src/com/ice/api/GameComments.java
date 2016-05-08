@@ -48,7 +48,7 @@ public class GameComments extends HttpServlet {
 				if (rs.isBeforeFirst()) {
 					List<GameComment> gamecomments = new ArrayList<GameComment>();
 					while (rs.next()) {
-						gamecomments.add(new GameComment(rs.getInt(2), rs.getInt(1), rs.getString(3), rs.getShort(4)));
+						gamecomments.add(new GameComment(rs.getInt(2), rs.getInt(1), rs.getString(3), rs.getShort(4),rs.getString(5)));
 					}				
 					response.getWriter().append(gson.toJson(new SearchResult(0, null, gamecomments)));
 				} else {
