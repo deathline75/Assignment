@@ -35,21 +35,18 @@ public class AddComment extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		if (request.getSession().getAttribute("username") == null)
-			response.sendRedirect("login.jsp");
-		else {
 			//String commentId = request.getParameter("commentId");
-			//String gameid = request.getParameter("gameid");
+			String gameid = request.getParameter("gameid");
 			String comment = request.getParameter("comment");
 			String rating = request.getParameter("rating");
 			String author = request.getParameter("author");
 			
 			connectToMysql connection  = new connectToMysql(MyConstants.url);
-			connection.preparedUpdate("insert into game_comment(commentID,gameid,comment,rating,author) VALUES(1,1,?,?,?)", comment,rating,author);
+			connection.preparedUpdate("insert into game_comment(gameid,comment,rating,author) VALUES(?,?,?,?)",gameid, comment,rating,author);
 			connection.close();
 			response.sendRedirect("comment.jsp");
 			
-	}
+
 	}
 	}
 

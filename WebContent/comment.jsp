@@ -13,8 +13,29 @@
             $('.rate').rating();
         });
     </script>
+ 
 </head>
 <body>
+<%
+String gameid = request.getParameter("gameid");
+%>
+
+<script>
+$(document).ready(function() {
+    $.getJSON("api/gamecomments?q-gameid=<%=gameid%>", function(data) {
+        console.log(data);
+        $.each(data.results, function(index, value) {
+            $('#Hello').append("Author:" + value.author + "<br/>" + "Comment:<br/>" + value.comment + "<br/>");
+        });
+    });
+});
+
+</script>
+
+<div id = "Hello">
+
+</div>
+
      <form action=AddComment method="post">
      <div class="rate">
         <input type="radio" name="rating" class="rating" value="1" />
@@ -23,11 +44,11 @@
         <input type="radio" name="rating" class="rating" value="4" />
         <input type="radio" name="rating" class="rating" value="5" />
       </div>
-     Name:   <input type="text" name="author"> <br/>
-      Comment:   <input type="text" name="comment"> Comment: <br/>
+      <input type="hidden" name="gameid" value="<%=gameid %>">
+      Name:<input type="text" name="author"> <br/>
+      Comment:<input type="text" name="comment"><br/>
 		<input type="submit" value="Submit">
 </form>
-
 
 
 
