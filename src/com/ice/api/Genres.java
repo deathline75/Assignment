@@ -36,25 +36,30 @@ public class Genres extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
-		
+		// Configure GSON, which is JSON parser from Google
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		// Sets the encoding to UTF-8 because Java...
+		response.setCharacterEncoding("UTF-8");
+		// Starts the connection to MySQL
 		connectToMysql connection = new connectToMysql(MyConstants.url);
+		
+		// Executes the query and returns the result set
 		ResultSet rs = connection.preparedQuery("SELECT * FROM genre");
 		
 		List<Genre> genres = new ArrayList<Genre>();
 		try {
 			while (rs.next()) {
+				// Adds all the results into the list
 				genres.add(new Genre(rs.getInt(1), rs.getString(2)));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		// Close the connection
 		connection.close();
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		response.setCharacterEncoding("UTF-8");
+		
+		// Writes out all the data along with the appropriate response code
 		response.getWriter().append(gson.toJson(new SearchResult(0, null, genres)));
 		
 	}
