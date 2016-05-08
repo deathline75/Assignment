@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <% String genreids = request.getParameter("id"); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -31,14 +32,35 @@
 		$('#games-list').html('<h3>Loading...</h3>');
 		$.getJSON("api/genres", function(data) {
 			if (data.responseCode == 0) {
+				var checkedGenres = "<%= genreids %>";
+				if (checkedGenres != "null") {
+					checkedGenres = checkedGenres.split(',').map(Number);
+					$.getJSON("api/gamegenre?q-genre=" + checkedGenres.join(','), function(data) {
+						if (data.responseCode == 0) {
+							ayylmao(data);
+						} else {
+							$('#games-list').html('<h3>No results found.</h3>');
+						}
+					});
+				} else {
+					$.getJSON("api/games", function(data) {
+						if (data.responseCode == 0) {
+							ayylmao(data);
+						}
+					});
+				}
 				$.each(data.results, function(index, value) {
-					$('#genrenav').append("<li><label><input class=\"genre-checkbox\" type=\"checkbox\" value=\"" + value.id + "\"> " + value.name + "</label></li>");
+					if (Array.isArray(checkedGenres) && $.inArray(value.id, checkedGenres) > -1)
+						$('#genrenav').append("<li><label><input class=\"genre-checkbox\" type=\"checkbox\" value=\"" + value.id + "\" checked> " + value.name + "</label></li>");
+					else
+						$('#genrenav').append("<li><label><input class=\"genre-checkbox\" type=\"checkbox\" value=\"" + value.id + "\"> " + value.name + "</label></li>");
 				});
 				$(':checkbox').change(function() {
 					var checkedVals = $('.genre-checkbox:checkbox:checked').map(function() {
 					    return this.value;
 					}).get();
 					if (checkedVals.length > 0) {
+						history.pushState("", document.title, "genres.jsp?id=" + checkedVals.join(','));
 						$('#games-list').html('<h3>Loading...</h3>');
 						$.getJSON("api/gamegenre?q-genre=" + checkedVals.join(','), function(data) {
 							if (data.responseCode == 0) {
@@ -48,6 +70,7 @@
 							}
 						});
 					} else {
+						history.pushState("", document.title, "genres.jsp");
 						$('#games-list').html('<h3>Loading...</h3>');
 						$.getJSON("api/games", function(data) {
 							if (data.responseCode == 0) {
@@ -60,11 +83,7 @@
 				});
 			}
 		});
-		$.getJSON("api/games", function(data) {
-			if (data.responseCode == 0) {
-				ayylmao(data);
-			}
-		});
+
 	});
 	
 	function platformSupport(value) {
@@ -104,6 +123,9 @@
 		} else {
 			$('#games-list').html('<h4>No results found.</h4>');
 		}
+		$('#games-list li').click(function (e) {
+			window.location.href = "game.jsp?id=" + $(this).attr('id').split('-')[1];
+		});
 	}
 </script>
 </body>

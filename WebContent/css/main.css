@@ -109,3 +109,11 @@ a {
 #genrenav label {
 	font-weight: normal;
 }
+#games-list li {
+	padding: 7px;
+	margin-top: 0;
+}
+#games-list li:hover {
+	background: #ccc;
+	cursor: pointer;
+}
