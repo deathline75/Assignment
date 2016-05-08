@@ -107,10 +107,10 @@
 				    			Game game = games.get(i);
 				    		%>
 				    		<li class="media">
-				    			<div class="media-left">
+				    			<div class="media-left media-middle">
 				    			<%
 				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
-				    			String imgSrc = "http://placehold.it/150x64";
+				    			String imgSrc = "http://placehold.it/128x50";
 				    			if (imageResult.next()) {
 				    				byte[] imageIS = imageResult.getBytes(3);
 				    				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
@@ -120,7 +120,7 @@
 				    				}
 				    			}
 				    			%>
-				    				<img src="<%= imgSrc %>" alt="..." width="150" height="64">
+				    				<img src="<%= imgSrc %>" alt="..." width="128" height="50">
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
@@ -165,10 +165,10 @@
 				    			}
 				    		%>
 				    		<li class="media">
-				    			<div class="media-left">
+				    			<div class="media-left media-middle">
 				    			<%
 				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
-				    			String imgSrc = "http://placehold.it/150x64";
+				    			String imgSrc = "http://placehold.it/128x50";
 				    			if (imageResult.next()) {
 				    				byte[] imageIS = imageResult.getBytes(3);
 				    				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
@@ -178,7 +178,7 @@
 				    				}
 				    			}
 				    			%>
-				    				<img src="<%= imgSrc %>" alt="..." width="150" height="64">
+				    				<img src="<%= imgSrc %>" alt="..." width="128" height="50">
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
@@ -223,10 +223,10 @@
 				    			}
 				    		%>
 				    		<li class="media">
-				    			<div class="media-left">
+				    			<div class="media-left media-middle">
 				    			<%
 				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0 LIMIT 6", game.getId());
-				    			String imgSrc = "http://placehold.it/150x64";
+				    			String imgSrc = "http://placehold.it/128x50";
 				    			if (imageResult.next()) {
 				    				byte[] imageIS = imageResult.getBytes(3);
 				    				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
@@ -236,7 +236,7 @@
 				    				}
 				    			}
 				    			%>
-				    				<img src="<%= imgSrc %>" alt="..." width="150" height="64">
+				    				<img src="<%= imgSrc %>" alt="..." width="128" height="50">
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
@@ -281,10 +281,10 @@
 				    			}
 				    		%>
 				    		<li class="media">
-				    			<div class="media-left">
+				    			<div class="media-left media-middle">
 				    			<%
 				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
-				    			String imgSrc = "http://placehold.it/150x64";
+				    			String imgSrc = "http://placehold.it/128x50";
 				    			if (imageResult.next()) {
 				    				byte[] imageIS = imageResult.getBytes(3);
 				    				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
@@ -294,7 +294,7 @@
 				    				}
 				    			}
 				    			%>
-				    				<img src="<%= imgSrc %>" alt="..." width="150" height="64">
+				    				<img src="<%= imgSrc %>" alt="..." width="128" height="50">
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
@@ -340,10 +340,10 @@
 
 				    		%>
 				    		<li class="media">
-				    			<div class="media-left">
+				    			<div class="media-left media-middle">
 				    			<%
 				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
-				    			String imgSrc = "http://placehold.it/150x64";
+				    			String imgSrc = "http://placehold.it/128x50";
 				    			if (imageResult.next()) {
 				    				byte[] imageIS = imageResult.getBytes(3);
 				    				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
@@ -353,7 +353,7 @@
 				    				}
 				    			}
 				    			%>
-				    				<img src="<%= imgSrc %>" alt="..." width="150" height="64">
+				    				<img src="<%= imgSrc %>" alt="..." width="128" height="50">
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
