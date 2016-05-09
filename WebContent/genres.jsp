@@ -35,7 +35,7 @@
 				var checkedGenres = "<%= genreids %>";
 				if (checkedGenres != "null") {
 					checkedGenres = checkedGenres.split(',').map(Number);
-					$.getJSON("api/gamegenre?q-genre=" + checkedGenres.join(','), function(data) {
+					$.getJSON("api/gamegenre?q-genreid=" + checkedGenres.join(','), function(data) {
 						if (data.responseCode == 0) {
 							ayylmao(data);
 						} else {
@@ -62,7 +62,7 @@
 					if (checkedVals.length > 0) {
 						history.pushState("", document.title, "genres.jsp?id=" + checkedVals.join(','));
 						$('#games-list').html('<h3>Loading...</h3>');
-						$.getJSON("api/gamegenre?q-genre=" + checkedVals.join(','), function(data) {
+						$.getJSON("api/gamegenre?q-genreid=" + checkedVals.join(','), function(data) {
 							if (data.responseCode == 0) {
 								ayylmao(data);
 							} else {

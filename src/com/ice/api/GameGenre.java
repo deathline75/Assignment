@@ -44,10 +44,10 @@ public class GameGenre extends HttpServlet {
 		connectToMysql connection = new connectToMysql(MyConstants.url);
 		
 		// Checks if parameters exist
-		if (request.getParameter("q-genre") != null) {
+		if (request.getParameter("q-genreid") != null) {
 			
 			// Splitting up the genres if there are more than one
-			String[] search = request.getParameter("q-genre").split(",");
+			String[] search = request.getParameter("q-genreid").split(",");
 			
 			String query = "SELECT * FROM game WHERE gameid IN (SELECT gameid FROM game_genre WHERE ";
 			// Appends more genreid to the back if necessary
@@ -73,6 +73,45 @@ public class GameGenre extends HttpServlet {
 					}				
 					// Writes out all the data along with the response code.
 					response.getWriter().append(gson.toJson(new SearchResult(0, null, games)));
+				} else {
+					// Returns the appropriate response code when no results found
+					response.getWriter().append(gson.toJson(new SearchResult(-1, "No results found.", null)));
+				}
+			} catch (SQLException e) {
+				// Returns the appropriate response code when SQLException occurs
+				response.getWriter().append(gson.toJson(new SearchResult(500, e.getMessage(), null)));
+			}
+			// Close the connection.
+			connection.close();
+		} else if (request.getParameter("q-gameid") != null) {
+			
+			// Splitting up the genres if there are more than one
+			String[] search = request.getParameter("q-gameid").split(",");
+			
+			String query = "SELECT * FROM genre WHERE genreid IN (SELECT genreid FROM game_genre WHERE ";
+			// Appends more genreid to the back if necessary
+			for (int i = 0; i < search.length; i++) {
+				if (i + 1 == search.length)
+					query += "gameid=?";
+				else
+					query += "gameid=? OR ";
+			}
+			query += ")";
+			
+			// Executing and getting the results back
+			ResultSet rs = connection.preparedQuery(query, (Object[]) search);
+			
+			try {
+				// Check if the ResultSet is empty
+				if (rs.isBeforeFirst()) {
+					List<Genre> genres = new ArrayList<Genre>();
+					
+					// Adds all the games to the ArrayList above.
+					while (rs.next()) {
+						genres.add(new Genre(rs.getInt(1), rs.getString(2)));
+					}				
+					// Writes out all the data along with the response code.
+					response.getWriter().append(gson.toJson(new SearchResult(0, null, genres)));
 				} else {
 					// Returns the appropriate response code when no results found
 					response.getWriter().append(gson.toJson(new SearchResult(-1, "No results found.", null)));

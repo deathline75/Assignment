@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -42,25 +43,60 @@ public class Genres extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		// Starts the connection to MySQL
 		connectToMysql connection = new connectToMysql(MyConstants.url);
-		
+		String sql = "SELECT * FROM genre";
 		// Executes the query and returns the result set
-		ResultSet rs = connection.preparedQuery("SELECT * FROM genre");
+		ResultSet rs = null;
 		
-		List<Genre> genres = new ArrayList<Genre>();
+		if (request.getParameterNames().hasMoreElements()) {
+			
+			sql += " WHERE";
+			Enumeration<String> queries = request.getParameterNames();
+			List<String> values = new ArrayList<String>();
+			
+			while (queries.hasMoreElements()) {
+				String query = queries.nextElement();
+				String value = request.getParameter(query);
+				boolean addable = false;
+				switch (query.toLowerCase()) {
+				case "q-genreid": 
+					sql += " genreid=? OR";
+					addable = true;
+					break;
+				case "q-name":
+					sql += " genrename LIKE ? OR";
+					value = "%" + value + "%";
+					addable = true;
+				}
+				if (addable)
+					values.add(value);
+			}
+			
+			sql = sql.substring(0, sql.length() - 2);
+			rs = connection.preparedQuery(sql, values.toArray());
+		} else {
+			rs = connection.preparedQuery(sql);
+		}
+		
+		
 		try {
-			while (rs.next()) {
-				// Adds all the results into the list
-				genres.add(new Genre(rs.getInt(1), rs.getString(2)));
+			if (rs.isBeforeFirst()) {
+				List<Genre> genres = new ArrayList<Genre>();
+				while (rs.next()) {
+					// Adds all the results into the list
+					genres.add(new Genre(rs.getInt(1), rs.getString(2)));
+				}
+				// Writes out all the data along with the appropriate response code
+				response.getWriter().append(gson.toJson(new SearchResult(0, null, genres)));
+			} else {
+				response.getWriter().append(gson.toJson(new SearchResult(-1, "No results found.", null)));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			response.getWriter().append(gson.toJson(new SearchResult(500, e.getMessage(), null)));
 		}
 
 		// Close the connection
 		connection.close();
 		
-		// Writes out all the data along with the appropriate response code
-		response.getWriter().append(gson.toJson(new SearchResult(0, null, genres)));
 		
 	}
 
