@@ -67,35 +67,25 @@ public class EditGame extends HttpServlet {
 
 			connection.preparedUpdate(
 					"update game set gameTitle=?,company=?,releaseDate=?,description=?,price=?,preOwned=?,supportWin=?,supportMac=?,supportXBOX=?,supportLinux=?,supportPS4=?,supportWIIU=? where gameid=?",gameTitle,company,releaseDate,description,price,preOwned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU,gameid);
-
-			connection.close();
 			
 			connection.preparedUpdate("delete from game_genre where gameid=?",gameid);
-			connection.close();
 			
 			for (String s: genres) {
 				int genreid = Integer.parseInt(s);
 				connection.preparedUpdate("INSERT INTO game_genre VALUES (?,?)", gameid, genreid);
-				connection.close();
 			}
 			
 			if (gameThumbnail.getSize() > 0) {
 				connection.preparedUpdate("delete from game_image where gameid=? and imageuse=0",gameid);
-				connection.close();
 				connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 0, gameThumbnail.getInputStream());
-				connection.close();
 			}
 			if (gameJumbo.getSize() > 0) {
 				connection.preparedUpdate("delete from game_image where gameid=? and imageuse=1",gameid);
-				connection.close();
 				connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 1, gameJumbo.getInputStream());
-				connection.close();
 			}
 			if (gamePromo.getSize() > 0) {
 				connection.preparedUpdate("delete from game_image where gameid=? and imageuse=2",gameid);
-				connection.close();
 				connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 2, gamePromo.getInputStream());
-				connection.close();
 			}
 			
 			response.sendRedirect("games.jsp");

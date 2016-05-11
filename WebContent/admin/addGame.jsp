@@ -6,11 +6,7 @@
 <%
 	if (session.getAttribute("username") == null)
 		response.sendRedirect("login.jsp");
-	
-%>
-
-<%
-connectToMysql connection = new connectToMysql(MyConstants.url);
+	connectToMysql connection = new connectToMysql(MyConstants.url);
 %>
 
 
@@ -67,7 +63,7 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
     					<% ResultSet rs = connection.preparedQuery("SELECT genreid,genrename FROM genre");
 			    		while (rs.next()) { %>
     					<option value="<%=rs.getInt(1)%>"><%=rs.getString(2)%></option>
-      					<% } %>
+      					<% } connection.close();%>
       				</select>
       				<script>
       					$('#sel2').select2();

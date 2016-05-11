@@ -1,6 +1,9 @@
 package com.ice;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,9 +43,16 @@ public class DeleteGenre extends HttpServlet {
 		else {
 			String genreid = request.getParameter("genreid");
 			connectToMysql connection  = new connectToMysql(MyConstants.url);
-			connection.preparedUpdate("delete from game_genre where genreid=?", genreid);
-			connection.close();
-			connection.preparedUpdate("delete from genre where genreid=?", genreid);
+			ResultSet rs = connection.preparedQuery("SELECT * from game_genre where genreid=?", genreid);
+			try {
+				if (!rs.next()) {
+					rs.close();
+					connection.preparedUpdate("delete from genre where genreid=?", genreid);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			connection.close();
 			response.sendRedirect("genres.jsp");
 			

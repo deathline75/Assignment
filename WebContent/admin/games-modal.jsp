@@ -26,14 +26,14 @@
 		String supportPS4 = rs.getString("supportPS4");
 		String supportWIIU = rs.getString("supportWIIU");
 
-		connection.close();
+		rs.close();
 		
 		ResultSet genrers = connection.preparedQuery("SELECT * FROM genre WHERE genreid IN (SELECT genreid FROM game_genre WHERE gameid=?)", gameid);
 		Map<Integer, String> genres = new HashMap<Integer, String>();
 		while (genrers.next()) {
 			genres.put(genrers.getInt(1), genrers.getString(2));
 		}
-		connection.close();
+		genrers.close();
 		
 %>
 <div class="modal-header">
@@ -103,6 +103,7 @@
 	<%
 				}
 			}
+			imageResult.close();
 		} else if (action.equalsIgnoreCase("edit")) {
 	%>
 	<form class="form-horizontal" method="post" id="EditGame" action="EditGame" enctype="multipart/form-data" >
@@ -139,7 +140,7 @@
     				<% ResultSet rs2 = connection.preparedQuery("SELECT genreid,genrename FROM genre");
 		    		while (rs2.next()) { %>
     				<option value="<%=rs2.getInt(1)%>" <%= genres.containsKey(rs2.getInt(1)) ? "selected" : "" %>><%=rs2.getString(2)%></option>
-      				<% } %>
+      				<% } rs2.close(); %>
       			</select>
       			<script>
       				$('#sel2').select2();

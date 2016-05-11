@@ -75,20 +75,17 @@ public class AddGame extends HttpServlet {
 						"insert into game(gametitle,company,releaseDate,description,price,preowned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU) values(?,?,?,?,?,?,?,?,?,?,?,?)",
 						gameTitle, company, releaseDate, description, price, preOwned, supportWin, supportMac,
 						supportXBOX, supportLinux, supportPS4, supportWIIU);
-
-				connection.close();
 				
 				ResultSet rs = connection.preparedQuery("SELECT gameid FROM game WHERE gametitle=?", gameTitle);
 				try {
 					rs.last();					
 					int gameid = rs.getInt(1);
-					connection.close();
+					rs.close();
 					
 					for (String s: genres) {
 						try {
 							int genreid = Integer.parseInt(s);
 							result = connection.preparedUpdate("INSERT INTO game_genre VALUES (?,?)", gameid, genreid);
-							connection.close();
 						} catch (NumberFormatException ex) {
 							result = -1;
 						}
@@ -100,17 +97,15 @@ public class AddGame extends HttpServlet {
 					if (result > 0) {
 						if (gameThumbnail.getSize() > 0) {
 							result = connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 0, gameThumbnail.getInputStream());
-							connection.close();
 						}
 						if (gameJumbo.getSize() > 0) {
 							result = connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 1, gameJumbo.getInputStream());
-							connection.close();
 						}
 						if (gamePromo.getSize() > 0) {
 							result = connection.preparedUpdate("INSERT INTO game_image VALUES (?,?,?)", gameid, 2, gamePromo.getInputStream());
-							connection.close();
 						}
 					}
+					connection.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

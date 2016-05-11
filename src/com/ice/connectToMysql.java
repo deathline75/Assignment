@@ -14,6 +14,12 @@ public class connectToMysql {
 	 */
 	public connectToMysql(String connectionURL) {
 		this.connectionURL = connectionURL;
+    	try {
+			connect();
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void connect() throws SQLException, ClassNotFoundException{
@@ -37,7 +43,6 @@ public class connectToMysql {
     public ResultSet query(String sql){  
     	ResultSet rs = null;
         try{  
-        	connect();
             Statement stat = conn.createStatement();  
             rs = stat.executeQuery(sql);  
         }catch(Exception ex){  
@@ -50,7 +55,6 @@ public class connectToMysql {
     
     private PreparedStatement prepareStatement(String sql, Object... values) {
 		try {
-    		connect();
 			PreparedStatement ps = conn.prepareStatement(sql);		
 			
 			for (int i = 0; i < values.length; i++) {
@@ -85,7 +89,7 @@ public class connectToMysql {
 			}
 
 			return ps;
-		} catch (SQLException | ClassNotFoundException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

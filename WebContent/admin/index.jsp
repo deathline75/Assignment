@@ -26,7 +26,7 @@
 				if (rs.next()) {
 					String lastLogin = rs.getString("lastLogin");
 					out.print(lastLogin);
-					connection.close();
+					rs.close();
 				}
 			%></small>
 			</h1>

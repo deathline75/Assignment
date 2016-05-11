@@ -13,21 +13,21 @@
 		while (rs.next()) {
 			games.add(new Game(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getString(5), rs.getDouble(6), rs.getString(7), rs.getBoolean(8), rs.getBoolean(9), rs.getBoolean(10), rs.getBoolean(11), rs.getBoolean(12), rs.getBoolean(13), rs.getBoolean(14)));
 		}
-		connection.close();
+		rs.close();
 		
 		Map<Integer, String> genres = new HashMap<Integer, String>();
 		ResultSet rs1 = connection.query("SELECT * FROM genre");
 		while(rs1.next()) {
 			genres.put(rs1.getInt(1), rs1.getString(2));
 		}
-		connection.close();
+		rs1.close();
 		
 		Vector<Genre> topgenres = new Vector<Genre>();
 		ResultSet rs2 = connection.query("SELECT g.genreid, g.genrename FROM genre g, game_genre gg WHERE g.genreid = gg.genreid GROUP BY gg.genreid ORDER BY count(gg.genreid) DESC LIMIT 8");
 		while (rs2.next()) {
 			topgenres.add(new Genre(rs2.getInt(1), rs2.getString(2)));
 		}
-		connection.close();
+		rs2.close();
 	%>
 	
 <!-- TODO: REMOVE ALL STYLE TAGS AND MIGRATE THEM TO CSS FILES. -->
@@ -119,6 +119,7 @@
 				    					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
 				    				}
 				    			}
+				    			imageResult.close();
 				    			%>
 				    				<img src="<%= imgSrc %>" alt="..." width="128" height="50">
 				    			</div>
@@ -147,7 +148,7 @@
 											while (gameGenres.next()) {
 										%>
 												<span class="label label-primary"><a href="genres.jsp?id=<%= gameGenres.getInt(1) %>"><%= genres.get(gameGenres.getInt(1)) %></a></span>
-										<% } connection.close();%>
+										<% } gameGenres.close();%>
 									</p>
 				    			</div>
 				    		</li>
@@ -177,6 +178,7 @@
 				    					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
 				    				}
 				    			}
+				    			imageResult.close();
 				    			%>
 				    				<img src="<%= imgSrc %>" alt="..." width="128" height="50">
 				    			</div>
@@ -205,7 +207,7 @@
 											while (gameGenres.next()) {
 										%>
 												<span class="label label-primary"><a href="genres.jsp?id=<%= gameGenres.getInt(1) %>"><%= genres.get(gameGenres.getInt(1)) %></a></span>
-										<% } connection.close();%>
+										<% } gameGenres.close();%>
 									</p>
 				    			</div>
 				    		</li>
@@ -235,6 +237,7 @@
 				    					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
 				    				}
 				    			}
+				    			imageResult.close();
 				    			%>
 				    				<img src="<%= imgSrc %>" alt="..." width="128" height="50">
 				    			</div>
@@ -263,7 +266,7 @@
 											while (gameGenres.next()) {
 										%>
 												<span class="label label-primary"><a href="genres.jsp?id=<%= gameGenres.getInt(1) %>"><%= genres.get(gameGenres.getInt(1)) %></a></span>
-										<% } connection.close();%>
+										<% } gameGenres.close();%>
 									</p>
 				    			</div>
 				    		</li>
@@ -293,6 +296,7 @@
 				    					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
 				    				}
 				    			}
+				    			imageResult.close();
 				    			%>
 				    				<img src="<%= imgSrc %>" alt="..." width="128" height="50">
 				    			</div>
@@ -321,7 +325,7 @@
 											while (gameGenres.next()) {
 										%>
 												<span class="label label-primary"><a href="genres.jsp?id=<%= gameGenres.getInt(1) %>"><%= genres.get(gameGenres.getInt(1)) %></a></span>
-										<% } connection.close();%>
+										<% } gameGenres.close();%>
 									</p>
 				    			</div>
 				    		</li>
@@ -352,6 +356,7 @@
 				    					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
 				    				}
 				    			}
+				    			imageResult.close();
 				    			%>
 				    				<img src="<%= imgSrc %>" alt="..." width="128" height="50">
 				    			</div>
@@ -380,7 +385,7 @@
 											while (gameGenres.next()) {
 										%>
 												<span class="label label-primary"><a href="genres.jsp?id=<%= gameGenres.getInt(1) %>"><%= genres.get(gameGenres.getInt(1)) %></a></span>
-										<% } connection.close();%>
+										<% } gameGenres.close();%>
 									</p>
 				    			</div>
 				    		</li>

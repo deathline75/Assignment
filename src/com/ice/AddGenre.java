@@ -55,7 +55,7 @@ public class AddGenre extends HttpServlet {
 					if (rs.next()) {
 						result = -3;
 					} else {
-						connection.close();
+						rs.close();
 					 	result = connection.preparedUpdate("insert into genre(genrename) values(?)", genreTitle);
 					}
 				} catch (SQLException e) {
