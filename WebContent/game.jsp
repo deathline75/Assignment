@@ -21,7 +21,7 @@
 <div class="container-fluid main-content" style="padding: 30px 0">
 	<div>
 		<div id="jumbo" class="col-sm-8">
-			<img src="http://placehold.it/1920x1080" alt="..." class="img-responsive"/>
+			<img src="http://placehold.it/1920x1080?text=No+Image+Available" alt="..." class="img-responsive"/>
 		</div>
 		<div class="col-sm-4" id="description">
 			<div class="page-header ice-header">
@@ -52,7 +52,7 @@
 				<div class="col-md-9">
 					<div class="input-group">
 						<span class="input-group-addon price">$??.??</span>
-  						<button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="right" title="Coming Soon">Buy</button>
+  						<button type="button" class="btn btn-success" id="buy" data-toggle="tooltip" data-placement="right" title="Coming Soon">Buy New</button>
 					</div>
 				</div>	
 			</div>
@@ -69,10 +69,16 @@
 		$.getJSON("api/games?q-gameid=" + gameid, function(data) {
 			if (data.responseCode == 0) {
 				var gamedata = data.results[0];
+				document.title = gamedata.title + " | SP Games Store";
 				$('.page-header > h1').text(gamedata.title);
 				$('.company').text(gamedata.company);
 				$('.releasedate').text(gamedata.releaseDate);
 				$('.description').text(gamedata.description);
+				if (gamedata.preowned) {
+					$('#buy').text('Buy Preowned');
+					$('#buy').removeClass('btn-success');
+					$('#buy').addClass('btn-warning');
+				}
 				if (gamedata.supportWin) {
 					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWin" autocomplete="off" val="win"> Windows </label>');
 				} if (gamedata.supportMac) { 
