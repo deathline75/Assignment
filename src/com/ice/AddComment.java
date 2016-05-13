@@ -43,6 +43,7 @@ public class AddComment extends HttpServlet {
 			comment = Jsoup.clean(comment, Whitelist.basic());
 			String rating = request.getParameter("rating");
 			String author = request.getParameter("author");
+			author = Jsoup.clean(author, Whitelist.basic());
 			connectToMysql connection  = new connectToMysql(MyConstants.url);
 			connection.preparedUpdate("insert into game_comment(gameid,comment,rating,author) VALUES(?,?,?,?)",gameid, comment,rating,author);
 			connection.close();
