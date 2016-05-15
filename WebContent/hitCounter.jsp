@@ -8,7 +8,12 @@
 </head>
 <body>
 <form action="hitCounter" method="POST">
-<input type="submit">
+<input type="submit" value="ToWholeSite">
+</form>
+
+<form action="hitCounterGame" method = "POST">
+<input type="hidden" name="gameid" value ="2">
+<input type="submit" value="ToGame">
 </form>
 </body>
 </html>
