@@ -21,9 +21,9 @@ if (session.getAttribute("username") != null)
       <ul class="nav navbar-nav ice-nav-ul">
         <li><a href="games.jsp">Games</a></li>
         <li><a href="genres.jsp">Genres</a></li>
-        <li><a href="../">Main Page</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li><a href="../">Main Page</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Signed in as <%= username %> <span class="caret"></span></a>
           <ul class="dropdown-menu">

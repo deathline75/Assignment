@@ -100,13 +100,13 @@
     			<li role="presentation"><a href="#xbone" aria-controls="xbone" role="tab" data-toggle="tab">Xbox One</a></li>
     			<li role="presentation"><a href="#wiiu" aria-controls="wiiu" role="tab" data-toggle="tab">Wii U</a></li>
 			</ul>
-			<div class="tab-content">
+			<div class="tab-content" id="games-list">
 				    <div role="tabpanel" class="tab-pane active" id="all">
 				    	<ul class="media-list">
 				    		<% for (int i = 0; i < (games.size() > 5 ? 5 : games.size()); i++) { 
 				    			Game game = games.get(i);
 				    		%>
-				    		<li class="media">
+				    		<li class="media" id="game-<%= game.getId() %>-all">
 				    			<div class="media-left media-middle">
 				    			<%
 				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
@@ -165,7 +165,7 @@
 				    				continue;
 				    			}
 				    		%>
-				    		<li class="media">
+				    		<li class="media" id="game-<%= game.getId() %>-pc">
 				    			<div class="media-left media-middle">
 				    			<%
 				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
@@ -224,7 +224,7 @@
 				    				continue;
 				    			}
 				    		%>
-				    		<li class="media">
+				    		<li class="media" id="game-<%= game.getId() %>-ps4">
 				    			<div class="media-left media-middle">
 				    			<%
 				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0 LIMIT 6", game.getId());
@@ -283,7 +283,7 @@
 				    				continue;
 				    			}
 				    		%>
-				    		<li class="media">
+				    		<li class="media" id="game-<%= game.getId() %>-xbone">
 				    			<div class="media-left media-middle">
 				    			<%
 				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
@@ -343,7 +343,7 @@
 				    			}
 
 				    		%>
-				    		<li class="media">
+				    		<li class="media" id="game-<%= game.getId() %>-wiiu">
 				    			<div class="media-left media-middle">
 				    			<%
 				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
@@ -405,6 +405,12 @@
 		</div>
 	</div>
 	<%@ include file="footer.html"%>
-	
+	<script>
+		$(document).ready(function() {
+			$('#games-list li').click(function (e) {
+				window.location.href = "game.jsp?id=" + $(this).attr('id').split('-')[1];
+			});
+		})
+	</script>
 </body>
 </html>
