@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<form action="hitCounter" method="POST">
+<input type="submit">
+</form>
 </body>
 </html>
