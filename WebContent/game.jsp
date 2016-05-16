@@ -13,7 +13,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="head.html"%>
-
+<script type="text/javascript" src="js/rating.js"></script>
+<link rel="stylesheet" href="css/rating.css" type="text/css" media="screen" title="Rating CSS">	
+    <script type="text/javascript">
+        $(function(){
+            $('.rate').rating();
+        });
+    </script>
 <title> | SP Games Store</title>
 </head>
 <body>
@@ -62,6 +68,24 @@
 	<div class="row">
 		<h2>Comments</h2>
 		<hr />
+
+<script>
+$(document).ready(function() {
+    $.getJSON("api/gamecomments?q-gameid=<%=gameid%>", function(data) {
+        console.log(data);
+        $.each(data.results, function(index, value) {
+            $('#comment').append("<div class=\"panel panel-default\"><div class=\"panel-heading\">Author:" + value.author +"</div>" + "<div class=\"panel-body\"> " + value.comment + "</div> </div>");
+            //+ "<br/>" + "Comment:<br/>" + value.comment + "<br/>"
+        });
+    });
+});
+</script>
+<div id="comment">
+<div class="col-sm-12">
+
+</div>
+
+</div>
 		<form action=AddComment method="post">
      		<div class="rate">
         		<input type="radio" name="rating" class="rating" value="1" />
