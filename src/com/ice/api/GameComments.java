@@ -48,7 +48,7 @@ public class GameComments extends HttpServlet {
 		if (request.getParameter("q-gameid") != null) {
 			String positionRows = request.getParameter("positionRows");
 			String s = "limit " + positionRows + "," + 5;
-			String query = "SELECT * FROM game_comment WHERE gameid=? order by date desc " + s;
+			String query = "SELECT * FROM game_comment WHERE gameid=? and preOwned=0 order by date desc " + s;
 			// Gets the data back from the query
 			ResultSet rs = connection.preparedQuery(query, request.getParameter("q-gameid"));
 			

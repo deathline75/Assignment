@@ -24,16 +24,25 @@
     	
     	int rows = 0;
     	int totalPageNum=0;
+    	int result = 0;
     %>
     
     <%
     connectToMysql connection = new connectToMysql(MyConstants.url);
 	ResultSet rs = connection.preparedQuery("SELECT * FROM game_comment WHERE gameid=?",gameid);
+	ResultSet rs1 = connection.preparedQuery("SELECT * FROM game WHERE gameid=? and preOwned=1",gameid);
+	
 	try {
 		
 		while(rs.next()){
 			rows++;
 		}
+		
+		if(rs1.next()){
+			result = 400;
+		}
+		
+		
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -151,6 +160,9 @@ function validateForm() {
     }
 }
 </script>
+<%if(result != 400){
+	%>
+	<form action=AddComment method="post" name="addcomment" onsubmit="return validateForm()" >
 		<form action=AddComment method="post" name="addcomment" onsubmit="return validateForm()">
      		<div class="rate">
         		<input type="radio" name="rating" class="rating" value="1" />
@@ -175,32 +187,29 @@ function validateForm() {
 			<nav>
 			
   <ul class="pagination">
-    <li>
-      <a href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
     <%
     for(int i=1;i<=totalPageNum;i++){%>
+    <% if(Integer.parseInt(userPageNum)==i){
+    	%>
+    <li class="active"><a href="game.jsp?id=<%=gameid%>&userPageNum=<%=i%>"><%=i%></a></li>	<%
+    }else{%>
     	<li><a href="game.jsp?id=<%=gameid%>&userPageNum=<%=i%>"><%=i%></a></li>	
+    <%} %>
     <%
     }
     %>
-    <li>
-      <a href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
+     </ul>
 </nav>
 			
 				<div class="g-recaptcha"
 				data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ"
 				style="margin-bottom: 15px"></div>	
 		</form>
+		<%} else{%>
 		<div id="comments">
 			<h4 class="text-muted">Comments are disabled as this is a preowned game.</h4>
 		</div>
+		<% }%>
 	</div>
 </div>
 <%@ include file="footer.html" %>
