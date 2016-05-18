@@ -46,7 +46,8 @@ public class GameComments extends HttpServlet {
 		// Checks if parameters exist
 		if (request.getParameter("q-gameid") != null) {
 			
-			String query = "SELECT * FROM game_comment WHERE gameid=?";
+			//String s = "limit" + begin + "," +size;
+			String query = "SELECT * FROM game_comment WHERE gameid=? order by commentid desc"; //+ s;
 			// Gets the data back from the query
 			ResultSet rs = connection.preparedQuery(query, request.getParameter("q-gameid"));
 			
@@ -56,14 +57,16 @@ public class GameComments extends HttpServlet {
 					
 					// Initialize the ArrayList for the GameComments coming in.
 					List<GameComment> gamecomments = new ArrayList<GameComment>();
-					
+					int rows = 0;
 					while (rs.next()) {
 						// Add the GameComments into the List
-						gamecomments.add(new GameComment(rs.getInt(2), rs.getInt(1), rs.getString(3), rs.getShort(4),rs.getString(5)));
-					}				
+						rows++;
+						gamecomments.add(new GameComment(rs.getInt(2), rs.getInt(1), rs.getString(3), rs.getShort(4),rs.getString(5),rs.getDate(6)));
+					}	
 					
 					// Print out the data along with the response code.
 					response.getWriter().append(gson.toJson(new SearchResult(0, null, gamecomments)));
+					
 				} else {
 					// Prints appropriate response when empty
 					response.getWriter().append(gson.toJson(new SearchResult(-1, "No results found.", null)));

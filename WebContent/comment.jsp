@@ -37,6 +37,10 @@ $(document).ready(function() {
 </div>
 
      <form action=AddComment method="post">
+ <div class="g-recaptcha col-sm-offset-1"
+				data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ"
+				style="margin-bottom: 15px"></div>
+ 
      <div class="rate">
         <input type="radio" name="rating" class="rating" value="1" />
         <input type="radio" name="rating" class="rating" value="2" />

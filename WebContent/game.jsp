@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="com.ice.*"%>
     <% 
     	String gameid = request.getParameter("id");
     	if (gameid == null)
     		response.sendRedirect(".");
-    	
-    	
-    	
     %>
+    
+ 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,6 +15,7 @@
 <%@ include file="head.html"%>
 <script type="text/javascript" src="js/rating.js"></script>
 <link rel="stylesheet" href="css/rating.css" type="text/css" media="screen" title="Rating CSS">	
+<link rel="stylesheet" href="css/comment.css" type="text/css">
     <script type="text/javascript">
         $(function(){
             $('.rate').rating();
@@ -74,19 +75,36 @@ $(document).ready(function() {
     $.getJSON("api/gamecomments?q-gameid=<%=gameid%>", function(data) {
         console.log(data);
         $.each(data.results, function(index, value) {
-            $('#comment').append("<div class=\"panel panel-default\"><div class=\"panel-heading\">Author:" + value.author +"</div>" + "<div class=\"panel-body\"> " + value.comment + "</div> </div>");
-            //+ "<br/>" + "Comment:<br/>" + value.comment + "<br/>"
+            $('#comment').append("<div class=\"col-sm-1\"><div class=\"thumbnail\"><img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\"></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\">" + "<strong>"+ value.author+"</strong>" +" <span class=\"text-muted\"> commented on " + value.date + "</span>" + "</div>" + "<div class=\"panel-body\"> " + value.comment + "</div> </div>");
         });
     });
 });
 </script>
+
 <div id="comment">
-<div class="col-sm-12">
+
 
 </div>
-
-</div>
-		<form action=AddComment method="post">
+<script>
+function validateForm() {
+    var x = document.forms["addcomment"]["author"].value;
+    var y = document.forms["addcomment"]["rating"].value;
+    var z = document.forms["addcomment"]["comment"].value;
+    if (x == null || x == "") {
+        alert("Please input your Author");
+        return false;
+    }
+    else if(y == null || y==""){
+        alert("Please input your Rating");
+        return false;
+    }
+    else if(z == null || z==""){
+        alert("Please input your Comment");
+        return false;
+    }
+}
+</script>
+		<form action=AddComment method="post" name="addcomment" onsubmit="return validateForm()">
      		<div class="rate">
         		<input type="radio" name="rating" class="rating" value="1" />
         		<input type="radio" name="rating" class="rating" value="2" />
@@ -95,9 +113,20 @@ $(document).ready(function() {
         		<input type="radio" name="rating" class="rating" value="5" />
       		</div>
       		<input type="hidden" name="gameid" value="<%=gameid %>">
-      		Name:<input type="text" name="author">
-      		Comment:<input type="text" name="comment">
-			<input type="submit" value="Submit">
+      		<div class="col-sm-3">
+      		<p>
+      		<input type="text" name="author" class="form-control" placeholder="YourName" aria-describedby="basic-addon1" class="form-group">
+      		</p>
+      		</div>
+      		<div class="col-sm-10" class="form-group">
+      		<textarea type="text" name="comment" class="form-control" placeholder="Your Comment Here" aria-describedby="basic-addon1" rows="9"></textarea>
+			</div>
+			<div class="form-group" class="col-sm-3">
+			<input type="submit" class="btn btn-default" value="Submit">
+			</div>
+				<div class="g-recaptcha"
+				data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ"
+				style="margin-bottom: 15px"></div>	
 		</form>
 		<div id="comments">
 			<h4 class="text-muted">Comments are disabled as this is a preowned game.</h4>

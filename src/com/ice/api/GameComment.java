@@ -1,5 +1,5 @@
 package com.ice.api;
-
+import java.sql.*;
 /**
  * GameComment is a POJO where it is mostly implemented in GSON
  * @author Kelvin Neo
@@ -12,14 +12,15 @@ public class GameComment {
 	private String author;
 	private String comment;
 	private short rating;
-	
-	public GameComment(int gameid, int commentid, String comment, short rating, String author) {
+	private Date date;
+	public GameComment(int gameid, int commentid, String comment, short rating, String author,Date date) {
 		super();
 		this.gameid = gameid;
 		this.commentid = commentid;
 		this.author = author;
 		this.comment = comment;
 		this.rating = rating;
+		this.date = date;
 	}
 	
 	/**
@@ -62,5 +63,7 @@ public class GameComment {
 		return rating;
 	}
 
-	
+	public Date getDate() {
+		return date;
+	}
 }
