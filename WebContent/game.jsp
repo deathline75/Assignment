@@ -1,13 +1,60 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="com.ice.*"%>
+    <%@ page import="java.sql.*" %>
     <% 
     	String gameid = request.getParameter("id");
+    	String userPageNum = request.getParameter("userPageNum");
     	if (gameid == null)
     		response.sendRedirect(".");
+		
+
+    	int positionRows = 0;
+    	if(userPageNum==null || userPageNum.isEmpty()){
+    		userPageNum = "1";
+    		positionRows = (Integer.parseInt(userPageNum) - 1) * 5;
+    		System.out.println(positionRows);
+    	}
+    			
+    	else{
+    		positionRows = (Integer.parseInt(userPageNum) - 1) * 5;
+    		System.out.println(positionRows);
+    	}
+    	
+    	
+    	int rows = 0;
+    	int totalPageNum=0;
     %>
     
- 
+    <%
+    connectToMysql connection = new connectToMysql(MyConstants.url);
+	ResultSet rs = connection.preparedQuery("SELECT * FROM game_comment WHERE gameid=?",gameid);
+	try {
+		
+		while(rs.next()){
+			rows++;
+		}
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} %>
+	
+<%
+//System.out.println(rows);
+
+	if(rows % 5 !=0){
+		totalPageNum = rows/5 + 1;
+		//System.out.println(totalPageNum);//Pages to display	
+	}
+
+	else{
+		totalPageNum = rows/5;
+		//System.out.println(totalPageNum);//Pages to display
+	}	
+
+
+%>	
+	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -72,7 +119,7 @@
 
 <script>
 $(document).ready(function() {
-    $.getJSON("api/gamecomments?q-gameid=<%=gameid%>", function(data) {
+    $.getJSON("api/gamecomments?q-gameid=<%=gameid%>&positionRows=<%=positionRows%>", function(data) {
         console.log(data);
         $.each(data.results, function(index, value) {
             $('#comment').append("<div class=\"col-sm-1\"><div class=\"thumbnail\"><img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\"></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\">" + "<strong>"+ value.author+"</strong>" +" <span class=\"text-muted\"> commented on " + value.date + "</span>" + "</div>" + "<div class=\"panel-body\"> " + value.comment + "</div> </div>");
@@ -124,6 +171,29 @@ function validateForm() {
 			<div class="form-group" class="col-sm-3">
 			<input type="submit" class="btn btn-default" value="Submit">
 			</div>
+			
+			<nav>
+			
+  <ul class="pagination">
+    <li>
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <%
+    for(int i=1;i<=totalPageNum;i++){%>
+    	<li><a href="game.jsp?id=<%=gameid%>&userPageNum=<%=i%>"><%=i%></a></li>	
+    <%
+    }
+    %>
+    <li>
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+			
 				<div class="g-recaptcha"
 				data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ"
 				style="margin-bottom: 15px"></div>	
@@ -187,5 +257,7 @@ function validateForm() {
 		});
 	});
 </script>
+
+
 </body>
 </html>
