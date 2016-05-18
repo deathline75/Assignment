@@ -49,16 +49,14 @@ public class GameGenre extends HttpServlet {
 			// Splitting up the genres if there are more than one
 			String[] search = request.getParameter("q-genreid").split(",");
 			
-			String query = "SELECT * FROM game WHERE gameid IN (SELECT gameid FROM game_genre WHERE ";
+			String query = "SELECT * FROM game WHERE ";
 			// Appends more genreid to the back if necessary
 			for (int i = 0; i < search.length; i++) {
 				if (i + 1 == search.length)
-					query += "genreid=?";
+					query += "gameid IN (SELECT gameid FROM game_genre WHERE genreid=?)";
 				else
-					query += "genreid=? OR ";
+					query += "gameid IN (SELECT gameid FROM game_genre WHERE genreid=?) AND ";
 			}
-			query += ")";
-			
 			// Executing and getting the results back
 			ResultSet rs = connection.preparedQuery(query, (Object[]) search);
 			
