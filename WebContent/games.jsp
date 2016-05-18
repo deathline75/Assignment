@@ -11,9 +11,9 @@
 <body>
 	<%@ include file="navbar.jsp"%>
 	<div class="container main-content">
-		<form>
+		<form class="form form-horizontal">
 			<div class="input-group">
-  				<input type="text" class="form-control" aria-label="...">
+  				<input type="text" class="form-control" aria-label="..." placeholder="Search">
   				<div class="input-group-btn">
     			<!-- Buttons -->
     				<button type="button" class="btn btn-primary">Search</button>
@@ -22,11 +22,32 @@
 			</div>
 			<div class="collapse" id="searchCollapse">
 				<div class="well">
-					<div class="checkbox">
-						<label>
-      						<input type="checkbox"> Preowned
-    					</label>
+					<div class="form-group">
+						<label for="sel2" class="col-sm-1 control-label">Genre: </label>
+						<div class="col-sm-3">
+							<!-- When you wished that Select2 would stop being dumb -->
+							<select multiple="multiple" class="form-control" id="sel2" name="genre" style="width: 100%"></select>
+						</div>
+						<label class="col-sm-1 control-label" for="inclusive">Inclusive: </label>
+						<div class="col-sm-1 control-label" style="text-align: left">
+							<input type="checkbox" id="inclusive" name="inclusive" checked>
+						</div>
+						<label class="col-sm-1 control-label" for="preowned">Preowned: </label>
+						<div class="col-sm-1 control-label" style="text-align: left">
+							<input type="checkbox" id="preowned" name="preowned">
+						</div>
+						<label class="col-sm-1 control-label">Depth: </label>
+						<div class="col-sm-1 control-label" style="text-align: left">
+							<input type="radio" id="preowned" name="depth" checked> All
+						</div>
+						<div class="col-sm-1 control-label" style="text-align: left">
+							<input type="radio" id="preowned" name="depth"> Some
+						</div>
+						<div class="col-sm-1 control-label" style="text-align: left">
+							<input type="radio" id="preowned" name="depth"> Title
+						</div>
 					</div>
+
 				</div>
 			</div>
 		</form>
@@ -45,6 +66,28 @@
 					$('#games-list').html('<h3>No results found.</h3>');
 				}
 			});
+			
+			$
+			
+			function format(state) {
+				return state.name;
+			}
+			
+			$('#sel2').select2({
+				  ajax: {
+				    url: 'api/genres',
+			        dataType: 'json',
+				    delay: 250,
+				    processResults: function(data) {
+				    	return {
+				    		results: data.results
+				    	}
+				    }
+				  },
+				templateSelection: format,
+				templateResult: format
+			});
+
 			
 			function platformSupport(value) {
 				var retv = "";
@@ -80,7 +123,6 @@
 							}
 						});
 						$.getJSON("api/gamegenre?q-gameid=" + value.id, function(data3) {
-							console.log(data3);
 							if (data3.responseCode == 0) {
 								$.each(data3.results, function(index, value2) {
 									$('#game-' + value.id + ' .genres').append('<span class="label label-primary"><a href="genres.jsp?id=' + value2.id + '">' + value2.name + '</a></span> ');
