@@ -21,7 +21,7 @@ import com.ice.connectToMysql;
 /**
  * Servlet implementation class GameSearch
  */
-@WebServlet("/GameSearch")
+@WebServlet("/api/gamesearch")
 public class GameSearch extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -67,10 +67,6 @@ public class GameSearch extends HttpServlet {
 				String value = request.getParameter(query);
 				boolean addable = false;
 				switch (query.toLowerCase()) {
-				case "q-gameid":
-					sql += " gameid=? " + operator;
-					addable = true;
-					break;
 				case "q-gametitle":
 					sql += " gametitle LIKE ? " + operator;
 					value = "%" + value + "%";
@@ -82,13 +78,14 @@ public class GameSearch extends HttpServlet {
 					addable = true;
 					break;
 				case "q-genreid":
-					String[] search = value.split(",");
-					for (int i = 0; i < search.length; i++) {
-						if (i + 1 == search.length)
-							value = search[i];
-						else 
-							values.add(search[i]);
-						query += " gameid IN (SELECT gameid FROM game_genre WHERE genreid=?) " + operator;
+					if (value.length() > 0) {
+						String[] search = value.split(",");
+						if (search.length > 0) {
+							for (int i = 0; i < search.length; i++) {
+								values.add(search[i]);
+								sql += " gameid IN (SELECT gameid FROM game_genre WHERE genreid=?) " + operator;
+							}
+						}
 					}
 					break;
 				case "q-preowned":
@@ -100,7 +97,7 @@ public class GameSearch extends HttpServlet {
 					values.add(value);
 			}
 			
-			sql = sql.substring(0, sql.length() - 2);
+			sql = sql.substring(0, sql.length() - operator.length());
 			rs = connection.preparedQuery(sql, values.toArray());
 			
 		} else {

@@ -16,22 +16,11 @@
       <ul class="nav navbar-nav ice-nav-ul">
         <li><a href="games.jsp">Games</a></li>
         <li><a href="genres.jsp">Genres</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
       </ul>
-      <form class="navbar-form navbar-right" role="search">
+      <form class="navbar-form navbar-right" role="search" action="games.jsp">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" class="form-control search-bar" placeholder="Search" name="q">
+          <input type="hidden" name="inclusive" value="on" />
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>

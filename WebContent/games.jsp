@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,12 +12,12 @@
 <body>
 	<%@ include file="navbar.jsp"%>
 	<div class="container main-content">
-		<form class="form form-horizontal">
+		<form class="form form-horizontal" method="get">
 			<div class="input-group">
-  				<input type="text" class="form-control" aria-label="..." placeholder="Search">
+  				<input type="text" id="big-search" class="form-control search-bar" aria-label="..." placeholder="Search" name="q">
   				<div class="input-group-btn">
     			<!-- Buttons -->
-    				<button type="button" class="btn btn-primary">Search</button>
+    				<button type="submit" class="btn btn-primary">Search</button>
     				<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#searchCollapse" aria-expanded="false" aria-controls="searchCollapse">Advance <span class="caret"></span></button>
 	  			</div>
 			</div>
@@ -24,7 +25,7 @@
 				<div class="well">
 					<div class="form-group">
 						<label for="sel2" class="col-sm-1 control-label">Genre: </label>
-						<div class="col-sm-3">
+						<div class="col-sm-7">
 							<!-- When you wished that Select2 would stop being dumb -->
 							<select multiple="multiple" class="form-control" id="sel2" name="genre" style="width: 100%"></select>
 						</div>
@@ -36,16 +37,16 @@
 						<div class="col-sm-1 control-label" style="text-align: left">
 							<input type="checkbox" id="preowned" name="preowned">
 						</div>
-						<label class="col-sm-1 control-label">Depth: </label>
-						<div class="col-sm-1 control-label" style="text-align: left">
-							<input type="radio" id="preowned" name="depth" checked> All
-						</div>
-						<div class="col-sm-1 control-label" style="text-align: left">
-							<input type="radio" id="preowned" name="depth"> Some
-						</div>
-						<div class="col-sm-1 control-label" style="text-align: left">
-							<input type="radio" id="preowned" name="depth"> Title
-						</div>
+<!-- 						<label class="col-sm-1 control-label">Depth: </label> -->
+<!-- 						<div class="col-sm-1 control-label" style="text-align: left"> -->
+<!-- 							<label><input type="radio" id="preowned" name="depth" value="0"> All</label> -->
+<!-- 						</div> -->
+<!-- 						<div class="col-sm-1 control-label" style="text-align: left"> -->
+<!-- 							<label><input type="radio" id="preowned" name="depth" value="1"> Some</label> -->
+<!-- 						</div> -->
+<!-- 						<div class="col-sm-1 control-label" style="text-align: left"> -->
+<!-- 							<label><input type="radio" id="preowned" name="depth" value="2"> Title</label> -->
+<!-- 						</div> -->
 					</div>
 
 				</div>
@@ -57,8 +58,10 @@
 	</div>
 	<%@ include file="footer.html"%>
 	<script>
+	
 		$(document).ready(function() {
 			
+			<% if (request.getParameter("q") == null) {%>
 			$.getJSON("api/games", function(data) {
 				if (data.responseCode == 0) {
 					ayylmao(data);
@@ -66,11 +69,31 @@
 					$('#games-list').html('<h3>No results found.</h3>');
 				}
 			});
+			<% } else {%>
+			var q = "<%= request.getParameter("q") %>";
+			var operator = <%= request.getParameter("inclusive") == null ? false : (request.getParameter("inclusive").equalsIgnoreCase("on") ? true : false) %>;
+			var preowned = <%= request.getParameter("preowned") == null ? 0 : (request.getParameter("preowned").equalsIgnoreCase("on") ? 1 : 0) %>;
+			var genre = "<%= request.getParameterValues("genre") == null ? "" : String.join(",", request.getParameterValues("genre")) %>";
 			
-			$
+			$('.search-bar').val(q);
+			if (!operator) {
+				$('#inclusive').prop('checked', false);
+			} if (preowned) {
+				$('#preowned').prop('checked', true);
+			} if (genre || !operator || preowned) {
+				$('#searchCollapse').collapse('show');
+			}
 			
+			$.getJSON("api/gamesearch?q-gametitle=" + q + "&inclusive=" + operator + "&q-preowned=" + preowned + "&q-genreid=" + genre, function(data) {
+				if (data.responseCode == 0) {
+					ayylmao(data);
+				} else {
+					$('#games-list').html('<h3>No results found.</h3>');
+				}
+			});
+			<% } %>
 			function format(state) {
-				return state.name;
+				return state.name || state.text;
 			}
 			
 			$('#sel2').select2({
@@ -85,7 +108,10 @@
 				    }
 				  },
 				templateSelection: format,
-				templateResult: format
+				templateResult: format,
+				cache: true,
+				allowClear: true,
+				placeholder: 'Select a genre'
 			});
 
 			
@@ -112,7 +138,7 @@
 				if (data.results.length > 0) {
 					$.each(data.results, function(index, value) {
 						$('#games-list').append('<li class="media" id="game-' + value.id + 
-								'"><div class="media-left"><img src="http://placehold.it/128x50" alt="..." width="128" height="50"></div><div class="media-body media-middle"><h4 class="media-heading">' + value.title + 
+								'"><div class="media-left media-middle"><img src="http://placehold.it/128x50" alt="..." width="128" height="50"></div><div class="media-body"><h4 class="media-heading">' + value.title + 
 								'</h4><p>Platforms: ' + platformSupport(value) + 
 								'</p><p class="genres">Genres: </p></div><div class="media-right media-middle"><span class="label label-success">$' + value.price.toFixed(2) + 
 								'</span></div></li>');
