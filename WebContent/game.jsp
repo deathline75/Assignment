@@ -30,7 +30,6 @@
     <%
     connectToMysql connection = new connectToMysql(MyConstants.url);
 	ResultSet rs = connection.preparedQuery("SELECT * FROM game_comment WHERE gameid=?",gameid);
-	ResultSet rs1 = connection.preparedQuery("SELECT * FROM game WHERE gameid=? and preOwned=1",gameid);
 	
 	try {
 		
@@ -38,9 +37,6 @@
 			rows++;
 		}
 		
-		if(rs1.next()){
-			result = 400;
-		}
 		
 		
 	} catch (SQLException e) {
@@ -114,7 +110,6 @@
 			<h3 id="buy-gamename" style="margin-top: 0; display: inline-block">ಠ_ಠ</h3>
 			<div class="btn-toolbar pull-right">
 				<div class="btn-group platforms" data-toggle="buttons"></div>
-		
 				<div class="btn-group" style="display:block" data-toggle="tooltip" data-placement="right" title="Coming Soon">
   					<button type="button" class="btn btn-success" id="buy">Buy New</button>
 					<button type="button" class="btn btn-default price">$??.??</button>
@@ -132,6 +127,7 @@ $(document).ready(function() {
         console.log(data);
         $.each(data.results, function(index, value) {
             $('#comment').append("<div class=\"col-sm-1\"><div class=\"thumbnail\"><img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\"></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\">" + "<strong>"+ value.author+"</strong>" +" <span class=\"text-muted\"> commented on " + value.date + "</span>" + "</div>" + "<div class=\"panel-body\"> " + value.comment + "</div> </div>");
+        	
         });
     });
 });
@@ -160,10 +156,7 @@ function validateForm() {
     }
 }
 </script>
-<%if(result != 400){
-	%>
-	<form action=AddComment method="post" name="addcomment" onsubmit="return validateForm()" >
-		<form action=AddComment method="post" name="addcomment" onsubmit="return validateForm()">
+		<form action=AddComment method="post" name="addcomment" onsubmit="return validateForm()" id="addcomment">
      		<div class="rate">
         		<input type="radio" name="rating" class="rating" value="1" />
         		<input type="radio" name="rating" class="rating" value="2" />
@@ -205,11 +198,9 @@ function validateForm() {
 				data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ"
 				style="margin-bottom: 15px"></div>	
 		</form>
-		<%} else{%>
 		<div id="comments">
 			<h4 class="text-muted">Comments are disabled as this is a preowned game.</h4>
 		</div>
-		<% }%>
 	</div>
 </div>
 <%@ include file="footer.html" %>
@@ -246,8 +237,9 @@ function validateForm() {
 					$('#buy').text('Buy Preowned');
 					$('#buy').removeClass('btn-success');
 					$('#buy').addClass('btn-warning');
+					$("#addcomment").css("display","none");
 				} else {
-					
+					$("#comments").css("display","none");
 				}
 			}
 		});
