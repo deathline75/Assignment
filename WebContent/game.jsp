@@ -212,10 +212,17 @@
 	    $.getJSON("api/gamecomments?q-gameid=<%=gameid%>&positionRows=<%=positionRows%>", function(data) {
 	        $.each(data.results, function(index, value) {
 	        	var stars= "";
+	        	var panelcolor = "panel-default";
 	        	for (var i=1; i <= value.rating; i++){
 	        		stars = stars + "<span class=\"glyphicon glyphicon-star\" aria-hidden=\"true\"></span>"	
 	        	}
-	            $('.comment').append("<div class=\"col-sm-1\"><div class=\"thumbnail\"><img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\"></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\">" + "<strong>"+ value.author+"</strong>" +" <span class=\"text-muted\"> commented on " + value.date + "</span>" + "</div>" + "<div class=\"panel-body\"><p>Rating: " + stars + "</p><p>Comment: " + value.comment + "</p></div> </div>");
+	        	if (value.rating > 3)
+	        		panelcolor = "panel-success";
+	        	else if (value.rating < 3)
+	        		panelcolor = "panel-danger";
+	        	else
+	        		panelcolor = "panel-warning";
+	            $('.comment').append("<div class=\"col-sm-1\"><div class=\"thumbnail\"><img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\"></div></div><div class=\"panel " + panelcolor + "\"><div class=\"panel-heading\">" + "<strong>"+ value.author+"</strong>" +" <span class=\"text-muted\"> commented on " + value.date + "</span>" + "</div>" + "<div class=\"panel-body\"><p>Rating: " + stars + "</p><p>Comment: " + value.comment + "</p></div> </div>");
 	        	
 	        });
 	    });

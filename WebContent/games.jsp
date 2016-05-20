@@ -142,6 +142,10 @@
 								'</h4><p>Platforms: ' + platformSupport(value) + 
 								'</p><p class="genres">Genres: </p></div><div class="media-right media-middle"><span class="label label-success">$' + value.price.toFixed(2) + 
 								'</span></div></li>');
+						if (value.preowned) {
+							$('#game-' + value.id + ' .media-right span').removeClass('label-success');
+							$('#game-' + value.id + ' .media-right span').addClass('label-warning');	
+						}
 						$.getJSON("api/gameimages?q-gameid=" + value.id + "&q-imageuse=0", function(data2) {
 							if (data2.responseCode == 0) {
 								$('#game-' + value.id + ' .media-left').html('<img src="data:' + data2.results[0].mimeType + ';base64,' + data2.results[0].b64imagedata + 
