@@ -117,94 +117,54 @@
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row" style="margin: 0">
 		<h2>Comments</h2>
 		<hr />
-
-<script>
-$(document).ready(function() {
-    $.getJSON("api/gamecomments?q-gameid=<%=gameid%>&positionRows=<%=positionRows%>", function(data) {
-        console.log(data);
-        $.each(data.results, function(index, value) {
-        	var stars= "";
-        	for (var i=1; i <= value.rating; i++){
-        		stars = stars + "<span class=\"glyphicon glyphicon-star\" aria-hidden=\"true\"></span>"	
-        	}
-            $('#comment').append("<div class=\"col-sm-1\"><div class=\"thumbnail\"><img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\"></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\">" + "<strong>"+ value.author+"</strong>" +" <span class=\"text-muted\"> commented on " + value.date + "</span>" +" " + stars + "</div>" + "<div class=\"panel-body\"> " + value.comment + "</div> </div>");
-        	
-        });
-    });
-});
-</script>
-
-<div id="comment">
-
-
-</div>
-<script>
-function validateForm() {
-    var x = document.forms["addcomment"]["author"].value;
-    var y = document.forms["addcomment"]["rating"].value;
-    var z = document.forms["addcomment"]["comment"].value;
-    if (x == null || x == "") {
-        alert("Please input your Author");
-        return false;
-    }
-    else if(y == null || y==""){
-        alert("Please input your Rating");
-        return false;
-    }
-    else if(z == null || z==""){
-        alert("Please input your Comment");
-        return false;
-    }
-}
-</script>
-		<form action=AddComment method="post" name="addcomment" onsubmit="return validateForm()" id="addcomment">
-     		<div class="rate">
-        		<input type="radio" name="rating" class="rating" value="1" />
-        		<input type="radio" name="rating" class="rating" value="2" />
-        		<input type="radio" name="rating" class="rating" value="3" />
-        		<input type="radio" name="rating" class="rating" value="4" />
-        		<input type="radio" name="rating" class="rating" value="5" />
-      		</div>
-      		<input type="hidden" name="gameid" value="<%=gameid %>">
-      		<div class="col-sm-3">
-      		<p>
-      		<input type="text" name="author" class="form-control" placeholder="YourName" aria-describedby="basic-addon1" class="form-group">
-      		</p>
-      		</div>
-      		<div class="col-sm-10" class="form-group">
-      		<textarea type="text" name="comment" class="form-control" placeholder="Your Comment Here" aria-describedby="basic-addon1" rows="9"></textarea>
-			</div>
-			<div class="form-group" class="col-sm-3">
-			<input type="submit" class="btn btn-default" value="Submit">
-			</div>
-			
-			<nav>
-			
-  <ul class="pagination">
-    <%
-    for(int i=1;i<=totalPageNum;i++){%>
-    <% if(Integer.parseInt(userPageNum)==i){
-    	%>
-    <li class="active"><a href="game.jsp?id=<%=gameid%>&userPageNum=<%=i%>"><%=i%></a></li>	<%
-    }else{%>
-    	<li><a href="game.jsp?id=<%=gameid%>&userPageNum=<%=i%>"><%=i%></a></li>	
-    <%} %>
-    <%
-    }
-    %>
-     </ul>
-</nav>
-			
-				<div class="g-recaptcha"
-				data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ"
-				style="margin-bottom: 15px"></div>	
-		</form>
-		<div id="comments">
-			<h4 class="text-muted">Comments are disabled as this is a preowned game.</h4>
+		<div class="ayylmao">
+			<h4 class="text-muted" id="comments">Comments are disabled as this is a preowned game.</h4>
+			<form action=AddComment method="post" name="addcomment" onsubmit="return validateForm()" id="addcomment" class="form form-horizontal">
+				<div class="form-group">
+			    	<label class="col-sm-1 control-label" for="author">Name: </label>
+      				<div class="col-sm-5">
+      					<input type="text" name="author" class="form-control" placeholder="Name" aria-describedby="basic-addon1" class="form-group" id="author">
+      				</div>
+      				<label class="col-sm-1 control-label">Rating: </label>
+     				<div class="rate col-sm-5 checkbox">
+        				<input type="radio" name="rating" class="rating" value="1" />
+        				<input type="radio" name="rating" class="rating" value="2" />
+        				<input type="radio" name="rating" class="rating" value="3" />
+        				<input type="radio" name="rating" class="rating" value="4" />
+        				<input type="radio" name="rating" class="rating" value="5" />
+      				</div>
+      				<input type="hidden" name="gameid" value="<%=gameid %>">
+				</div>
+      			<div class="form-group">
+      				<label class="col-sm-1 control-label" for="comment">Comment: </label>
+      				<div class="col-sm-6">
+      					<textarea type="text" name="comment" class="form-control" id="comment" placeholder="Comment" aria-describedby="basic-addon1" rows="5"></textarea>
+      				</div>
+				</div>
+				<div class="form-group">
+					<div class="g-recaptcha col-sm-offset-1 col-sm-11" data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ"></div>
+				</div>	
+				<div class="form-group">
+					<div class="col-sm-offset-1 col-sm-1">
+						<input type="submit" class="btn btn-default" value="Submit">
+					</div>
+				</div>
+			</form>
 		</div>
+		<div class="comment">
+		</div>
+			<ul class="pagination">
+    		<% for(int i=1;i<=totalPageNum;i++){ 
+    			if (Integer.parseInt(userPageNum)==i){ %>
+    			<li class="active"><a href="game.jsp?id=<%=gameid%>&userPageNum=<%=i%>"><%=i%></a></li>	<%
+    			} else {%>
+    			<li><a href="game.jsp?id=<%=gameid%>&userPageNum=<%=i%>"><%=i%></a></li>	
+    			<%} %>
+    		<% } %>
+    		</ul>
 	</div>
 </div>
 <%@ include file="footer.html" %>
@@ -244,6 +204,7 @@ function validateForm() {
 					$("#addcomment").css("display","none");
 				} else {
 					$("#comments").css("display","none");
+			    	$('.ayylmao').append("<hr/>");
 				}
 			}
 		});
@@ -253,6 +214,16 @@ function validateForm() {
 				'" alt="..." class="img-responsive"/>');
 			}
 		});
+	    $.getJSON("api/gamecomments?q-gameid=<%=gameid%>&positionRows=<%=positionRows%>", function(data) {
+	        $.each(data.results, function(index, value) {
+	        	var stars= "";
+	        	for (var i=1; i <= value.rating; i++){
+	        		stars = stars + "<span class=\"glyphicon glyphicon-star\" aria-hidden=\"true\"></span>"	
+	        	}
+	            $('.comment').append("<div class=\"col-sm-1\"><div class=\"thumbnail\"><img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\"></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\">" + "<strong>"+ value.author+"</strong>" +" <span class=\"text-muted\"> commented on " + value.date + "</span>" + "</div>" + "<div class=\"panel-body\"><p>Rating: " + stars + "</p><p>Comment: " + value.comment + "</p></div> </div>");
+	        	
+	        });
+	    });
 		$.getJSON("api/gamegenre?q-gameid=" + gameid, function(data) {
 			if (data.responseCode == 0) {
 				$.each(data.results, function(index, value) {
@@ -261,6 +232,23 @@ function validateForm() {
 			}
 		});
 	});
+	function validateForm() {
+	    var x = document.forms["addcomment"]["author"].value;
+	    var y = document.forms["addcomment"]["rating"].value;
+	    var z = document.forms["addcomment"]["comment"].value;
+	    if (x == null || x == "") {
+	        alert("Please input your Author");
+	        return false;
+	    }
+	    else if(y == null || y==""){
+	        alert("Please input your Rating");
+	        return false;
+	    }
+	    else if(z == null || z==""){
+	        alert("Please input your Comment");
+	        return false;
+	    }
+	}
 </script>
 
 
