@@ -126,7 +126,11 @@ $(document).ready(function() {
     $.getJSON("api/gamecomments?q-gameid=<%=gameid%>&positionRows=<%=positionRows%>", function(data) {
         console.log(data);
         $.each(data.results, function(index, value) {
-            $('#comment').append("<div class=\"col-sm-1\"><div class=\"thumbnail\"><img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\"></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\">" + "<strong>"+ value.author+"</strong>" +" <span class=\"text-muted\"> commented on " + value.date + "</span>" + "</div>" + "<div class=\"panel-body\"> " + value.comment + "</div> </div>");
+        	var stars= "";
+        	for (var i=1; i <= value.rating; i++){
+        		stars = stars + "<span class=\"glyphicon glyphicon-star\" aria-hidden=\"true\"></span>"	
+        	}
+            $('#comment').append("<div class=\"col-sm-1\"><div class=\"thumbnail\"><img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\"></div></div><div class=\"panel panel-default\"><div class=\"panel-heading\">" + "<strong>"+ value.author+"</strong>" +" <span class=\"text-muted\"> commented on " + value.date + "</span>" +" " + stars + "</div>" + "<div class=\"panel-body\"> " + value.comment + "</div> </div>");
         	
         });
     });
