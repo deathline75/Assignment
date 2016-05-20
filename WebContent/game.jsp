@@ -5,57 +5,52 @@
     <% 
     	String gameid = request.getParameter("id");
     	String userPageNum = request.getParameter("userPageNum");
-    	if (gameid == null)
+    	if (gameid == null) {
     		response.sendRedirect(".");
-		
+    		return;
+    	}
 
     	int positionRows = 0;
-    	if(userPageNum==null || userPageNum.isEmpty()){
+    	if (userPageNum==null || userPageNum.isEmpty()) {
     		userPageNum = "1";
     		positionRows = (Integer.parseInt(userPageNum) - 1) * 5;
-    		System.out.println(positionRows);
-    	}
-    			
-    	else{
+    	} else {
     		positionRows = (Integer.parseInt(userPageNum) - 1) * 5;
-    		System.out.println(positionRows);
     	}
     	
     	
     	int rows = 0;
     	int totalPageNum=0;
     	int result = 0;
-    %>
-    
-    <%
-    connectToMysql connection = new connectToMysql(MyConstants.url);
-	ResultSet rs = connection.preparedQuery("SELECT * FROM game_comment WHERE gameid=?",gameid);
+    	connectToMysql connection = new connectToMysql(MyConstants.url);
+    	ResultSet validGame = connection.preparedQuery("SELECT * FROM game WHERE gameid=?",gameid);
+    	
+    	if (!validGame.next()) {
+    		connection.close();
+    		response.sendRedirect(".");
+    		return;
+    	}
+    	
+    	validGame.close();
+    	connection.preparedUpdate("insert into game_hitcounter(day,gameid,slot,count) value(CURRENT_DATE,?,RAND()*100,1) on duplicate key update count=count+1",gameid);
+		ResultSet rs = connection.preparedQuery("SELECT * FROM game_comment WHERE gameid=?",gameid);
 	
-	try {
-		
-		while(rs.next()){
-			rows++;
-		}
-		
-		
-		
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} %>
-	
-<%
+		try {
+			while (rs.next())
+				rows++;
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
 //System.out.println(rows);
 
-	if(rows % 5 !=0){
-		totalPageNum = rows/5 + 1;
-		//System.out.println(totalPageNum);//Pages to display	
-	}
-
-	else{
-		totalPageNum = rows/5;
-		//System.out.println(totalPageNum);//Pages to display
-	}	
+		if (rows % 5 !=0) {
+			totalPageNum = rows/5 + 1;
+			//System.out.println(totalPageNum);//Pages to display	
+		} else {
+			totalPageNum = rows/5;
+			//System.out.println(totalPageNum);//Pages to display
+		}	
 
 
 %>	

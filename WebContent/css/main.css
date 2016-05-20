@@ -57,7 +57,10 @@ a {
 }
 .ice-carousel-caption > h3 {
 	margin-bottom: 3px;
+}
+.ice-carousel-caption > h3 > a,.ice-carousel-caption > h3 > a:hover,.ice-carousel-caption > h3 > a:active{
 	color: darkcyan;
+	text-decoration: none;
 }
 .ice-carousel-caption > p {
 	color: #d9edf7;

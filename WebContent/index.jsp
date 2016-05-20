@@ -28,6 +28,8 @@
 			topgenres.add(new Genre(rs2.getInt(1), rs2.getString(2)));
 		}
 		rs2.close();
+		Game random = games.get(new Random().nextInt(games.size()));
+		Game[] randomJumbo = {games.get(new Random().nextInt(games.size())), games.get(new Random().nextInt(games.size())), games.get(new Random().nextInt(games.size()))};
 	%>
 	
 <!-- TODO: REMOVE ALL STYLE TAGS AND MIGRATE THEM TO CSS FILES. -->
@@ -58,27 +60,28 @@
 			</ol>
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
-				<div class="item active">
-					<img src="img/609173.jpg" alt="Dark Souls 3">
-					<div class="carousel-caption ice-carousel-caption">
-						<h3>Dark Souls 3</h3>
-						<p>Out now</p>
-					</div>
-				</div>
+				<% for (Game g: randomJumbo) { %>
 				<div class="item">
-					<img src="img/ogimage.img.jpg" alt="Mirror's Edge Catalyst">
+				    <%
+				    ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=1", g.getId());
+				    String imgSrc = "http://placehold.it/1920x1080";
+				    if (imageResult.next()) {
+				    	byte[] imageIS = imageResult.getBytes(3);
+				    	String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
+				    	if (mimeType.startsWith("image")) {
+				    		String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
+				    		imgSrc = "data:" + mimeType + ";base64," + b64encoded;
+				    	}
+				    }
+				    imageResult.close();
+				    %>
+					<a href="game.jsp?id=<%= g.getId() %>"><img src="<%= imgSrc %>" alt="<%= g.getTitle() %>" width="1920" height="1080"></a>
 					<div class="carousel-caption ice-carousel-caption">
-						<h3>Mirror's Edge Catalyst</h3>
-						<p>Coming Soon</p>
+						<h3><a href="game.jsp?id=<%= g.getId() %>"><%= g.getTitle() %></a></h3>
+						<p><%= g.getCompany() %></p>
 					</div>
 				</div>
-				<div class="item">
-					<img src="img/maxresdefault.jpg" alt="Cities Skylines">
-					<div class="carousel-caption ice-carousel-caption">
-						<h3>Cities Skylines</h3>
-						<p>New expansion coming soon</p>
-					</div>
-				</div>
+				<% } %>
 			</div>
 		</div>
 		<div>
@@ -396,10 +399,24 @@
 		</div>
 		<div class="col-sm-4" style="padding-right:0;">
 			<div class="thumbnail">
-				<img src="http://placehold.it/350x350" alt="...">
+			<% 
+			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=2", random.getId());
+			String imgSrc = "http://placehold.it/350x350";
+			if (imageResult.next()) {
+				byte[] imageIS = imageResult.getBytes(3);
+				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
+				if (mimeType.startsWith("image")) {
+					String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
+					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
+				}
+			}
+			imageResult.close();
+			%>
+				<img src="<%= imgSrc %>" alt="..." width="350" height="350">
 				<div class="caption">
-					<h3>Game Title</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper ligula vel velit fringilla ornare. Morbi interdum velit enim, eget maximus neque lobortis quis. Duis.</p>
+					<h3><%= random.getTitle() %></h3>
+					<p><%= random.getDescription() %></p>
+					<a href="game.jsp?id=<%= random.getId() %>" class="btn btn-primary active" role="button">More Info <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span></a>
 				</div>
 			</div>
 		</div>
@@ -410,6 +427,7 @@
 			$('#games-list li').click(function (e) {
 				window.location.href = "game.jsp?id=" + $(this).attr('id').split('-')[1];
 			});
+			$('.carousel-inner .item:first-child').addClass('active');
 		})
 	</script>
 </body>
