@@ -26,18 +26,12 @@
 				connectToMysql connection = new connectToMysql(MyConstants.url);
 				ResultSet rs = connection.preparedQuery("Select lastLogin from user where username=?", username);
 				//ResultSet rs1 = connection.preparedQuery("select SUM(COUNT) from game_hitcounter");
-				ResultSet rs2 = connection.preparedQuery("select gametitle,SUM(COUNT) from game_hitcounter gh,game g where gh.gameid = g.gameid group by g.gameid");
+				ResultSet rs2 = connection.preparedQuery("select gametitle,SUM(COUNT) Count from game_hitcounter gh,game g where gh.gameid = g.gameid group by g.gameid order by Count DESC");
 				if (rs.next()) {
 					String lastLogin = rs.getString("lastLogin");
 					out.print(lastLogin);
-					//rs.close();
+					rs.close();
 				}
-/* 				String totalCount="";
-				if(rs1.next()){
-					totalCount = rs1.getString(1);
-					System.out.println(totalCount);
-					//rs.close();
-				} */
 			%></small>
 			</h1>
 
@@ -47,50 +41,42 @@
 				java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String currentTime = sdf.format(date);
 				connection.preparedUpdate("update user set lastLogin=? where username=?", date, username);
-				//connection.close();
+				connection.close();
 			%>
 			
 			
-    <!--Load the AJAX API-->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-			
-	<script type="text/javascript">
-
-      // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
-      // Set a callback to run when the Google Visualization API is loaded.
+     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
+	  function drawChart () {
+		    $.ajax({
+		        url: "../api/hitcounters",
+		        dataType: "json",
+		        success: function (jsonData) {
+		        	console.log(jsonData);
+		            var data = new google.visualization.DataTable();
+		            // assumes "word" is a string and "count" is a number
+		            data.addColumn('string', 'GameTitle');
+		            data.addColumn('number', 'HitCounts');
 
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'HitCounter');
-        data.addColumn('number', 'Game!!');
-        
-        data.addRows([
-          <%while(rs2.next()){
-        	%>
-        	["<%=rs2.getString("gametitle")%>",<%=rs2.getString(2)%>],
-        	<%
-          }%>
-          ['Test', 1]
-        ]);
+		            for (var i = 0; i < jsonData.length; i++) {
+		                data.addRow([jsonData[i].gameTitle, jsonData[i].hitCounter]);
+		            }
 
-        // Set chart options
-        var options = {'title':'Popularity of Different games.',
-                       'width':400,
-                       'height':300};
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-</script>
+		            var options = {
+		                title: 'DA GAMES HITCOUNTS',
+		                is3D: true
+		            };
+		            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+		            chart.draw(data, options);
+		        }
+		    });
+		    
+		}
+    </script>
 			
-				<div id="chart_div"></div>
+		<div id="chart_div" style="width: 900px; height: 500px;"></div>
 		</div>
 	</div>
 	<%@ include file="../footer.html"%>

@@ -39,9 +39,13 @@
 			while (rs.next())
 				rows++;
 			rs.close();
-		} catch (SQLException e) {
+		}
+		
+			
+		catch (SQLException e) {
 			e.printStackTrace();
 		} 
+		connection.close();
 //System.out.println(rows);
 
 		if (rows % 5 !=0) {
@@ -62,7 +66,6 @@
 <%@ include file="head.html"%>
 <script type="text/javascript" src="js/rating.js"></script>
 <link rel="stylesheet" href="css/rating.css" type="text/css" media="screen" title="Rating CSS">	
-<link rel="stylesheet" href="css/comment.css" type="text/css">
     <script type="text/javascript">
         $(function(){
             $('.rate').rating();
@@ -210,7 +213,7 @@
 			}
 		});
 	    $.getJSON("api/gamecomments?q-gameid=<%=gameid%>&positionRows=<%=positionRows%>", function(data) {
-	        $.each(data.results, function(index, value) {
+	    	$.each(data.results, function(index, value) {
 	        	var stars= "";
 	        	var panelcolor = "panel-default";
 	        	for (var i=1; i <= value.rating; i++){
