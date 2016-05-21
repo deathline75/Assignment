@@ -139,8 +139,8 @@
 					$.each(data.results, function(index, value) {
 						$('#games-list').append('<li class="media" id="game-' + value.id + 
 								'"><div class="media-left media-middle"><img src="http://placehold.it/128x50" alt="..." width="128" height="50"></div><div class="media-body"><h4 class="media-heading">' + value.title + 
-								'</h4><p>Platforms: ' + platformSupport(value) + 
-								'</p><p class="genres">Genres: </p></div><div class="media-right media-middle"><span class="label label-success">$' + value.price.toFixed(2) + 
+								'</h4><p class="hidden-xs">Platforms: ' + platformSupport(value) + 
+								'</p><p class="genres hidden-xs">Genres: </p></div><div class="media-right media-middle"><span class="label label-success">$' + value.price.toFixed(2) + 
 								'</span></div></li>');
 						if (value.preowned) {
 							$('#game-' + value.id + ' .media-right span').removeClass('label-success');

@@ -12,6 +12,7 @@
 <body>
 <%@ include file="navbar.jsp"%>
 <div class="container">
+	<div class="alert alert-danger visible-sm visible-xs" role="alert"><strong>Sorry!</strong> This page does not work on small devices. We apologize for the inconvinience.</div>
 	<div class="col-md-10 main-content" id="genrecontent">
 		<div class="page-header ice-header">
 			<h1>Browse by Genre</h1>
@@ -20,7 +21,7 @@
 			
 		</ul>
 	</div>
-	<div class="col-md-2 hidden-xs hidden-sm">
+	<div class="col-md-2 hidden-xs">
 		<ul id="genrenav" class="nav nav-stacked affix">
 			<li><h4>Genres</h4></li>
 		</ul>
@@ -110,7 +111,7 @@
 			$.each(data.results, function(index, value) {
 				$('#games-list').append('<li class="media" id="game-' + value.id + 
 						'"><div class="media-left"><img src="http://placehold.it/128x50" alt="..." width="128" height="50"></div><div class="media-body media-middle"><h4 class="media-heading">' + value.title + 
-						'</h4><p>Platforms: ' + platformSupport(value) + 
+						'</h4><p class="hidden-xs">Platforms: ' + platformSupport(value) + 
 						'</p></div><div class="media-right media-middle"><span class="label label-success">$' + value.price.toFixed(2) + 
 						'</span></div></li>');
 				if (value.preowned) {

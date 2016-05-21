@@ -128,7 +128,7 @@
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
-				    				<p> Platforms: 
+				    				<p class="hidden-xs"> Platforms: 
 										<%
 										if (game.isSupportWin())
 											out.print("<span class=\"label label-info\">Windows</span> ");
@@ -144,7 +144,7 @@
 											out.print("<span class=\"label label-info\">Wii-U</span> ");
 										%>
 									</p>
-									<p>
+									<p class="hidden-xs">
 										Genres: 
 										<%
 											ResultSet gameGenres = connection.preparedQuery("SELECT genreid FROM game_genre WHERE gameid=? LIMIT 6", game.getId());
@@ -187,7 +187,7 @@
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
-				    				<p> Platforms: 
+				    				<p class="hidden-xs"> Platforms: 
 										<%
 										if (game.isSupportWin())
 											out.print("<span class=\"label label-info\">Windows</span> ");
@@ -203,7 +203,7 @@
 											out.print("<span class=\"label label-info\">Wii-U</span> ");
 										%>
 									</p>
-									<p>
+									<p class="hidden-xs">
 										Genres: 
 										<%
 											ResultSet gameGenres = connection.preparedQuery("SELECT genreid FROM game_genre WHERE gameid=? LIMIT 6", game.getId());
@@ -246,7 +246,7 @@
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
-				    				<p> Platforms: 
+				    				<p class="hidden-xs"> Platforms: 
 										<%
 										if (game.isSupportWin())
 											out.print("<span class=\"label label-info\">Windows</span> ");
@@ -262,7 +262,7 @@
 											out.print("<span class=\"label label-info\">Wii-U</span> ");
 										%>
 									</p>
-									<p>
+									<p class="hidden-xs">
 										Genres: 
 										<%
 											ResultSet gameGenres = connection.preparedQuery("SELECT genreid FROM game_genre WHERE gameid=? LIMIT 6", game.getId());
@@ -305,7 +305,7 @@
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
-				    				<p> Platforms: 
+				    				<p class="hidden-xs"> Platforms: 
 										<%
 										if (game.isSupportWin())
 											out.print("<span class=\"label label-info\">Windows</span> ");
@@ -321,7 +321,7 @@
 											out.print("<span class=\"label label-info\">Wii-U</span> ");
 										%>
 									</p>
-									<p>
+									<p class="hidden-xs">
 										Genres: 
 										<%
 											ResultSet gameGenres = connection.preparedQuery("SELECT genreid FROM game_genre WHERE gameid=? LIMIT 6", game.getId());
@@ -365,7 +365,7 @@
 				    			</div>
 				    			<div class="media-body">
 				    				<h4 class="media-heading"><%= game.getTitle() %></h4>
-				    				<p> Platforms: 
+				    				<p class="hidden-xs"> Platforms: 
 										<%
 										if (game.isSupportWin())
 											out.print("<span class=\"label label-info\">Windows</span> ");
@@ -381,7 +381,7 @@
 											out.print("<span class=\"label label-info\">Wii-U</span> ");
 										%>
 									</p>
-									<p>
+									<p class="hidden-xs">
 										Genres: 
 										<%
 											ResultSet gameGenres = connection.preparedQuery("SELECT genreid FROM game_genre WHERE gameid=? LIMIT 6", game.getId());
