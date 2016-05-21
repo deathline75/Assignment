@@ -70,7 +70,6 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 					<td class="col-md-1"><%=rs.getInt(1)%></td>
 					<td class="col-md-9" class="genreEdit" uid="<%=rs.getInt(1)%>"><%=rs.getString(2)%></td>
 					<td class="col-md-2">
-						 <button type="submit" class="btn btn-primary btn-xs" name="submit"">Edit</button>
 						 <form action="DeleteGenre" style="display: inline" method="post" id="deleteGenre<%=genreid %>">
 						 	<input type="hidden" value="<%=genreid%>" name="genreid">
 						 	<button type="submit" class="btn btn-danger btn-xs" name="submit" form="deleteGenre<%=genreid%>">Delete</button>
