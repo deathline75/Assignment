@@ -15,12 +15,7 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%@ include file="head.html"%>
-<title>Genres | SP Games Store Administration</title>
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip(); 
-});
-</script>
+<title>Genres | SP Games Store Admin</title>
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
@@ -44,9 +39,9 @@ $(document).ready(function(){
 		<div class="col-sm-3" style="margin: 20px 0 10px;">
 			<form class="form-inline" role="search">
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Search">
+					<input type="text" class="form-control" placeholder="Search" disabled>
 				</div>
-				<button type="submit" class="btn btn-default">Search</button>
+				<button type="submit" class="btn btn-default" disabled>Search</button>
 			</form>
 		</div>
 		<div class="col-sm-3" style="margin: 20px 0 10px;">
@@ -67,7 +62,6 @@ $(document).ready(function(){
 			</thead>
 			<tbody>
 				<%
-				
 					ResultSet rs = connection.preparedQuery("SELECT * FROM genre");
 					while (rs.next()) {
 						int genreid = rs.getInt(1);
@@ -79,13 +73,15 @@ $(document).ready(function(){
 						<a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="Delete" data-genreid="<%=rs.getInt(1)%>">Delete</a>
 					</td>
 				</tr>
-				<%
-					}
-					connection.close();
-				%>
-
+				<% } connection.close(); %>
 			</tbody>
 		</table>
+	</div>
+	<div class="modal fade" id="ice-modal" tabindex="-1" role="dialog" aria-labelledby="iceModalLabel">
+  		<div class="modal-dialog" role="document">
+    		<div class="modal-content">
+    		</div>
+  		</div>
 	</div>
 <script>
 		$(document).ready(function() {
@@ -103,72 +99,63 @@ $(document).ready(function(){
     			xhttp.open("GET", "genres-modal.jsp?action=" + action + "&genreid=" +genreid, true);
     			modal.find(".modal-content").html('<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="exampleModalLabel">Loading...</h4></div>');
         		xhttp.send();
-    		})
+    		});
+
+			$(document).ready(function(){
+			    $('[data-toggle="tooltip"]').tooltip(); 
+			});
 		});
+		
+		function changeTotext(obj) //2
+		{ 
+		    var tdValue = obj.innerText; 
+		    obj.innerText = ""; 
+		    var txt = document.createElement("input"); 
+		    txt.type = "text"; 
+		    txt.value = tdValue; 
+		    txt.id = "_text_000000000_"; 
+		    txt.setAttribute("className","text"); 
+		    obj.appendChild(txt); 
+		    txt.select();
+		} 
+		function cancel(obj,tableid) //4
+		{ 
+		    var txtValue = document.getElementById("_text_000000000_").value; 
+		    obj.innerText = txtValue; 
+		    var tableid = tableid;
+		        $.ajax({
+		        	  type: "POST",
+		        	  url: "EditGenre",
+		        	  data: {"genreid":tableid,
+		        			"genrename":txtValue 
+		        	  },
+		        	  success: function(data, textStatus, jqXHR) {
+		        	    console.log("Success!!");
+		        	  }
+		        	}); 
+		  
+
+		} 
+
+		document.ondblclick = function()  //1
+		{ 
+		    if (event.srcElement.tagName.toLowerCase() == "td") 
+		    { 
+		        changeTotext(event.srcElement); 
+		    } 
+		     
+		} 
+		document.onmouseup = function() //3
+		{ 
+		    if (document.getElementById("_text_000000000_") && event.srcElement.id != "_text_000000000_") 
+		    { 
+		        var obj = document.getElementById("_text_000000000_").parentElement; 
+		        var tableid =document.getElementById("_text_000000000_").parentNode.getAttribute("uid");
+		        cancel(obj,tableid); 
+		    }
+		} 
     		
 </script>
-
-		<div class="modal fade" id="ice-modal" tabindex="-1" role="dialog" aria-labelledby="iceModalLabel">
-  			<div class="modal-dialog" role="document">
-    			<div class="modal-content">
-    			</div>
-  			</div>
-		</div>
-
-<script language="javascript"> 
-function changeTotext(obj) //2
-{ 
-    var tdValue = obj.innerText; 
-    obj.innerText = ""; 
-    var txt = document.createElement("input"); 
-    txt.type = "text"; 
-    txt.value = tdValue; 
-    txt.id = "_text_000000000_"; 
-    txt.setAttribute("className","text"); 
-    obj.appendChild(txt); 
-    txt.select();
-} 
-function cancel(obj,tableid) //4
-{ 
-    var txtValue = document.getElementById("_text_000000000_").value; 
-    obj.innerText = txtValue; 
-    var tableid = tableid;
-        $.ajax({
-        	  type: "POST",
-        	  url: "EditGenre",
-        	  data: {"genreid":tableid,
-        			"genrename":txtValue 
-        	  },
-        	  success: function(data, textStatus, jqXHR) {
-        	    console.log("Success!!");
-        	  }
-        	}); 
-  
-
-} 
-
-document.ondblclick = function()  //1
-{ 
-    if (event.srcElement.tagName.toLowerCase() == "td") 
-    { 
-        changeTotext(event.srcElement); 
-    } 
-     
-} 
-document.onmouseup = function() //3
-{ 
-    if (document.getElementById("_text_000000000_") && event.srcElement.id != "_text_000000000_") 
-    { 
-        var obj = document.getElementById("_text_000000000_").parentElement; 
-        var tableid =document.getElementById("_text_000000000_").parentNode.getAttribute("uid");
-        cancel(obj,tableid); 
-    }
-} 
-   </script>
-
-
-
-
 	<%@ include file="../footer.html"%>
 </body>
 </html>

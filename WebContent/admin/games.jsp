@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.ice.*"%>
-<%@ page import="java.sql.*"%>
+<%@ page import="com.ice.*, java.sql.*" %>
 <%
 	if (session.getAttribute("username") == null)
 		response.sendRedirect("login.jsp");
@@ -14,7 +13,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="head.html"%>
-<title>Games | SP Games Store Administration</title>
+<title>Games | SP Games Store Admin</title>
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
@@ -23,9 +22,9 @@
 		<div class="col-sm-3" style="margin: 20px 0 10px;">
 			<form class="form-inline" role="search">
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Search">
+					<input type="text" class="form-control" placeholder="Search" disabled>
 				</div>
-				<button type="submit" class="btn btn-default">Search</button>
+				<button type="submit" class="btn btn-default" disabled>Search</button>
 			</form>
 		</div>
 		<div class="col-sm-1" style="margin: 20px 0 10px;">
@@ -61,6 +60,7 @@
 			</tbody>
 		</table>
 		<script>
+		// Modal handling. It was before we realised that jQuery has ajax as well. Oh well.
 		$(document).ready(function() {
 			$('#ice-modal').on('show.bs.modal', function (event) {
     			var button = $(event.relatedTarget);

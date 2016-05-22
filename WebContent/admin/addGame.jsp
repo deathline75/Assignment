@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@page import="java.sql.*"%>
-<%@ page import="com.ice.*"%>
-
+<%@ page import="java.sql.*,com.ice.*" %>
 <%
 	if (session.getAttribute("username") == null)
 		response.sendRedirect("login.jsp");
@@ -16,7 +14,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="head.html"%>
-<title>Games | SP Games Store Administration</title>
+<title>Games | SP Games Store Admin</title>
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
@@ -80,7 +78,7 @@
 				<label for="gameprice" class="col-sm-2 control-label">Price*: </label>
     			<div class="col-sm-2 input-group" style="padding: 0 15px;">
     				<span class="input-group-addon">$</span>
-      				<input type="number" class="form-control" id="gameprice" placeholder="59.90" name="price" />
+      				<input type="number" step="any" class="form-control" id="gameprice" placeholder="59.90" name="price" />
     			</div>
 			</div>
 			<div class="form-group">

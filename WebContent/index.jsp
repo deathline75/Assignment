@@ -1,34 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
-	<%@ page import="com.ice.*" %>
-	<%@ page import="com.ice.api.*" %>
-	<%@ page import="java.sql.*" %>
-	<%@ page import="java.util.*" %>
-	<%@ page import="java.net.*"%>
-	<%@ page import="java.io.*"%>
+	<%@ page import="com.ice.*, com.ice.api.*, java.sql.*, java.util.*, java.net.*, java.io.*" %>
 	<%! connectToMysql connection = new connectToMysql(MyConstants.url); %>
 	<%
+		// This page predates the API times, therefore everything here is a mess.
+		// Tread lightly
+		
+		// Outdated ArrayList
 		Vector<Game> games = new Vector<Game>();
 		ResultSet rs = connection.query("SELECT * FROM game");
+		// Adding everything into the vector
 		while (rs.next()) {
 			games.add(new Game(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getString(5), rs.getDouble(6), rs.getString(7), rs.getBoolean(8), rs.getBoolean(9), rs.getBoolean(10), rs.getBoolean(11), rs.getBoolean(12), rs.getBoolean(13), rs.getBoolean(14)));
 		}
 		rs.close();
 		
+		// Mapping the genre's name into it's genre id.
 		Map<Integer, String> genres = new HashMap<Integer, String>();
 		ResultSet rs1 = connection.query("SELECT * FROM genre");
+		// Putting them into the HashMap
 		while(rs1.next()) {
 			genres.put(rs1.getInt(1), rs1.getString(2));
 		}
 		rs1.close();
 		
+		// All the top genres
 		Vector<Genre> topgenres = new Vector<Genre>();
 		ResultSet rs2 = connection.query("SELECT g.genreid, g.genrename FROM genre g, game_genre gg WHERE g.genreid = gg.genreid GROUP BY gg.genreid ORDER BY count(gg.genreid) DESC LIMIT 8");
 		while (rs2.next()) {
 			topgenres.add(new Genre(rs2.getInt(1), rs2.getString(2)));
 		}
 		rs2.close();
+		
+		// Grab some random games
 		Game random = games.get(new Random().nextInt(games.size()));
+		// TODO: Make it non-repeat.
 		Game[] randomJumbo = {games.get(new Random().nextInt(games.size())), games.get(new Random().nextInt(games.size())), games.get(new Random().nextInt(games.size()))};
 	%>
 	
@@ -106,12 +112,18 @@
 			<div class="tab-content" id="games-list">
 				    <div role="tabpanel" class="tab-pane active" id="all">
 				    	<ul class="media-list">
-				    		<% for (int i = 0; i < (games.size() > 5 ? 5 : games.size()); i++) { 
+				    		<%
+				    		// I am so sorry...
+				    		// It just iterates through the first 5 games or less in the list
+				    		for (int i = 0; i < (games.size() > 5 ? 5 : games.size()); i++) { 
 				    			Game game = games.get(i);
 				    		%>
 				    		<li class="media" id="game-<%= game.getId() %>-all">
 				    			<div class="media-left media-middle">
 				    			<%
+				    			// Encoding the image into base64 and displaying them
+				    			// HTML supports Base64 encoded images apparently.
+				    			// Eg: <img src="data:image/jpeg;base64,b64data">
 				    			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=0", game.getId());
 				    			String imgSrc = "http://placehold.it/128x50";
 				    			if (imageResult.next()) {
@@ -151,11 +163,11 @@
 											while (gameGenres.next()) {
 										%>
 												<span class="label label-primary"><a href="genres.jsp?id=<%= gameGenres.getInt(1) %>"><%= genres.get(gameGenres.getInt(1)) %></a></span>
-										<% } gameGenres.close();%>
+										<% } gameGenres.close(); %>
 									</p>
 				    			</div>
 				    		</li>
-				    		<%	} %>
+				    		<% } %>
 				    	</ul>
 				    </div>
     				<div role="tabpanel" class="tab-pane" id="pc">
@@ -163,6 +175,8 @@
 				    		<% for (int i = 0, y = (games.size() > 5 ? 5 : games.size()); i < y; i++) { 
 				    			Game game = games.get(i);
 				    			if (!game.isSupportLinux() && !game.isSupportMac() && !game.isSupportWin()) {
+				    				// I actually have no idea what is this.
+				    				// It was meant to fix some enumeration problem.
 				    				if (games.size() - i > y - i && games.size() > 5)
 				    					y++;
 				    				continue;

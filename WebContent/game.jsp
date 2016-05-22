@@ -1,17 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="com.ice.*"%>
-    <%@ page import="java.sql.*" %>
+    <%@ page import="com.ice.*, java.sql.*"%>
     <% 
+    	// Parameter initialization
     	String gameid = request.getParameter("id");
     	String userPageNum = request.getParameter("userPageNum");
+    	
+    	// Check if Game ID exists
+    	// Otherwise redirect to index page
     	if (gameid == null) {
     		response.sendRedirect(".");
     		return;
     	}
 
+    	// Pagination is a nightmare
+    	// This is to check and see which page should render
     	int positionRows = 0;
-    	if (userPageNum==null || userPageNum.isEmpty()) {
+    	// If there is no current page number, just return the first page.
+    	if (userPageNum == null || userPageNum.isEmpty()) {
     		userPageNum = "1";
     		positionRows = (Integer.parseInt(userPageNum) - 1) * 5;
     	} else {
@@ -32,28 +38,22 @@
     	}
     	
     	validGame.close();
-    	connection.preparedUpdate("insert into game_hitcounter(day,gameid,slot,count) value(CURRENT_DATE,?,RAND()*100,1) on duplicate key update count=count+1",gameid);
+    	connection.preparedUpdate("insert into game_hitcounter(day,gameid,slot,count) value(CURRENT_DATE,?,RAND()*100,1) on duplicate key update count=count+1", gameid);
 		ResultSet rs = connection.preparedQuery("SELECT * FROM game_comment WHERE gameid=?",gameid);
 	
 		try {
 			while (rs.next())
 				rows++;
 			rs.close();
-		}
-		
-			
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
 		connection.close();
-//System.out.println(rows);
 
 		if (rows % 5 !=0) {
-			totalPageNum = rows/5 + 1;
-			//System.out.println(totalPageNum);//Pages to display	
+			totalPageNum = rows / 5 + 1;
 		} else {
-			totalPageNum = rows/5;
-			//System.out.println(totalPageNum);//Pages to display
+			totalPageNum = rows / 5;
 		}	
 
 
@@ -168,10 +168,14 @@
 <%@ include file="footer.html" %>
 <script>
 	$(document).ready(function() {
+		// Initialize all tooltips
 		$(function () {
 			  $('[data-toggle="tooltip"]').tooltip()
 			})
-		var gameid = <%= gameid %>;	
+		// Get the game id
+		var gameid = <%= gameid %>;
+		
+		// Using jQuery to get JSON data from /api/games
 		$.getJSON("api/games?q-gameid=" + gameid, function(data) {
 			if (data.responseCode == 0) {
 				var gamedata = data.results[0];
@@ -195,6 +199,7 @@
 				} if (gamedata.supportWiiu) { 
 					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWiiu" autocomplete="off" val="wiiu"> Wii-U </label>');
 				}
+				// Change some visuals if the game is preowned
 				if (gamedata.preowned) {
 					$('#buy').text('Buy Preowned');
 					$('#buy').removeClass('btn-success');
@@ -206,12 +211,16 @@
 				}
 			}
 		});
+		
+		// Render images using JSON
 		$.getJSON("api/gameimages?q-gameid=" + gameid + "&q-imageuse=1", function(data) {
 			if (data.responseCode == 0) {
 				$('#jumbo').html('<img src="data:' + data.results[0].mimeType + ';base64,' + data.results[0].b64imagedata + 
 				'" alt="..." class="img-responsive"/>');
 			}
 		});
+		
+		// Render game comments using JSON
 	    $.getJSON("api/gamecomments?q-gameid=<%=gameid%>&positionRows=<%=positionRows%>", function(data) {
 	    	$.each(data.results, function(index, value) {
 	        	var stars= "";
@@ -229,6 +238,8 @@
 	        	
 	        });
 	    });
+		
+		// Render all the genres with JSON
 		$.getJSON("api/gamegenre?q-gameid=" + gameid, function(data) {
 			if (data.responseCode == 0) {
 				$.each(data.results, function(index, value) {
@@ -237,6 +248,8 @@
 			}
 		});
 	});
+	
+	// Some form validation for comments
 	function validateForm() {
 	    var x = document.forms["addcomment"]["author"].value;
 	    var y = document.forms["addcomment"]["rating"].value;

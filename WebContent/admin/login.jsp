@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
-<%@page import="java.sql.*"%>
-<%@ page import="com.ice.*"%>
+<%@ page import="java.sql.*, com.ice.*	" %>
 <%
 	if (session.getAttribute("username") != null)
 		response.sendRedirect(".");
@@ -33,27 +32,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="head.html"%>
 
-<title>Admin Login | SP Games Store</title>
+<title>Admin Login | SP Games Store Admin</title>
 </head>
 <body>
 	<nav class="navbar navbar-fixed-top ice-nav">
 	<div class="container">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed"
-				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-				aria-expanded="false">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href=".">SP Games Store Administration
-				Page</a>
+			<a class="navbar-brand" href=".">SP Games Store Admin</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse"
-			id="bs-example-navbar-collapse-1">
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav ice-nav-ul">
 				<li><a href="../">Main Page</a></li>
 			</ul>
@@ -69,8 +62,7 @@
 			}
 		%>
 		<h1 class="col-sm-offset-3">Admin Login</h1>
-		<form class="form-horizontal ice-admin-login-form col-sm-offset-3"
-			method="post">
+		<form class="form-horizontal ice-admin-login-form col-sm-offset-3" method="post">
 			<div class="form-group">
 				<label for="inputEmail3" class="col-sm-1 control-label">Username</label>
 				<div class="col-sm-5">
@@ -81,21 +73,10 @@
 			<div class="form-group">
 				<label for="inputPassword3" class="col-sm-1 control-label">Password</label>
 				<div class="col-sm-5">
-					<input type="password" class="form-control" id="inputPassword"
-						placeholder="Password" required name="password">
+					<input type="password" class="form-control" id="inputPassword" placeholder="Password" required name="password">
 				</div>
 			</div>
-			<div class="form-group">
-				<div class="col-sm-offset-1 col-sm-10">
-					<div class="checkbox">
-						<label> <input type="checkbox"> Remember me
-						</label>
-					</div>
-				</div>
-			</div>
-			<div class="g-recaptcha col-sm-offset-1"
-				data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ"
-				style="margin-bottom: 15px"></div>
+			<div class="g-recaptcha col-sm-offset-1" data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ" style="margin-bottom: 15px"></div>
 			<div class="form-group">
 				<div class="col-sm-offset-1 col-sm-10">
 					<button type="submit" class="btn btn-default">Sign in</button>

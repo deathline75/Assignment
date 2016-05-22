@@ -57,12 +57,16 @@
 						$('#genrenav').append("<li><label><input class=\"genre-checkbox\" type=\"checkbox\" value=\"" + value.id + "\"> " + value.name + "</label></li>");
 				});
 				$(':checkbox').change(function() {
+					// Some cheat way of mapping all the checked genres into an array.
 					var checkedVals = $('.genre-checkbox:checkbox:checked').map(function() {
 					    return this.value;
 					}).get();
 					if (checkedVals.length > 0) {
+						// Modifying the address bar into the checked genres
 						history.pushState("", document.title, "genres.jsp?id=" + checkedVals.join(','));
+						
 						$('#games-list').html('<h3>Loading...</h3>');
+						// Grab JSON data from gamegenre and rendering them
 						$.getJSON("api/gamegenre?q-genreid=" + checkedVals.join(','), function(data) {
 							if (data.responseCode == 0) {
 								ayylmao(data);
@@ -71,8 +75,10 @@
 							}
 						});
 					} else {
+						// Modifying the address bar to no parameters.
 						history.pushState("", document.title, "genres.jsp");
 						$('#games-list').html('<h3>Loading...</h3>');
+						// Grab generic JSON game data and rendering them
 						$.getJSON("api/games", function(data) {
 							if (data.responseCode == 0) {
 								ayylmao(data);

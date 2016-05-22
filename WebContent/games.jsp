@@ -61,7 +61,8 @@
 	
 		$(document).ready(function() {
 			
-			<% if (request.getParameter("q") == null) {%>
+			<% // Check if there is anything to search for. Otherwise just render all the games. 
+			if (request.getParameter("q") == null) {%>
 			$.getJSON("api/games", function(data) {
 				if (data.responseCode == 0) {
 					ayylmao(data);
@@ -96,6 +97,8 @@
 				return state.name || state.text;
 			}
 			
+			// Initialize Select2 for the search.
+			// See their documentation for more information
 			$('#sel2').select2({
 				  ajax: {
 				    url: 'api/genres',

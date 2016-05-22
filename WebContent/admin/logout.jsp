@@ -12,25 +12,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta http-equiv="Refresh" content="5;url=../">
 <%@ include file="head.html"%>
-<title>Logout | SP Games Store Administration</title>
+<title>Logout | SP Games Store Admin</title>
 </head>
 <body>
 	<nav class="navbar navbar-fixed-top ice-nav">
-	<div class="container">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed"
-				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-				aria-expanded="false">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href=".">SP Games Administration Page</a>
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href=".">SP Games Store Admin</a>
+			</div>
+			<!-- /.navbar-collapse -->
 		</div>
-		<!-- /.navbar-collapse -->
-	</div>
-	<!-- /.container-fluid --> </nav>
+	</nav>
+	<!-- /.container-fluid -->
 	<div class="container main-content">
 		<div class="page-header ice-header">
 			<h1>You have successfully logged out. <small>You will be redirected back to the store page.</small></h1>
