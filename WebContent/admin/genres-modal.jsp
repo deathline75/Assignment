@@ -5,31 +5,49 @@
 <%@ page import="java.util.*"%>
 <%
 	String action = request.getParameter("action");
-	String gameid = request.getParameter("genreid");
+	String genreid = request.getParameter("genreid");
+	System.out.println(genreid);
 	connectToMysql connection = new connectToMysql(MyConstants.url);
-	ResultSet rs = connection.preparedQuery("Select * from game where gameid=?", gameid);
+	ResultSet rs = connection.preparedQuery("Select * from genre where genreid=?", genreid);
 	if (rs.next()) {
-		String gameTitle = rs.getString("genreid");
+		String genrename = rs.getString("genrename");
 		connection.close();
 %>
+
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal"
 		aria-label="Close">
 		<span aria-hidden="true">&times;</span>
 	</button>
-	<h4 class="modal-title" id="exampleModalLabel"><%=action%>:Genre</h4>
+	<h4 class="modal-title" id="exampleModalLabel"><%=action%>:
+		<%=genrename%></h4>
 </div>
+
 <div class="modal-body">
 	<%
-		if (action.equalsIgnoreCase("add")) {
-			
-			
-			
+	System.out.println(action);
+		if (action.equalsIgnoreCase("delete")) {
+			%>
+				<form action=DeleteGenre method="post" id="deleteGenre">
+				<p>
+				Are you sure you want to delete <b><%=genrename%></b> ?
+				<input type="hidden" name="genreid" value="<%=genreid%>" />
+				</p>
+				</form>
+			<%
 		}
 %>
 
 </div>
+
 <div class="modal-footer">
+	<%
+		if (action.equalsIgnoreCase("delete")) {
+	%>
+	<button type="submit" class="btn btn-danger" name="submit" form="deleteGenre">Delete Game</button>
+	<%
+		}
+	%>
 	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	<%
 		}

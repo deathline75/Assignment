@@ -16,6 +16,11 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%@ include file="head.html"%>
 <title>Genres | SP Games Store Administration</title>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
@@ -34,6 +39,7 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 				}
 			}
 		%>
+		
 		<h1 class="col-sm-6" style="padding: 0;">Genres Management</h1>
 		<div class="col-sm-3" style="margin: 20px 0 10px;">
 			<form class="form-inline" role="search">
@@ -62,18 +68,15 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 			<tbody>
 				<%
 				
-					ResultSet rs = connection.preparedQuery("SELECT genreid,genrename FROM genre");
+					ResultSet rs = connection.preparedQuery("SELECT * FROM genre");
 					while (rs.next()) {
 						int genreid = rs.getInt(1);
 				%>
 				<tr>
 					<td class="col-md-1"><%=rs.getInt(1)%></td>
-					<td class="col-md-9" class="genreEdit" uid="<%=rs.getInt(1)%>"><%=rs.getString(2)%></td>
+					<td class="col-md-9" data-toggle="tooltip" title="Double click to Edit" data-placement="left" data-delay='{"show":"500"' data-container="body" class="genreEdit" uid="<%=rs.getInt(1)%>"><%=rs.getString(2)%></td>
 					<td class="col-md-2">
-						 <form action="DeleteGenre" style="display: inline" method="post" id="deleteGenre<%=genreid %>">
-						 	<input type="hidden" value="<%=genreid%>" name="genreid">
-						 	<button type="submit" class="btn btn-danger btn-xs" name="submit" form="deleteGenre<%=genreid%>">Delete</button>
-						</form>
+						<a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="Delete" data-genreid="<%=rs.getInt(1)%>">Delete</a>
 					</td>
 				</tr>
 				<%
@@ -84,6 +87,34 @@ connectToMysql connection = new connectToMysql(MyConstants.url);
 			</tbody>
 		</table>
 	</div>
+<script>
+		$(document).ready(function() {
+			$('#ice-modal').on('show.bs.modal', function (event) {
+    			var button = $(event.relatedTarget);
+    			var action = button.data("action");
+    			var genreid = button.data("genreid");
+    			var modal = $(this);
+    			var xhttp = new XMLHttpRequest();
+    			xhttp.onreadystatechange = function() {
+					if (xhttp.readyState == 4 && xhttp.status == 200) {
+    			    	modal.find(".modal-content").html(xhttp.responseText);
+    			    }
+    			};
+    			xhttp.open("GET", "genres-modal.jsp?action=" + action + "&genreid=" +genreid, true);
+    			modal.find(".modal-content").html('<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="exampleModalLabel">Loading...</h4></div>');
+        		xhttp.send();
+    		})
+		});
+    		
+</script>
+
+		<div class="modal fade" id="ice-modal" tabindex="-1" role="dialog" aria-labelledby="iceModalLabel">
+  			<div class="modal-dialog" role="document">
+    			<div class="modal-content">
+    			</div>
+  			</div>
+		</div>
+
 <script language="javascript"> 
 function changeTotext(obj) //2
 { 
