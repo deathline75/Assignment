@@ -101,34 +101,28 @@
 	<form class="form-horizontal" method="post" id="EditGame" action="EditGame" enctype="multipart/form-data" >
 		<div class="form-group">
 		<input type="hidden" name="gameid" value="<%= gameid %>" />
-			<label for="gametitle" class="col-sm-3 control-label">Game
-				Title*: </label>
+			<label for="gametitle" class="col-sm-3 control-label">Game Title*: </label>
 			<div class="col-sm-8">
-				<input type="text" class="form-control" id="gametitle"
-					placeholder="Game Title" value="<%= gameTitle %>" name="gameTitle" />
+				<input type="text" class="form-control" id="gametitle" placeholder="Game Title" value="<%= gameTitle %>" name="gameTitle" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="gamecompany" class="col-sm-3 control-label">Company*:
 			</label>
 			<div class="col-sm-8">
-				<input type="text" class="form-control" id="company"
-					placeholder="Company" value="<%= company %>" name="company" />
+				<input type="text" class="form-control" id="company" placeholder="Company" value="<%= company %>" name="company" />
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="gamereleasedate" class="col-sm-3 control-label">Release
-				Date*: </label>
+			<label for="gamereleasedate" class="col-sm-3 control-label">Release	Date*: </label>
 			<div class="col-sm-5">
-				<input type="date" class="form-control" id="releaseDate"
-					placeholder="Release Date" value="<%= releaseDate %>"
-					name="releaseDate" />
+				<input type="date" class="form-control" id="releaseDate" placeholder="Release Date" value="<%= releaseDate %>" name="releaseDate" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="sel2" class="col-sm-3 control-label">Genre*: </label>
     		<div class="col-sm-9">
-    			<select multiple="multiple" class="form-control" id="sel2" name="genre">
+    			<select multiple="multiple" class="form-control" id="sel2" name="genre" style="width: 100%">
     				<% ResultSet rs2 = connection.preparedQuery("SELECT genreid,genrename FROM genre");
 		    		while (rs2.next()) { %>
     				<option value="<%= rs2.getInt(1) %>" <%= genres.containsKey(rs2.getInt(1)) ? "selected" : "" %>><%= rs2.getString(2) %></option>
@@ -154,8 +148,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label" for="gamepreownedgame">
-				Preowned Game:</label>
+			<label class="col-sm-3 control-label" for="gamepreownedgame">Preowned Game:</label>
 			<div class="control-label col-sm-1" style="text-align: left;">
 				<input type="checkbox" name="preOwned" id="preOwned" <%= preowned.equals("1") ? "checked" : "" %>>
 			</div>
