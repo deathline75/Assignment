@@ -2,16 +2,16 @@ package com.ice.api;
 
 public class HitCounter {
 	
-	private String gameTitle;
+	private String element;
 	private int hitCounter;
 	
-	public HitCounter(String gameTitle,int hitCounter){
-		this.gameTitle = gameTitle;
+	public HitCounter(String element,int hitCounter){
+		this.element = element;
 		this.hitCounter = hitCounter;
 	}
 	
-	public String getTitle(){
-		return gameTitle;
+	public String getelement(){
+		return element;
 	}
 	
 	public int getHitCount(){

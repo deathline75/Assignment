@@ -49,6 +49,7 @@
     <script type="text/javascript">
     google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(drawChart2);
 	  function drawChart () {
 		    $.ajax({
 		        url: "../api/hitcounters",
@@ -61,11 +62,11 @@
 		            data.addColumn('number', 'HitCounts');
 
 		            for (var i = 0; i < jsonData.length; i++) {
-		                data.addRow([jsonData[i].gameTitle, jsonData[i].hitCounter]);
+		                data.addRow([jsonData[i].element, jsonData[i].hitCounter]);
 		            }
 
 		            var options = {
-		                title: 'DA GAMES HITCOUNTS',
+		                title: 'Popularity spreadsheet',
 		                is3D: true
 		            };
 		            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -74,9 +75,38 @@
 		    });
 		    
 		}
+	  
+	  
+	  function drawChart2 () {
+		    $.ajax({
+		        url: "../api/hitcounters?day",
+		        dataType: "json",
+		        success: function (jsonData) {
+		        	console.log(jsonData);
+		            var data = new google.visualization.DataTable();
+		            // assumes "word" is a string and "count" is a number
+		            data.addColumn('string', 'GameTitle');
+		            data.addColumn('number', 'HitCounts');
+
+		            for (var i = 0; i < jsonData.length; i++) {
+		                data.addRow([jsonData[i].element, jsonData[i].hitCounter]);
+		            }
+
+		            var options = {
+		                title: 'Daily Hitcounter',
+		                is3D: true
+		            };
+		            var chart = new google.visualization.AreaChart(document.getElementById('chart_div2'));
+		            chart.draw(data, options);
+		        }
+		    });
+		    
+		}
     </script>
 			
 		<div id="chart_div" style="width: 900px; height: 500px;"></div>
+		</div>
+		<div id="chart_div2" style="width: 900px; height: 500px;"></div>
 		</div>
 	</div>
 	<%@ include file="../footer.html"%>

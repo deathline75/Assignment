@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -41,14 +42,22 @@ public class HitCounters extends HttpServlet {
 		// Sets the encoding to UTF-8 because Java...
 		response.setCharacterEncoding("UTF-8");
 		// Starts the connection to MySQL
-		connectToMysql connection = new connectToMysql(MyConstants.url);		
+		connectToMysql connection = new connectToMysql(MyConstants.url);
+		String sql2 = "select day,SUM(COUNT) Count from game_hitcounter gh,game g where gh.gameid = g.gameid group by day";
 		String sql = "select gametitle,SUM(COUNT) Count from game_hitcounter gh,game g where gh.gameid = g.gameid group by g.gameid order by Count DESC";
 		// Executes the query and returns a ResultSet
 		ResultSet rs = null;
-		rs = connection.preparedQuery(sql);
+		
+		if (request.getParameterNames().hasMoreElements()) {
+			rs = connection.preparedQuery(sql2);
+		}
+		else{
+			rs = connection.preparedQuery(sql);
+		}
+		
+		
 		try {
 			if (rs.isBeforeFirst()) {
-				
 				List<HitCounter> hitcounters = new ArrayList<HitCounter>();
 				while (rs.next()) {
 					hitcounters.add(new HitCounter(rs.getString(1),rs.getInt(2)));
