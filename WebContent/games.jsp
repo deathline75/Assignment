@@ -52,6 +52,9 @@
 				</div>
 			</div>
 		</form>
+		<div class="page-header ice-header">
+			<h1>Browse by Game</h1>
+		</div>
 		<ul class="media-list" id="games-list">
 			
 		</ul>

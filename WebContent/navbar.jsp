@@ -17,14 +17,20 @@
         <li><a href="games.jsp">Games</a></li>
         <li><a href="genres.jsp">Genres</a></li>
       </ul>
-      <form class="navbar-form navbar-right" role="search" action="games.jsp">
-        <div class="form-group">
-          <input type="text" class="form-control search-bar" placeholder="Search" name="q">
-          <input type="hidden" name="inclusive" value="on" />
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-
+      <ul class="nav navbar-nav ice-nav-ul navbar-right">
+      	<li>
+      		<form class="navbar-form" role="search" action="games.jsp">
+        		<div class="form-group">
+          			<input type="text" class="form-control search-bar" placeholder="Search" name="q">
+          			<input type="hidden" name="inclusive" value="on" />
+        		</div>
+        		<button type="submit" class="btn btn-default">Submit</button>
+      		</form>
+      	</li>
+      	<li>
+      		<a href="login.jsp"><span class="glyphicon glyphicon-user"></span> Sign In / Register</a>
+      	</li>
+      </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
