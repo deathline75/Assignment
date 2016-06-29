@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
-	<%@ page import="com.ice.*, com.ice.api.*, java.sql.*, java.util.*, java.net.*, java.io.*" %>
+<%@ page import="com.ice.*, com.ice.api.*, java.sql.*, java.util.*, java.net.*, java.io.*" %>
 	<%! connectToMysql connection = new connectToMysql(MyConstants.url); %>
 	<%
 		// This page predates the API times, therefore everything here is a mess.
@@ -34,10 +34,7 @@
 		
 		// Grab some random games
 		Game random = games.get(new Random().nextInt(games.size()));
-		// TODO: Make it non-repeat.
-		Game[] randomJumbo = {games.get(new Random().nextInt(games.size())), games.get(new Random().nextInt(games.size())), games.get(new Random().nextInt(games.size()))};
 	%>
-	
 <!-- TODO: REMOVE ALL STYLE TAGS AND MIGRATE THEM TO CSS FILES. -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -66,28 +63,7 @@
 			</ol>
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
-				<% for (Game g: randomJumbo) { %>
-				<div class="item">
-				    <%
-				    ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=1", g.getId());
-				    String imgSrc = "http://placehold.it/1920x1080";
-				    if (imageResult.next()) {
-				    	byte[] imageIS = imageResult.getBytes(3);
-				    	String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
-				    	if (mimeType.startsWith("image")) {
-				    		String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
-				    		imgSrc = "data:" + mimeType + ";base64," + b64encoded;
-				    	}
-				    }
-				    imageResult.close();
-				    %>
-					<a href="game.jsp?id=<%= g.getId() %>"><img src="<%= imgSrc %>" alt="<%= g.getTitle() %>" width="1920" height="1080"></a>
-					<div class="carousel-caption ice-carousel-caption">
-						<h3><a href="game.jsp?id=<%= g.getId() %>"><%= g.getTitle() %></a></h3>
-						<p><%= g.getCompany() %></p>
-					</div>
-				</div>
-				<% } %>
+				
 			</div>
 		</div>
 		<div>
@@ -436,12 +412,48 @@
 		</div>
 	</div>
 	<%@ include file="footer.html"%>
+	<script id="jumbo-temp" type="text/x-handlebars-template">
+		<div class="item">
+			<a href="game.jsp?id={{id}}"><img src="{{b64imagedata}}" alt="{{title}}" width="1920" height="1080"></a>
+			<div class="carousel-caption ice-carousel-caption">
+				<h3><a href="game.jsp?id={{id}}">{{title}}</a></h3>
+				<p>{{company}}</p>
+			</div>
+		</div>
+	</script>
 	<script>
 		$(document).ready(function() {
 			$('#games-list li').click(function (e) {
 				window.location.href = "game.jsp?id=" + $(this).attr('id').split('-')[1];
 			});
-			$('.carousel-inner .item:first-child').addClass('active');
+			
+			$.getJSON("api/games", function(data) {
+				if (data.responseCode == 0) {
+					for (i = 0; i < 3; i++) {
+						var random = Math.floor(Math.random() * data.results.length);
+						var game = data.results[random];
+						$.getJSON("api/gameimages?q-gameid=" + game.id + "&q-imageuse=1", function(data2) {
+							var b64imagedata = "http://placehold.it/1920x1080?text=No+Image+Available";
+							if (data2.responseCode == 0) {
+								b64imagedata = "data:" + data2.results[0].mimeType + ';base64,' + data2.results[0].b64imagedata;
+							}
+							
+							var id = game.id;
+							var title = game.title;
+							var company = game.company;
+							
+							var template = $('#jumbo-temp').html();
+							var compiledtemplate = Handlebars.compile(template);
+							var rendered = compiledtemplate({id: id, title: title, company: company, b64imagedata: b64imagedata});
+							$('.carousel-inner').append(rendered);
+							
+						});
+					}
+
+					$('.carousel-inner .item:first-child').addClass('active');
+				} else {
+				}
+			});
 		})
 	</script>
 </body>
