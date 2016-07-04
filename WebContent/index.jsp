@@ -413,7 +413,7 @@
 	</div>
 	<%@ include file="footer.html"%>
 	<script id="jumbo-temp" type="text/x-handlebars-template">
-		<div class="item">
+		<div class="item" id="carousel-item-{{i}}">
 			<a href="game.jsp?id={{id}}"><img src="{{b64imagedata}}" alt="{{title}}" width="1920" height="1080"></a>
 			<div class="carousel-caption ice-carousel-caption">
 				<h3><a href="game.jsp?id={{id}}">{{title}}</a></h3>
@@ -429,32 +429,34 @@
 			
 			$.getJSON("api/games", function(data) {
 				if (data.responseCode == 0) {
-					for (i = 0; i < 3; i++) {
+					for (var i = 0; i < 3; i++) {
 						var random = Math.floor(Math.random() * data.results.length);
 						var game = data.results[random];
-						$.getJSON("api/gameimages?q-gameid=" + game.id + "&q-imageuse=1", function(data2) {
-							var b64imagedata = "http://placehold.it/1920x1080?text=No+Image+Available";
-							if (data2.responseCode == 0) {
-								b64imagedata = "data:" + data2.results[0].mimeType + ';base64,' + data2.results[0].b64imagedata;
-							}
-							
-							var id = game.id;
-							var title = game.title;
-							var company = game.company;
-							
-							var template = $('#jumbo-temp').html();
-							var compiledtemplate = Handlebars.compile(template);
-							var rendered = compiledtemplate({id: id, title: title, company: company, b64imagedata: b64imagedata});
-							$('.carousel-inner').append(rendered);
-							
-						});
+						var b64imagedata = "http://placehold.it/1920x1080?text=No+Image+Available";
+						var id = game.id;
+						var title = game.title;
+						var company = game.company;
+						
+						var template = $('#jumbo-temp').html();
+						var compiledtemplate = Handlebars.compile(template);
+						var rendered = compiledtemplate({id: id, title: title, company: company, b64imagedata: b64imagedata, i: i});
+						$('.carousel-inner').append(rendered);
+						loadimage(id, 1, '#carousel-item-' + i + ' > a > img');
 					}
-
 					$('.carousel-inner .item:first-child').addClass('active');
 				} else {
 				}
 			});
-		})
+		});
+		
+		function loadimage(gameid, imageuse, imageloc) {
+			$.getJSON("api/gameimages?q-gameid=" + gameid + "&q-imageuse=" + imageuse, function(data2) {
+				if (data2.responseCode == 0) {
+					$(imageloc).attr("src", "data:" + data2.results[0].mimeType + ';base64,' + data2.results[0].b64imagedata);
+				}
+
+			});
+		}
 	</script>
 </body>
 </html>
