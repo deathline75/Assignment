@@ -52,7 +52,7 @@ public class Games extends HttpServlet {
 			
 			sql += " WHERE";
 			Enumeration<String> queries = request.getParameterNames();
-			List<String> values = new ArrayList<String>();
+			List<Object> values = new ArrayList<Object>();
 			
 			while (queries.hasMoreElements()) {
 				String query = queries.nextElement();
@@ -130,7 +130,28 @@ public class Games extends HttpServlet {
 					values.add(value);
 			}
 			
-			sql = sql.substring(0, sql.length() - 2);
+			if (sql.endsWith("WHERE"))
+				sql = sql.substring(0, sql.length() - 5);
+			else
+				sql = sql.substring(0, sql.length() - 3);
+			
+			if (request.getParameter("limit") != null) {
+				try {
+					int limit = Integer.parseInt(request.getParameter("limit"));
+					if (limit > 0) {
+						sql += " LIMIT ?";
+						values.add(limit);
+						if (request.getParameter("limit-offset") != null) {
+							int limitOffset = Integer.parseInt(request.getParameter("limit"));
+							if (limitOffset > 0) {
+								sql += ",?";
+								values.add(limitOffset);
+							}
+						}
+					}
+				} catch (NumberFormatException ex) {}
+			}
+			
 			rs = connection.preparedQuery(sql, values.toArray());
 			
 		} else {
