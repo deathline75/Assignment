@@ -74,8 +74,8 @@ public class Register extends HttpServlet {
 				return;
 			}
 			
-			if (password.length() < 8) {
-				request.getSession().setAttribute("error", "Password length must be greater than 8 characters!");
+			if (password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,16}$")) {
+				request.getSession().setAttribute("error", "Password must contain uppercase, lowercase, numbers and must be between 8 to 16 characters!");
 				response.sendRedirect("login.jsp");
 				return;
 			}
