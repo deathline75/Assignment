@@ -70,13 +70,6 @@ public class CRUDUser {
 			}
 		}
 		
-		// To make the lag noticeable for bruteforcers
-		byte[] salt = new byte[16];
-		SecureRandom random = new SecureRandom();
-		random.nextBytes(salt);
-		byte[] hashed = HashingUtil.hashPassword(password.toCharArray(), salt, 10000, 512);
-		hashed.toString();
-		
 		return null;
 	}
 	

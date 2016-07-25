@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    <% String genreids = request.getParameter("id"); %>
+    pageEncoding="ISO-8859-1" import="java.util.*,java.security.*"%>
+    <%
+    	SecureRandom random = new SecureRandom();
+    	byte[] token = new byte[128];
+    	random.nextBytes(token);
+    	String tokenString = Base64.getEncoder().encodeToString(token);
+    	session.setAttribute("logintoken", tokenString);
+    %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -40,6 +46,7 @@
 						<input type="password" class="form-control" id="inputPassword" placeholder="Password" required name="password">
 					</div>
 				</div>
+				<input type="hidden" name="logintoken" value="<%= tokenString %>">
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<button type="submit" class="btn btn-default">Sign in</button>
