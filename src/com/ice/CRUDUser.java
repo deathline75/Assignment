@@ -85,26 +85,14 @@ public class CRUDUser {
 	}
 	
 	public User insertUser(String name, String email, int contact, String password, String mailAddr1, String mailAddr2) {
-		ResultSet rs = connection.preparedUpdateAutoKey("INSERT INTO userdata VALUES (?, ?, ?, ?, ?, ?)", name, email, contact, password, mailAddr1, mailAddr2);
-		int id = -1;
-		try {
-			if (rs.next()) {
-				id = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				rs.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		byte[] salt = new byte[16];
+		SecureRandom random = new SecureRandom();
+		random.nextBytes(salt);
+		String hashed = HashingUtil.byteArrayToHex(HashingUtil.hashPassword(password.toCharArray(), salt, 10000, 512));
+		int result = connection.preparedUpdate("INSERT INTO userdata VALUES (?, ?, ?, ?, ?, ?)", name, email, contact, hashed, mailAddr1, mailAddr2);
+		if (result != -1) {
+			return getUser(email, password);
 		}
-		
-		if (id != -1) {
-			return getUser(id);
-		}
-		
 		return null;
 	}
 	
