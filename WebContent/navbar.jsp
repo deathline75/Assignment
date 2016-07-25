@@ -1,3 +1,7 @@
+<%@page import="com.ice.api.*" %>
+<%
+	User user = (User) session.getAttribute("user");
+%>
 <nav class="navbar navbar-fixed-top ice-nav navbar-default">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -27,9 +31,20 @@
         		<button type="submit" class="btn btn-default">Submit</button>
       		</form>
       	</li>
-      	<li>
-      		<a href="login.jsp"><span class="glyphicon glyphicon-user"></span> Sign In / Register</a>
-      	</li>
+      	<% if (user == null) { %>
+      		<li><a href="login.jsp"><span class="glyphicon glyphicon-user"></span> Sign In / Register </a></li>
+      	<% } else { %>
+      		<li><a href="cart.jsp"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+      		<li class="dropdown">
+      			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> <%= user.getName() %> <span class="caret"></span></a>
+      			<ul class="dropdown-menu">
+            		<li><a href="history.jsp">History</a></li>
+            		<li><a href="settings.jsp">Settings</a></li>
+            		<li role="separator" class="divider"></li>
+            		<li><a href="logout.jsp">Logout</a></li>
+          		</ul>
+      		</li>
+      	<% } %>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
