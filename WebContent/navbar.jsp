@@ -34,6 +34,7 @@
       	<% if (user == null) { %>
       		<li><a href="login.jsp"><span class="glyphicon glyphicon-user"></span> Sign In / Register </a></li>
       	<% } else { %>
+      		<li><a href="cart.jsp"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
       		<li class="dropdown">
       			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> <%= user.getName() %> <span class="caret"></span></a>
       			<ul class="dropdown-menu">

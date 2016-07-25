@@ -89,7 +89,7 @@ public class CRUDUser {
 		SecureRandom random = new SecureRandom();
 		random.nextBytes(salt);
 		String hashed = HashingUtil.byteArrayToHex(HashingUtil.hashPassword(password.toCharArray(), salt, 10000, 512));
-		int result = connection.preparedUpdate("INSERT INTO userdata VALUES (?, ?, ?, ?, ?, ?)", name, email, contact, hashed, mailAddr1, mailAddr2);
+		int result = connection.preparedUpdate("INSERT INTO userdata (name, email, contact, password, mailaddr1, mailaddr2) VALUES (?, ?, ?, ?, ?, ?)", name, email, contact, HashingUtil.byteArrayToHex(salt) + ":" + hashed, mailAddr1, mailAddr2);
 		if (result != -1) {
 			return getUser(email, password);
 		}
