@@ -170,7 +170,7 @@ public class connectToMysql {
 				else
 					ps.setObject(i + 1, values[i]);
 			}
-			
+			ps.executeUpdate();
 			return ps.getGeneratedKeys();
 		} catch (SQLException e) {
 			e.printStackTrace();

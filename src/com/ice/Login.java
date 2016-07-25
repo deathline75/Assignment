@@ -51,7 +51,7 @@ public class Login extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		if (request.getParameter("logintoken") == null || session.getAttribute("logintoken") == null 
-				|| (String) session.getAttribute("logintoken") != request.getParameter("logintoken")) {
+				|| !((String) session.getAttribute("logintoken")).equals(request.getParameter("logintoken"))) {
 			request.getSession().setAttribute("error", "Session has expired. Please try again.");
 			lag();
 			response.sendRedirect("login.jsp");

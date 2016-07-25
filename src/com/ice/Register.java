@@ -95,9 +95,11 @@ public class Register extends HttpServlet {
 			CRUDUser dbUser = new CRUDUser();
 			User user = null;
 			if (dbUser.isUser(email)) {
+				System.out.println("asdf");
 				request.getSession().setAttribute("error", "Email already registered!");
 				response.sendRedirect("login.jsp");
 			} else if ((user = dbUser.insertUser(name, cfmEmail, contact, cfmPassword, addr1, addr2)) == null) {
+				System.out.println("asdfffffffffffffffffff");
 				request.getSession().setAttribute("error", "Email already registered!");
 				response.sendRedirect("login.jsp");
 			} else {
