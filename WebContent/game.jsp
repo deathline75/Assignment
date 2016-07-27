@@ -109,8 +109,12 @@
 			<div class="btn-toolbar pull-right">
 				<div class="btn-group platforms" data-toggle="buttons"></div>
 				<div class="btn-group" style="display:block" data-toggle="tooltip" data-placement="right" title="Coming Soon">
-  					<button type="button" class="btn btn-success" id="buy">Buy New</button>
+				<form action="AddCartItem" method="post">
+				<input type="hidden" name="gameid" value="<%=gameid%>">
+				<input type="hidden" name="userid" value="<%=user.getId()%>">
+  					<button type="submit" class="btn btn-success" id="buy">Buy New</button>
 					<button type="button" class="btn btn-default price">$??.??</button>
+				</form>
 				</div>
 			</div>
 		</div>
