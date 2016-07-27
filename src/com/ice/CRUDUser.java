@@ -15,6 +15,11 @@ public class CRUDUser {
 		connection = new connectToMysql(MyConstants.url);
 	}
 	
+	/**
+	 * Gets a new User object based on User ID
+	 * @param id The ID of the user in the SQL database
+	 * @return The ID of the user
+	 */
 	public User getUser(int id) {
 		ResultSet rs = connection.preparedQuery("SELECT * FROM userdata WHERE id=?", id);
 		try {
@@ -40,6 +45,12 @@ public class CRUDUser {
 		return null;
 	}
 	
+	/**
+	 * Gets a new User object based on email and password (unhashed).
+	 * @param email The email of the user
+	 * @param password The password of the user
+	 * @return The new User object.
+	 */
 	public User getUser(String email, String password) {
 		
 		ResultSet rs = connection.preparedQuery("SELECT * FROM userdata WHERE email=?", email);
@@ -73,6 +84,11 @@ public class CRUDUser {
 		return null;
 	}
 	
+	/**
+	 * Checks if the user email exists in the database.
+	 * @param email The email to check
+	 * @return A boolean to see if the user email exists.
+	 */
 	public boolean isUser(String email) {
 		ResultSet rs = connection.preparedQuery("SELECT * FROM userdata WHERE email=?", email);
 		try {
@@ -84,6 +100,34 @@ public class CRUDUser {
 		return false;
 	}
 	
+	/**
+	 * Updates the user details
+	 * @param user The user details to reference
+	 * @return A boolean to see if the user update was successful.
+	 */
+	public boolean updateUser(User user) {
+		if (user == null)
+			throw new NullPointerException("User cannot be null!");
+		
+		int result = connection.preparedUpdate("UPDATE userdata SET name=?, email=?, contact=?, password=?, mailaddr1=?, mailaddr2=? WHERE id=?", user.getName(), user.getEmail(), user.getContact(), user.getPassword(), user.getMailaddr()[0] ,user.getMailaddr()[1], user.getId());
+		if (result != -1)
+			return true;
+		
+		return false;
+	}
+	
+	/**
+	 * Inserts a new user into the database.
+	 * This method will not check if the email already exists in the database. 
+	 * If the email does exist, the method will probably throw an {@link java.sql.SQLException} 
+	 * @param name The name to insert
+	 * @param email The email to insert
+	 * @param contact The contact number to insert
+	 * @param password The unhashed password to insert
+	 * @param mailAddr1 The first line of mail address
+	 * @param mailAddr2 The second line of mail address
+	 * @return A new User object based on the parameters provided.
+	 */
 	public User insertUser(String name, String email, int contact, String password, String mailAddr1, String mailAddr2) {
 		byte[] salt = new byte[16];
 		SecureRandom random = new SecureRandom();
@@ -96,6 +140,9 @@ public class CRUDUser {
 		return null;
 	}
 	
+	/**
+	 * Closes the database connection
+	 */
 	public void close() {
 		connection.close();
 	}

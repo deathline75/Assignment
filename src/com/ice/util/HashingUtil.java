@@ -8,6 +8,12 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+/**
+ * Hashing functions for passwords.
+ * This class also provides functions to convert the byte array returned to a hex value of the byte array and vice versa.
+ * @author Kelvin
+ *
+ */
 public class HashingUtil {
 	public static String byteArrayToHex(byte[] array) {
 		return DatatypeConverter.printHexBinary(array);
