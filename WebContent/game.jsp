@@ -107,15 +107,32 @@
 		<div class="panel-body">
 			<h3 id="buy-gamename" style="margin-top: 0; display: inline-block">ಠ_ಠ</h3>
 			<div class="btn-toolbar pull-right">
+			<%if(user != null){ %>
+			  	<form action= "AddCartItem" method="post" id="AddCartItem">
+  				<input type="hidden" name="gameid" value="<%=gameid%>">
+				<input type="hidden" name="userid" value="<%=user.getId()%>">
+  				</form>
+  				
 				<div class="btn-group platforms" data-toggle="buttons"></div>
 				<div class="btn-group" style="display:block" data-toggle="tooltip" data-placement="right" title="Coming Soon">
-				<form action="AddCartItem" method="post">
+				<form action="PurchaseItem" method="post">
 				<input type="hidden" name="gameid" value="<%=gameid%>">
 				<input type="hidden" name="userid" value="<%=user.getId()%>">
   					<button type="submit" class="btn btn-success" id="buy">Buy New</button>
+					<button type="submit" class="btn btn-info" form="AddCartItem">Add to Cart</button>
+					<button type="button" class="btn btn-default price">$??.??</button>
+				
+				</form>
+				</div>
+				<%} else{%>
+				<div class="btn-group platforms" data-toggle="buttons"></div>
+				<div class="btn-group" style="display:block" data-toggle="tooltip" data-placement="right" title="Can you login first?walau.">
+				<form action="AddCartItem" method="post">
+					<button type="submit" class="btn btn-success" id="buy">Buy New</button>
 					<button type="button" class="btn btn-default price">$??.??</button>
 				</form>
 				</div>
+				<%} %>
 			</div>
 		</div>
 	</div>
