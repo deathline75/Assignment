@@ -73,7 +73,7 @@
 				<div class="form-group">
 					<label for="inputCfmEmail" class="col-sm-3 control-label">Confirm Email: </label>
 					<div class="col-sm-9">
-						<input type="email" class="form-control" id="inputCfmEmail" placeholder="Email Address" required name="cfmEmail" >
+						<input type="email" class="form-control" id="inputCfmEmail" placeholder="Email Address" required name="cfmEmail"  autocomplete="off">
 					</div>
 				</div>
 				<hr/>
@@ -86,7 +86,7 @@
 				<div class="form-group">
 					<label for="inputCfmPassword" class="col-sm-3 control-label">Confirm Password: </label>
 					<div class="col-sm-9">
-						<input type="password" class="form-control" id="inputCfmPassword" placeholder="Confirm Password" required name="cfmPassword">
+						<input type="password" class="form-control" id="inputCfmPassword" placeholder="Confirm Password" required name="cfmPassword" autocomplete="off">
 					</div>
 				</div>
 				<hr />
