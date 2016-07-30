@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@ page import="com.ice.*"%>
-<%@ page import="java.sql.*"%>
+	pageEncoding="ISO-8859-1" import="java.sql.*,com.ice.*"%>
 <%
 	if (session.getAttribute("username") == null)
 		response.sendRedirect("login.jsp");
