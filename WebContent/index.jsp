@@ -24,7 +24,10 @@
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
-	<div class="container main-content">
+	<div class="container main-content">	
+		<div id="no-js" class="alert alert-warning" role="alert">
+			<strong>Warning!</strong> This site will not work well with Javascript off. For best viewing experience, please turn Javascript on.
+		</div>
 		<div class="page-header ice-header">
 			<h1>
 				Welcome to SP Games Store! <small>We sell games I guess...</small>
@@ -133,6 +136,8 @@
 	</script>
 	<script>
 		$(document).ready(function() {
+			
+			$('#no-js').hide();
 			
 			$.getJSON("api/games", function(data) {
 				if (data.responseCode == 0) {
