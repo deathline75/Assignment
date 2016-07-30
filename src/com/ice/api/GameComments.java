@@ -6,12 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -60,7 +61,7 @@ public class GameComments extends HttpServlet {
 					List<GameComment> gamecomments = new ArrayList<GameComment>();
 					while (rs.next()) {
 						// Add the GameComments into the List
-						gamecomments.add(new GameComment(rs.getInt(2), rs.getInt(1), rs.getString(3), rs.getShort(4),rs.getString(5),rs.getDate(6)));
+						gamecomments.add(new GameComment(rs.getInt(2), rs.getInt(1), StringEscapeUtils.escapeHtml4(rs.getString(3)), rs.getShort(4), StringEscapeUtils.escapeHtml4(rs.getString(5)),rs.getDate(6)));
 					}	
 					// Print out the data along with the response code.
 					response.getWriter().append(gson.toJson(new SearchResult(0, null, gamecomments)));

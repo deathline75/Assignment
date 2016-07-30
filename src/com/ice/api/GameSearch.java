@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ice.MyConstants;
@@ -64,7 +66,7 @@ public class GameSearch extends HttpServlet {
 			
 			while (queries.hasMoreElements()) {
 				String query = queries.nextElement();
-				String value = request.getParameter(query);
+				String value = StringEscapeUtils.escapeHtml4(request.getParameter(query));
 				boolean addable = false;
 				switch (query.toLowerCase()) {
 				case "q-gametitle":

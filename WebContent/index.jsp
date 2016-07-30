@@ -5,25 +5,6 @@
 	<%
 		// This page predates the API times, therefore everything here is a mess.
 		// Tread lightly
-		
-		// Outdated ArrayList
-		Vector<Game> games = new Vector<Game>();
-		ResultSet rs = connection.query("SELECT * FROM game");
-		// Adding everything into the vector
-		while (rs.next()) {
-			games.add(new Game(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getString(5), rs.getDouble(6), rs.getString(7), rs.getBoolean(8), rs.getBoolean(9), rs.getBoolean(10), rs.getBoolean(11), rs.getBoolean(12), rs.getBoolean(13), rs.getBoolean(14)));
-		}
-		rs.close();
-		
-		// Mapping the genre's name into it's genre id.
-		Map<Integer, String> genres = new HashMap<Integer, String>();
-		ResultSet rs1 = connection.query("SELECT * FROM genre");
-		// Putting them into the HashMap
-		while(rs1.next()) {
-			genres.put(rs1.getInt(1), rs1.getString(2));
-		}
-		rs1.close();
-		
 		// All the top genres
 		Vector<Genre> topgenres = new Vector<Genre>();
 		ResultSet rs2 = connection.query("SELECT g.genreid, g.genrename FROM genre g, game_genre gg WHERE g.genreid = gg.genreid GROUP BY gg.genreid ORDER BY count(gg.genreid) DESC LIMIT 8");
@@ -31,9 +12,6 @@
 			topgenres.add(new Genre(rs2.getInt(1), rs2.getString(2)));
 		}
 		rs2.close();
-		
-		// Grab some random games
-		Game random = games.get(new Random().nextInt(games.size()));
 	%>
 <!-- TODO: REMOVE ALL STYLE TAGS AND MIGRATE THEM TO CSS FILES. -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -110,29 +88,19 @@
 		</div>
 		<div class="col-sm-4" style="padding-right:0;">
 			<div class="thumbnail">
-			<% 
-			ResultSet imageResult = connection.preparedQuery("SELECT * FROM game_image WHERE gameid=? AND imageuse=2", random.getId());
-			String imgSrc = "http://placehold.it/350x350";
-			if (imageResult.next()) {
-				byte[] imageIS = imageResult.getBytes(3);
-				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
-				if (mimeType.startsWith("image")) {
-					String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
-					imgSrc = "data:" + mimeType + ";base64," + b64encoded;
-				}
-			}
-			imageResult.close();
-			%>
-				<img src="<%= imgSrc %>" alt="..." width="350" height="350">
-				<div class="caption">
-					<h3><%= random.getTitle() %></h3>
-					<p><%= random.getDescription() %></p>
-					<a href="game.jsp?id=<%= random.getId() %>" class="btn btn-primary active" role="button">More Info <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span></a>
-				</div>
+				
 			</div>
 		</div>
 	</div>
 	<%@ include file="footer.html"%>
+	<script id="thumb-temp" type="text/x-handlebars-template">
+		<img src="{{b64imagedata}}" alt="{{title}}" width="350" height="350">
+		<div class="caption">
+			<h3>{{title}}</h3>
+			<p>{{description}}</p>
+			<a href="game.jsp?id={{id}}" class="btn btn-primary active" role="button">More Info <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span></a>
+		</div>
+	</script>
 	<script id="jumbo-temp" type="text/x-handlebars-template">
 		<div class="item" id="carousel-item-{{i}}">
 			<a href="game.jsp?id={{id}}"><img src="{{b64imagedata}}" alt="{{title}}" width="1920" height="1080"></a>
@@ -168,6 +136,16 @@
 			
 			$.getJSON("api/games", function(data) {
 				if (data.responseCode == 0) {
+					
+					var random = Math.floor(Math.random() * data.results.length);
+					var rnggame = data.results[random];
+					var thumbnailtemplate = $('#thumb-temp').html();
+					var compiledthumbnailtemplate = Handlebars.compile(thumbnailtemplate);
+					var renderedthumbnail = compiledthumbnailtemplate({id: rnggame.id, title: rnggame.title,	description: rnggame.description, b64imagedata: "http://placehold.it/350x350"});
+					$('.thumbnail').append(renderedthumbnail);
+					loadimage(rnggame.id, 2, ".thumbnail > img");
+					
+					
 					for (var i = 0; i < 3; i++) {
 						var random = Math.floor(Math.random() * data.results.length);
 						var game = data.results[random];

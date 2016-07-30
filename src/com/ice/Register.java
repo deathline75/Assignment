@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.ice.api.User;
 
 /**
@@ -51,9 +53,9 @@ public class Register extends HttpServlet {
 		} else {
 
 			int contact = 0;
-			String email = request.getParameter("email"), cfmEmail = request.getParameter("cfmEmail"), password = request.getParameter("password"),
-					cfmPassword = request.getParameter("cfmPassword"), name = request.getParameter("name"), addr1 = request.getParameter("addr1"),
-					addr2 = request.getParameter("addr2");
+			String email = StringEscapeUtils.escapeHtml4(request.getParameter("email")), cfmEmail = StringEscapeUtils.escapeHtml4(request.getParameter("cfmEmail")), password = request.getParameter("password"),
+					cfmPassword = request.getParameter("cfmPassword"), name = StringEscapeUtils.escapeHtml4(request.getParameter("name")), addr1 = StringEscapeUtils.escapeHtml4(request.getParameter("addr1")),
+					addr2 = StringEscapeUtils.escapeHtml4(request.getParameter("addr2"));
 			
 			try {
 				if (request.getParameter("contact").length() != 8) {

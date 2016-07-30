@@ -10,6 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.*;
 import org.jsoup.safety.Whitelist;
 
@@ -67,7 +69,7 @@ public class AddComment extends HttpServlet {
 						gameid);
 				try {
 					if (rs.next()) {
-						String comment = request.getParameter("comment");
+						String comment = StringEscapeUtils.escapeHtml4(request.getParameter("comment"));
 						comment = Jsoup.clean(comment, Whitelist.none());
 						String rating = request.getParameter("rating");
 						String author = request.getParameter("author");
