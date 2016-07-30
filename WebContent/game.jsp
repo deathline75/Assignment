@@ -70,6 +70,13 @@
         $(function(){
             $('.rate').rating();
         });
+        
+        function changeQty(amount) {
+        	if (isNaN(parseInt($('#qty').val())) || (parseInt($('#qty').val()) <= 0 && amount <= 0) || parseInt($('#qty').val()) < 0)
+        		$('#qty').val(0)
+        	else
+        		$('#qty').val(parseInt($('#qty').val()) + amount);
+        }
     </script>
 <title> | SP Games Store</title>
 </head>
@@ -108,16 +115,24 @@
 			<h3 id="buy-gamename" style="margin-top: 0; display: inline-block">ಠ_ಠ</h3>
 			<div class="btn-toolbar pull-right">
 			<%if(user != null){ %>
-			  	<form action= "AddCartItem" method="post" id="AddCartItem">
-  				<input type="hidden" name="gameid" value="<%=gameid%>">
-				<input type="hidden" name="userid" value="<%=user.getId()%>">
-  				</form>
-  				
+			
 				<div class="btn-group platforms" data-toggle="buttons"></div>
+				<div class="input-group" style="width: 150px">
+      				<div class="input-group-btn">
+        				<button class="btn btn-default" type="button" onclick="changeQty(-1)"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span>&nbsp;</button>
+      				</div>
+      				<form action="AddCartItem" method="post" id="AddCartItem">
+      				 	<input type="hidden" name="gameid" value="<%=gameid%>">
+      					<input type="text" class="form-control" placeholder="Qty" id="qty" name="quantity" value="0" style="display: block">
+      				</form>
+      				<div class="input-group-btn">
+        				<button class="btn btn-default" type="button" onclick="changeQty(1)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;</button>
+      				</div>
+				</div>
 				<div class="btn-group" style="display:block" data-toggle="tooltip" data-placement="right" title="Coming Soon">
 				<form action="PurchaseItem" method="post">
 				<input type="hidden" name="gameid" value="<%=gameid%>">
-				<input type="hidden" name="userid" value="<%=user.getId()%>">
+				<%-- <input type="hidden" name="userid" value="<%=user.getId()%>"> --%>
   					<button type="submit" class="btn btn-success" id="buy">Buy New</button>
 					<button type="submit" class="btn btn-info" form="AddCartItem">Add to Cart</button>
 					<button type="button" class="btn btn-default price">$??.??</button>
@@ -126,11 +141,9 @@
 				</div>
 				<%} else{%>
 				<div class="btn-group platforms" data-toggle="buttons"></div>
-				<div class="btn-group" style="display:block" data-toggle="tooltip" data-placement="right" title="Can you login first?walau.">
-				<form action="AddCartItem" method="post">
-					<button type="submit" class="btn btn-success" id="buy">Buy New</button>
+				<div class="btn-group" style="display:block" data-toggle="tooltip" data-placement="right" title="Click to login!">
+					<a href= "login.jsp" class="btn btn-success" role="button" id="buy">Buy New</a>
 					<button type="button" class="btn btn-default price">$??.??</button>
-				</form>
 				</div>
 				<%} %>
 			</div>

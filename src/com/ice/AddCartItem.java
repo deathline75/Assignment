@@ -10,9 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import com.ice.api.User;
+
 
 /**
  * Servlet implementation class AddCartItem
@@ -40,9 +41,8 @@ public class AddCartItem extends HttpServlet {
 	}
 
 	private boolean checkInput(HttpServletRequest request) {
-		return request.getParameter("gameid") != null && !request.getParameter("gameid").isEmpty()
-				&& request.getParameter("userid") != null && !request.getParameter("userid").isEmpty();
-		}
+			return request.getParameter("gameid") != null && !request.getParameter("gameid").isEmpty();
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -52,16 +52,18 @@ public class AddCartItem extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		connectToMysql connection = new connectToMysql(MyConstants.url);
+		HttpSession session = request.getSession();
 		String gameid = request.getParameter("gameid");
-		String userid = request.getParameter("userid");
-		System.out.println(userid+ " "+ gameid);
+		User user = (User) session.getAttribute("user");
+		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		
-
 		if (checkInput(request)) {
 			ResultSet rs = connection.preparedQuery("SELECT * from game where gameid=? and qty>0", gameid);
 			try {
 				if (rs.next()) {
-					connection.preparedUpdate("insert into shop_cart(gameid,userid) VALUES(?,?)",gameid,userid);
+					for (int i = 0; i < quantity; i++) {
+						connection.preparedUpdate("insert into shop_cart(gameid,userid) VALUES(?,?)", gameid, user.getId());
+					}
 				}
 				response.sendRedirect("game.jsp?id=" + gameid);
 				rs.close();
@@ -75,4 +77,5 @@ public class AddCartItem extends HttpServlet {
 			rd.forward(request, response);
 		}
 	}
+
 }
