@@ -117,7 +117,7 @@
 						<div class="form-group">
 							<label for="inputCPassword" class="col-sm-3 control-label">Current Password: </label>
 							<div class="col-sm-9">
-								<input type="password" class="form-control" id="inputCPassword" placeholder="Password" required name="password">
+								<input type="password" class="form-control" id="inputCPassword" placeholder="Password" required name="cpassword">
 							</div>
 						</div>
 						<div class="form-group">
@@ -136,7 +136,7 @@
   					<input type="hidden" name="action" value="4">
   					<div class="panel-footer" style="text-align: right;background-color:#fcf8e3;border-top:#faebcc"><button class="btn btn-warning" type="submit">Update</button></div>
 				</form>
-				<form class="panel panel-danger form-horizontal" method="post" action="Settings">
+<!-- 				<form class="panel panel-danger form-horizontal disabled" method="post" action="Settings">
   					<div class="panel-heading">
 	    				<h3 class="panel-title">Deactivate Account</h3>
   					</div>
@@ -146,13 +146,13 @@
 						<div class="form-group">
 							<label for="inputCfmPassword" class="col-sm-3 control-label">Confirm Password: </label>
 							<div class="col-sm-9">
-								<input type="password" class="form-control" id="inputCfmPassword" placeholder="Confirm Password" required name="cfmPassword" autocomplete="off">
+								<input type="password" class="form-control" id="inputCfmPassword" placeholder="Confirm Password" required name="cfmPassword" autocomplete="off" disabled>
 							</div>
 						</div>
 	  				</div>
   					<input type="hidden" name="action" value="5">
-  					<div class="panel-footer" style="text-align: right;background-color:#f2dede"><button class="btn btn-danger" type="submit">Deactivate</button></div>
-				</form>
+  					<div class="panel-footer" style="text-align: right;background-color:#f2dede"><button class="btn btn-danger" type="submit" disabled>Deactivate</button></div>
+				</form> -->
 			</div>
 		</div>
 	</div>
