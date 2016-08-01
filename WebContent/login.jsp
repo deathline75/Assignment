@@ -61,32 +61,32 @@
 				<div class="form-group">
 					<label for="inputName" class="col-sm-3 control-label">Name: </label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" id="inputName" placeholder="Name" required name="name">
+						<input type="text" class="form-control" id="inputName" placeholder="Name" required name="name" data-toggle="tooltip" data-placement="right" title="Maximum 45 alphanumberic and space characters">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="inputEmail" class="col-sm-3 control-label">Email Address: </label>
+					<label for="inputEmailR" class="col-sm-3 control-label">Email Address: </label>
 					<div class="col-sm-9">
-						<input type="email" class="form-control" id="inputEmail" placeholder="Email Address" required name="email" >
+						<input type="email" class="form-control" id="inputEmailR" placeholder="Email Address" required name="email" data-toggle="tooltip" data-placement="right" title="Must contain a '@' and a '.'">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="inputCfmEmail" class="col-sm-3 control-label">Confirm Email: </label>
+					<label for="inputCfmEmailR" class="col-sm-3 control-label">Confirm Email: </label>
 					<div class="col-sm-9">
-						<input type="email" class="form-control" id="inputCfmEmail" placeholder="Email Address" required name="cfmEmail"  autocomplete="off">
+						<input type="email" class="form-control" id="inputCfmEmailR" placeholder="Email Address" required name="cfmEmail"  autocomplete="off">
 					</div>
 				</div>
 				<hr/>
 				<div class="form-group">
-					<label for="inputPassword" class="col-sm-3 control-label">Password: </label>
+					<label for="inputPasswordR" class="col-sm-3 control-label">Password: </label>
 					<div class="col-sm-9">
-						<input type="password" class="form-control" id="inputPassword" placeholder="Password" required name="password">
+						<input type="password" class="form-control" id="inputPasswordR" placeholder="Password" required name="password" data-toggle="tooltip" data-placement="right" title="Must contain 8 to 16 uppercase, lowercase and numbers only">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="inputCfmPassword" class="col-sm-3 control-label">Confirm Password: </label>
+					<label for="inputCfmPasswordR" class="col-sm-3 control-label">Confirm Password: </label>
 					<div class="col-sm-9">
-						<input type="password" class="form-control" id="inputCfmPassword" placeholder="Confirm Password" required name="cfmPassword" autocomplete="off">
+						<input type="password" class="form-control" id="inputCfmPasswordR" placeholder="Confirm Password" required name="cfmPassword" autocomplete="off">
 					</div>
 				</div>
 				<hr />
@@ -105,14 +105,14 @@
 				<div class="form-group">
 					<label for="inputContact" class="col-sm-3 control-label">Contact: </label>
 					<div class="col-sm-9">
-						<input type="number" class="form-control" id="inputContact" placeholder="91234567" required name="contact">
+						<input type="number" class="form-control" id="inputContact" placeholder="91234567" required name="contact" data-toggle="tooltip" data-placement="right" title="Must be 8 digits only">
 					</div>
 				</div>
 				<hr />
 				<div class="g-recaptcha col-sm-offset-3" data-sitekey="6LctkR4TAAAAAPQYqGQkmeaczaReQwT0qkC-tagZ" style="margin-bottom: 15px"></div>
 				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-9">
-						<button type="submit" class="btn btn-default">Register</button>
+						<button type="submit" class="btn btn-default" id="btnRegister">Register</button>
 					</div>
 				</div>
 			</form>
@@ -120,5 +120,43 @@
 	</div>
 </div>
 	<%@ include file="footer.html"%>
+	<script>
+	function matchesRegex(element, regex, cfmElement) {
+		if (cfmElement != null)
+			cfmElement.trigger('change');
+		if (element.val().match(regex) == null) {
+			element.parent().parent().addClass("has-error");
+			element.parent().parent().removeClass("has-success");
+			return false;
+		} else {
+			element.parent().parent().addClass("has-success");
+			element.parent().parent().removeClass("has-error");
+			return true;
+		}
+	}
+	$('[data-toggle="tooltip"]').tooltip()
+	$('#inputPasswordR').on('change paste keyup', function(){
+		matchesRegex($(this), /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,16}$/, $('#inputCfmPasswordR'));
+	});
+	$('#inputCfmPasswordR').on('change paste keyup', function(){
+		matchesRegex($(this), new RegExp('^' + $('#inputPasswordR').val() + '$'), null);
+	});
+	$('#inputEmailR').on('change paste keyup', function(){
+		matchesRegex($(this),  /^(.+?@.+?(\..+)+?){0,254}$/, $('#inputCfmEmailR'));
+	});
+	$('#inputCfmEmailR').on('change paste keyup', function(){
+		matchesRegex($(this), new RegExp('^' + $('#inputEmailR').val() + '$'), null);
+	});
+	$('#inputName').on('change paste keyup', function(){
+		matchesRegex($(this), /^[\w ]{0,45}$/, null);
+	});
+	$('#inputAddr1, #inputAddr2').on('change paste keyup', function(){
+		matchesRegex($(this), /^.{0,255}$/, null);
+	});
+	$('#inputContact').on('change paste keyup', function(){
+		matchesRegex($(this), /^\d{8}$/, null);
+	});
+	
+	</script>
 </body>
 </html>
