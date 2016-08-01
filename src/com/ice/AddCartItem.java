@@ -56,15 +56,23 @@ public class AddCartItem extends HttpServlet {
 		String gameid = request.getParameter("gameid");
 		User user = (User) session.getAttribute("user");
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
-		
+		String platform = request.getParameter("platforms");
 		if (checkInput(request)) {
 			ResultSet rs = connection.preparedQuery("SELECT * from game where gameid=? and qty>0", gameid);
+		//	ResultSet rs = connection.preparedQuery("select platform from shop_cart where userid=? and gameid=? and platform='?'", user.getId(),gameid,platform);
 			try {
 				if (rs.next()) {
-					for (int i = 0; i < quantity; i++) {
-						connection.preparedUpdate("insert into shop_cart(gameid,userid) VALUES(?,?)", gameid, user.getId());
+					rs = connection.preparedQuery("select platform from shop_cart where userid=? and gameid=?", user.getId(),gameid);
+					if(rs.next()){
+						connection.preparedUpdate("update shop_cart set quantity=quantity+? where userid=? and gameid=? and platform=?",quantity,user.getId(),gameid,platform);
+					}
+					else{
+						connection.preparedUpdate("insert into shop_cart(gameid,userid,platform,quantity) VALUES(?,?,?,?)", gameid, user.getId(),platform,quantity);
 					}
 				}
+/*				else{
+					connection.preparedUpdate("insert into shop_cart(gameid,userid,platform,quantity) VALUES(?,?,?,?)", gameid, user.getId(),platform,quantity);
+				}*/
 				response.sendRedirect("game.jsp?id=" + gameid);
 				rs.close();
 			} catch (SQLException e) {
@@ -74,6 +82,7 @@ public class AddCartItem extends HttpServlet {
 		} else {
 			connection.close();
 			RequestDispatcher rd = request.getRequestDispatcher("game.jsp?id=" + gameid);
+			System.out.println("error sia kns cannot get rs.");
 			rd.forward(request, response);
 		}
 	}

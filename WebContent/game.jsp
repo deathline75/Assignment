@@ -115,16 +115,16 @@
 			<h3 id="buy-gamename" style="margin-top: 0; display: inline-block">ಠ_ಠ</h3>
 			<div class="btn-toolbar pull-right">
 			<%if(user != null){ %>
-			
-				<div class="btn-group platforms" data-toggle="buttons"></div>
+				<!-- <div class="btn-group platforms" data-toggle="buttons"></div> -->
+			     <form action="AddCartItem" method="post" id="AddCartItem" class="btn-group platforms" data-toggle="buttons">
+      				<input type="hidden" name="gameid" value="<%=gameid%>">
+      				<input type="text" class="form-control" placeholder="Qty" id="qty" name="quantity" value="0" style="display: block">
+      			</form>
+				
 				<div class="input-group" style="width: 150px">
       				<div class="input-group-btn">
         				<button class="btn btn-default" type="button" onclick="changeQty(-1)"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span>&nbsp;</button>
       				</div>
-      				<form action="AddCartItem" method="post" id="AddCartItem">
-      				 	<input type="hidden" name="gameid" value="<%=gameid%>">
-      					<input type="text" class="form-control" placeholder="Qty" id="qty" name="quantity" value="0" style="display: block">
-      				</form>
       				<div class="input-group-btn">
         				<button class="btn btn-default" type="button" onclick="changeQty(1)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;</button>
       				</div>
@@ -221,17 +221,17 @@
 				$('.description').text(gamedata.description);
 				$('.price').text('$' + gamedata.price.toFixed(2));
 				if (gamedata.supportWin) {
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWin" autocomplete="off" val="win"> Windows </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWin" autocomplete="off" value="win"> Windows </label>');
 				} if (gamedata.supportMac) { 
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformMac" autocomplete="off" val="mac"> OS X </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformMac" autocomplete="off" value="mac"> OS X </label>');
 				} if (gamedata.supportLinux) { 
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformLinux" autocomplete="off" val="linux"> Linux </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformLinux" autocomplete="off" value="linux"> Linux </label>');
 				} if (gamedata.supportXbox) { 
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformXbox" autocomplete="off" val="xbox"> Xbox One </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformXbox" autocomplete="off" value="xbox"> Xbox One </label>');
 				} if (gamedata.supportPs4) { 
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformPS4" autocomplete="off" val="ps4"> PS4 </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformPS4" autocomplete="off" value="ps4"> PS4 </label>');
 				} if (gamedata.supportWiiu) { 
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWiiu" autocomplete="off" val="wiiu"> Wii-U </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWiiu" autocomplete="off" value="wiiu"> Wii-U </label>');
 				}
 				// Change some visuals if the game is preowned
 				if (gamedata.preowned) {
@@ -301,6 +301,12 @@
 	        return false;
 	    }
 	}
+	
+	
+</script>
+
+<script>
+
 </script>
 
 

@@ -44,9 +44,21 @@ public class ShopCartItems extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = new User();
-		ShopCartItem shopCartBean = null;
+		ArrayList<ShopCartItem> shopCartBean= new ArrayList<ShopCartItem>();
 		connectToMysql connection = new connectToMysql(MyConstants.url);
 		ResultSet rs = connection.preparedQuery("select * from ",user.getId());
+		
+		try {
+			while(rs.next()){
+				shopCartBean.add(new ShopCartItem(rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getInt(4)));
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 
