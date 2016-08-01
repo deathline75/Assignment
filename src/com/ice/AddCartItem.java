@@ -3,6 +3,7 @@ package com.ice;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ice.api.User;
+import com.ice.api.*;
 
 
 /**
@@ -58,27 +59,50 @@ public class AddCartItem extends HttpServlet {
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		String platform = request.getParameter("platforms");
 		if (checkInput(request)) {
-			ResultSet rs = connection.preparedQuery("SELECT * from game where gameid=? and qty>0", gameid);
-		//	ResultSet rs = connection.preparedQuery("select platform from shop_cart where userid=? and gameid=? and platform='?'", user.getId(),gameid,platform);
-			try {
-				if (rs.next()) {
-					rs = connection.preparedQuery("select platform from shop_cart where userid=? and gameid=?", user.getId(),gameid);
-					if(rs.next()){
-						connection.preparedUpdate("update shop_cart set quantity=quantity+? where userid=? and gameid=? and platform=?",quantity,user.getId(),gameid,platform);
-					}
-					else{
-						connection.preparedUpdate("insert into shop_cart(gameid,userid,platform,quantity) VALUES(?,?,?,?)", gameid, user.getId(),platform,quantity);
+			
+			ArrayList<ShopCartItem> shopCartItems = null;
+			CRUDCartItem dbItem = new CRUDCartItem();
+			
+			if (session.getAttribute("cartitems") != null) {
+				shopCartItems = (ArrayList<ShopCartItem>) session.getAttribute("cartitems");
+				for (ShopCartItem it: shopCartItems) {
+					if (it.getGame().getId() == Integer.parseInt(gameid) && it.getPlatform().equals(platform) && it.getUser().getId() == user.getId()) {
+						it.setQuantity(it.getQuantity() + quantity);
+						dbItem.updateItem(it);
+						dbItem.close();
+						response.sendRedirect("cart.jsp");
+						return;
 					}
 				}
-/*				else{
-					connection.preparedUpdate("insert into shop_cart(gameid,userid,platform,quantity) VALUES(?,?,?,?)", gameid, user.getId(),platform,quantity);
-				}*/
-				response.sendRedirect("game.jsp?id=" + gameid);
-				rs.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+			
+			CRUDGame dbGame = new CRUDGame();
+			Game game = dbGame.getGame(Integer.parseInt(gameid));
+			dbGame.close();
+			
+			ShopCartItem item = null;
+			if (dbItem.isItem(user, game, platform)) {
+				item = dbItem.getItem(user, game, platform);
+				item.setQuantity(item.getQuantity() + quantity);
+				dbItem.updateItem(item);
+			} else {
+				item = dbItem.insertItem(user, game, platform, quantity);
+			}
+			
+			if (session.getAttribute("cartitems") == null) {
+				System.out.println("asdasdsd");
+				shopCartItems = new ArrayList<>();
+				shopCartItems.add(item);
+				session.setAttribute("cartitems", shopCartItems);
+			} else {
+				shopCartItems = (ArrayList<ShopCartItem>) session.getAttribute("cartitems");
+				shopCartItems.add(item);
+				session.setAttribute("cartitems", shopCartItems);
+			}
+
+			dbItem.close();
+			response.sendRedirect("cart.jsp");
+			
 		} else {
 			connection.close();
 			RequestDispatcher rd = request.getRequestDispatcher("game.jsp?id=" + gameid);

@@ -23,10 +23,11 @@ public class Game {
 	private boolean supportLinux;
 	private boolean supportPs4;
 	private boolean supportWiiu;
+	private int quantity;
 	
 	public Game(int id, String title, String company, Timestamp releaseDate, String description, double price, String imgLocation,
 			boolean preowned, boolean supportWin, boolean supportMac, boolean supportXbox, boolean supportLinux,
-			boolean supportPs4, boolean supportWiiu) {
+			boolean supportPs4, boolean supportWiiu,int quantity) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -42,6 +43,7 @@ public class Game {
 		this.supportLinux = supportLinux;
 		this.supportPs4 = supportPs4;
 		this.supportWiiu = supportWiiu;
+		this.quantity = quantity;
 	}
 	
 	/**
@@ -155,6 +157,14 @@ public class Game {
 	 */
 	public boolean isSupportWiiu() {
 		return supportWiiu;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	
 	

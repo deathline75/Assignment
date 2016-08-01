@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.ice.*, java.sql.*"%>
+<%@ page import="com.ice.*, com.ice.api.*,java.sql.*, java.util.*"%>
 <%
 	connectToMysql connection = new connectToMysql(MyConstants.url);
 %>
@@ -14,6 +14,14 @@
 <body>
 	<div class="container main-content">
 		<%@ include file="navbar.jsp"%>
+		<%			
+			if (session.getAttribute("cartitems") != null) {
+				System.out.println("----");
+				for (ShopCartItem it : (ArrayList<ShopCartItem>) session.getAttribute("cartitems")) {
+					System.out.println(it.getGame().getTitle() + ": " + it.getQuantity());
+				}
+			}
+		%>
 		<table id="cartTable" class="cart table table-condensed">
 			<thead>
 				<tr>
@@ -27,16 +35,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<%
-					ResultSet rs = connection.preparedQuery("select * from shop_cart sc ,game g,userdata ud where userid=? and sc.gameid=g.gameid and sc.userid=ud.id", user.getId());
-					while (rs.next()) {
-				%>
 				<tr>
 					<td><input class="check-one check" type="checkbox" /></td>
-					<td class="goods"><label><%=rs.getString("gametitle")%></label></td>
-					<td class="number small-bold-red"><span><%=rs.getString("price")%></span></td>
+					<td class="goods"><label>Title</label></td>
+					<td class="number small-bold-red"><span>$$$wo yao qiannn duo shao qiannn</span></td>
 					<td class="input-group"><span class="input-group-addon minus">-</span>
-						<input type="text" class="number form-control input-sm" value="<%=rs.getString("quantity") %>" />
+						<input type="text" class="number form-control input-sm" value="10" />
 						<span class="input-group-addon plus">+</span></td>
 					<td class="subtotal number small-bold-red">101</td>
 					<td class="operation"><span
@@ -44,9 +48,6 @@
 				</tr>
 			</tbody>
 		</table>
-		<%
-			}
-		%>
 		<div class="row">
 			<div class="col-md-12 col-lg-12 col-sm-12">
 				<div style="border-top: 1px solid gray; padding: 4px 10px;">

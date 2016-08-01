@@ -1,4 +1,4 @@
-<%@page import="com.ice.api.*" %>
+<%@page import="com.ice.api.*, com.ice.*" %>
 <%
 	User user = (User) session.getAttribute("user");
 %>
@@ -34,6 +34,13 @@
       	<% if (user == null) { %>
       		<li><a href="login.jsp"><span class="glyphicon glyphicon-user"></span> Sign In / Register </a></li>
       	<% } else { %>
+      	<%
+      		if (session.getAttribute("cartitems") == null) {
+      			CRUDCartItem dbItems = new CRUDCartItem();
+      			session.setAttribute("cartitems", dbItems.getItems(user));
+      			dbItems.close();
+      		}
+      	%>
       		<li><a href="cart.jsp"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
       		<li class="dropdown">
       			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> <%= user.getName() %> <span class="caret"></span></a>
