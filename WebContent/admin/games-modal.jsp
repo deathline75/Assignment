@@ -6,7 +6,7 @@
 	String action = request.getParameter("action");
 	String gameid = request.getParameter("gameid");
 	connectToMysql connection = new connectToMysql(MyConstants.url);
-	ResultSet rs = connection.preparedQuery("Select * from game where gameid=?", gameid);
+	ResultSet rs = connection.preparedQuery("SELECT * FROM game WHERE gameid=?", gameid);
 	if (rs.next()) {
 		String gameTitle = rs.getString("gameTitle");
 		String company = rs.getString("company");
@@ -21,6 +21,7 @@
 		String supportLinux = rs.getString("supportLinux");
 		String supportPS4 = rs.getString("supportPS4");
 		String supportWIIU = rs.getString("supportWIIU");
+		String quantity = rs.getString("qty");
 
 		rs.close();
 		
@@ -32,6 +33,15 @@
 		genrers.close();
 		
 %>
+
+<script>
+function changeQty(amount) {
+	if (isNaN(parseInt($('#qty').val())) || (parseInt($('#qty').val()) <= 0 && amount <= 0) || parseInt($('#qty').val()) < 0)
+		$('#qty').val(0)
+	else
+		$('#qty').val(parseInt($('#qty').val()) + amount);
+}
+</script>
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	<h4 class="modal-title" id="exampleModalLabel"><%=action%>:	<%=gameTitle%></h4>
@@ -61,6 +71,9 @@
 	<p>
 		<span class="label label-info">Price:</span>
 		<%= String.format("$%.2f", Double.parseDouble(price)) %>
+	</p>
+	<p>
+		<span class="label label-default">Quantity:</span> <%= quantity %>
 	</p>
 	<p>
 		<span class="label label-warning">Preowned:</span> 
@@ -145,6 +158,19 @@
 			</label>
 			<div class="col-sm-4 input-group" style="padding: 0 15px;">
 				<span class="input-group-addon">$</span> <input type="number" step="any" class="form-control" id="price" placeholder="59.90" value="<%= price %>" name="price" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="gameprice" class="col-sm-3 control-label">Quantity*:
+			</label>
+			<div class="col-sm-4 input-group" style="padding: 0 15px;">
+			      	<div class="input-group-btn">
+        				<button class="btn btn-default" type="button" onclick="changeQty(-1)"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span>&nbsp;</button>
+      				</div>
+      				<input id="qty" type="number" class="form-control" id="price" value="<%= quantity %>" name="quantity" />
+      				<div class="input-group-btn">
+        				<button class="btn btn-default" type="button" onclick="changeQty(1)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;</button>
+      				</div>
 			</div>
 		</div>
 		<div class="form-group">

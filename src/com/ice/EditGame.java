@@ -59,6 +59,7 @@ public class EditGame extends HttpServlet {
 			String supportLinux = request.getParameter("supportLinux") == null ? "0" : "1";
 			String supportPS4 = request.getParameter("supportPS4") == null ? "0" : "1";
 			String supportWIIU = request.getParameter("supportWIIU") == null ? "0" : "1";
+			String quantity = request.getParameter("quantity");
 			Part gameThumbnail = request.getPart("gamethumbnail");
 			Part gameJumbo = request.getPart("gamejumbo");
 			Part gamePromo = request.getPart("gamepromo");
@@ -66,7 +67,7 @@ public class EditGame extends HttpServlet {
 			connectToMysql connection = new connectToMysql(MyConstants.url);
 
 			connection.preparedUpdate(
-					"update game set gameTitle=?,company=?,releaseDate=?,description=?,price=?,preOwned=?,supportWin=?,supportMac=?,supportXBOX=?,supportLinux=?,supportPS4=?,supportWIIU=? where gameid=?",gameTitle,company,releaseDate,description,price,preOwned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU,gameid);
+					"update game set gameTitle=?,company=?,releaseDate=?,description=?,price=?,preOwned=?,supportWin=?,supportMac=?,supportXBOX=?,supportLinux=?,supportPS4=?,supportWIIU=?,qty=? where gameid=?",gameTitle,company,releaseDate,description,price,preOwned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU,quantity,gameid);
 			
 			connection.preparedUpdate("delete from game_genre where gameid=?",gameid);
 			

@@ -36,12 +36,13 @@
 					<th>Game Title</th>
 					<th>Company</th>
 					<th>Price</th>
+					<th>Quantity</th>
 					<th>Edit Data</th>
 				</tr>
 			</thead>
 			<tbody>
 				<%
-					ResultSet rs = connection.preparedQuery("SELECT gameid,gametitle,company,price FROM game");
+					ResultSet rs = connection.preparedQuery("SELECT gameid,gametitle,company,price,qty FROM game");
 					while (rs.next()) {
 				%>
 				<tr>
@@ -49,6 +50,7 @@
 					<td><%=rs.getString(2)%></td>
 					<td><%=rs.getString(3)%></td>
 					<td><%=rs.getDouble(4)%></td>
+					<td><%=rs.getInt(5)%></td>
 					<td>
 						<a href="#" class="btn btn-info btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="View" data-gameid="<%=rs.getInt(1)%>">Info</a> 
 						<a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="Edit" data-gameid="<%=rs.getInt(1)%>">Edit</a>
