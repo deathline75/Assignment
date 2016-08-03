@@ -21,6 +21,7 @@ if (session.getAttribute("username") != null)
       <ul class="nav navbar-nav ice-nav-ul">
         <li><a href="games.jsp">Games</a></li>
         <li><a href="genres.jsp">Genres</a></li>
+        <li><a href="stocks.jsp">Stocks</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="../">Main Page</a></li>
