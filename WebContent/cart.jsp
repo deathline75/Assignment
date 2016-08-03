@@ -14,40 +14,64 @@
 <body>
 	<div class="container main-content">
 		<%@ include file="navbar.jsp"%>
-		<%			
-			if (session.getAttribute("cartitems") != null) {
-				System.out.println("----");
-				for (ShopCartItem it : (ArrayList<ShopCartItem>) session.getAttribute("cartitems")) {
-					System.out.println(it.getGame().getTitle() + ": " + it.getQuantity());
-				}
-			}
-		%>
+		<%if(request.getAttribute("error")!=null){
+			System.out.println("hello!!");
+			%>
+		<div class="panel panel-default">
+    		<div class="panel-heading">Error</div>
+    		<div class="panel-body"><%=request.getAttribute("error") %></div>
+		</div>
+		<% }%>
+		
+		<%
+			if(user == null){
+			response.sendRedirect("login.jsp");
+		} %>
+			
+			
+		<form action="UpdateCartItem" method="post">
 		<table id="cartTable" class="cart table table-condensed">
 			<thead>
 				<tr>
-					<th><label><input class="check-all check"
-							type="checkbox" />Select All</label></th>
+					<th><label><input class="check-all check" type="checkbox" />Select All</label></th>
 					<th><label>Game</label></th>
 					<th><label>Price</label></th>
 					<th><label>Quantity</label></th>
-					<th><label>Sub-Total</label></th>
+					<th><label>Platform</label></th>
 					<th><label>Operation</label></th>
 				</tr>
 			</thead>
 			<tbody>
+				<%
+			if (session.getAttribute("cartitems") != null) {
+				System.out.println("----");
+				for (ShopCartItem it : (ArrayList<ShopCartItem>) session.getAttribute("cartitems")) {
+					System.out.println(it.getGame().getTitle() + ": " + it.getQuantity());
+				%>
 				<tr>
-					<td><input class="check-one check" type="checkbox" /></td>
-					<td class="goods"><label>Title</label></td>
-					<td class="number small-bold-red"><span>$$$wo yao qiannn duo shao qiannn</span></td>
-					<td class="input-group"><span class="input-group-addon minus">-</span>
-						<input type="text" class="number form-control input-sm" value="10" />
+					<td><input class="check-one check" type="checkbox" name="shopCartId" value="<%=it.getShopcartID() %>" /></td>
+					<td class="goods"><label><%= it.getGame().getTitle()%></label></td>
+					<td class="number small-bold-red"><span><%= it.getGame().getPrice()%></span></td>
+					<td class="input-group"><span class="input-group-addon minus">-</span>				
+						<input type="text" class="number form-control input-sm" name="qty-<%=it.getShopcartID()%>" value="<%=it.getQuantity() %>" >
 						<span class="input-group-addon plus">+</span></td>
+						<td class="platforms"><label><%= it.getPlatform()%></label></td>
 					<td class="subtotal number small-bold-red">101</td>
-					<td class="operation"><span
-						class="delete btn btn-xs btn-primary">Delete</span></td>
+						<td class="operation">
+							<form action="DeleteCartItem" method="post">
+							<input type="hidden" name="shopCartId" value="<%=it.getShopcartID()%>">
+							<input type="submit" class="delete btn btn-xs btn-primary" value="Delete">
+							</form>
+						</td>
 				</tr>
+				<%
+								}
+			}
+		%>
+		<input type="submit" value="update">
 			</tbody>
 		</table>
+			</form>
 		<div class="row">
 			<div class="col-md-12 col-lg-12 col-sm-12">
 				<div style="border-top: 1px solid gray; padding: 4px 10px;">
@@ -64,9 +88,13 @@
 					<div class="pull-right selected" id="selected">
 						<span id="selectedTotal"></span>
 					</div>
+						<form action="PurchaseItems" method="post">
+							<input type="submit" value="purchase">
+						</form>
 				</div>
 			</div>
 		</div>
 	</div>
+	<%@ include file="footer.html"%>
 </body>
 </html>

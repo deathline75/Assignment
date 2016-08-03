@@ -26,6 +26,7 @@ public class CRUDCartItem {
 		return false;
 	}
 	
+	
 	public ShopCartItem getItem(User user, Game game, String platform) {
 		ResultSet rs = connection.preparedQuery("SELECT * FROM shop_cart WHERE userid=? AND gameid=? AND platform=?", user.getId(), game.getId(), platform);
 		try {
@@ -36,6 +37,27 @@ public class CRUDCartItem {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public boolean deleteItem(int shopcartid) {
+		int rows = connection.preparedUpdate("delete from shop_cart where shopcartid=?", shopcartid);
+		if(rows != 0 ){
+			return true;
+		}
+		return false;
+	}
+	
+	
+	public int getTotalQuantityAcrossPlatforms(User user,Game game) {
+		ResultSet rs = connection.preparedQuery("select gameid,sum(quantity) as totalquantity from shop_cart where userid=? and gameid=? group by gameid", user.getId(),game.getId());
+		try {
+			if (rs.next()) {
+				return rs.getInt("totalquantity");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 99999;
 	}
 	
 	public ShopCartItem insertItem(User user, Game game, String platform, int quantity) {
@@ -51,7 +73,7 @@ public class CRUDCartItem {
 			return true;
 		return false;
 	}
-	
+		
 	public ArrayList<ShopCartItem> getItems(User user){
 		ArrayList <ShopCartItem> shopcartitems = new ArrayList<ShopCartItem>(); 
 		CRUDGame dbGame = new CRUDGame();

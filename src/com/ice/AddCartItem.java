@@ -52,7 +52,6 @@ public class AddCartItem extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		connectToMysql connection = new connectToMysql(MyConstants.url);
 		HttpSession session = request.getSession();
 		String gameid = request.getParameter("gameid");
 		User user = (User) session.getAttribute("user");
@@ -63,6 +62,8 @@ public class AddCartItem extends HttpServlet {
 			ArrayList<ShopCartItem> shopCartItems = null;
 			CRUDCartItem dbItem = new CRUDCartItem();
 			
+			
+			// Check if the item on the same platform exist in shop cart already, if yes, update the quantity ONLY and return.
 			if (session.getAttribute("cartitems") != null) {
 				shopCartItems = (ArrayList<ShopCartItem>) session.getAttribute("cartitems");
 				for (ShopCartItem it: shopCartItems) {
@@ -76,6 +77,7 @@ public class AddCartItem extends HttpServlet {
 				}
 			}
 			
+			//Determine if the game has exist in the db, if yes, update quantity in the shopcart only!,if no, insert a new row in shop_cart
 			CRUDGame dbGame = new CRUDGame();
 			Game game = dbGame.getGame(Integer.parseInt(gameid));
 			dbGame.close();
@@ -89,8 +91,8 @@ public class AddCartItem extends HttpServlet {
 				item = dbItem.insertItem(user, game, platform, quantity);
 			}
 			
+			//If the shop cart is empty, create a shop cart arraylist and simply add the items in the arraylist if not empty just append to the existing arraylist!			
 			if (session.getAttribute("cartitems") == null) {
-				System.out.println("asdasdsd");
 				shopCartItems = new ArrayList<>();
 				shopCartItems.add(item);
 				session.setAttribute("cartitems", shopCartItems);
@@ -104,7 +106,6 @@ public class AddCartItem extends HttpServlet {
 			response.sendRedirect("cart.jsp");
 			
 		} else {
-			connection.close();
 			RequestDispatcher rd = request.getRequestDispatcher("game.jsp?id=" + gameid);
 			System.out.println("error sia kns cannot get rs.");
 			rd.forward(request, response);
