@@ -6,6 +6,7 @@
     	random.nextBytes(token);
     	String tokenString = Base64.getEncoder().encodeToString(token);
     	session.setAttribute("logintoken", tokenString);
+    	String lastpage = (String) (session.getAttribute("lastpage") == null ? "." : session.getAttribute("lastpage"));
     %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -17,6 +18,7 @@
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
+<% session.setAttribute("lastpage", lastpage); %>
 <div class="container main-content">
 	<% if (session.getAttribute("error") != null) {%>
 	<div class="alert alert-danger" role="alert">

@@ -50,6 +50,7 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		String lastPage = (String) (session.getAttribute("lastpage") == null ? "." : session.getAttribute("lastpage"));
 		if (request.getParameter("logintoken") == null || session.getAttribute("logintoken") == null 
 				|| !((String) session.getAttribute("logintoken")).equals(request.getParameter("logintoken"))) {
 			request.getSession().setAttribute("error", "Session has expired. Please try again.");
@@ -76,7 +77,7 @@ public class Login extends HttpServlet {
 				} else {
 					session.invalidate();
 					request.getSession().setAttribute("user", user);
-					response.sendRedirect(".");
+					response.sendRedirect(lastPage);
 				}
 			}
 			

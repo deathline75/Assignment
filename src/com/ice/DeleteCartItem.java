@@ -43,20 +43,19 @@ public class DeleteCartItem extends HttpServlet {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
 		int cartid = Integer.parseInt(request.getParameter("shopCartId"));
-		System.out.println(cartid);
 		CRUDCartItem db = new CRUDCartItem();
 		HttpSession session = request.getSession();
 		ArrayList<ShopCartItem> items = (ArrayList<ShopCartItem>) session.getAttribute("cartitems");
 		
 		if(db.deleteItem(cartid) != true){
-			request.setAttribute("error", "delete failed.No rows deleted");
-			RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");  
-			rd.forward(request,response);
+			request.setAttribute("error", "Delete failed. No rows deleted");
+			response.sendRedirect("cart.jsp");
 			return;
 		}
 		
 		for(ShopCartItem item : items){
 			if(item.getShopcartID() == cartid){
+				session.setAttribute("success", "Deleted: " + item.getGame().getTitle());
 				items.remove(item);
 				break;
 			}

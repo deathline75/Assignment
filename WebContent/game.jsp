@@ -82,7 +82,7 @@
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
-<div class="container main-content" style="padding: 30px 0">
+<div class="container main-content" style="margin-top: 30px">
 
 	<% if (session.getAttribute("error") != null) {%>
 	<div class="alert alert-danger" role="alert">
@@ -123,36 +123,36 @@
 			<div class="btn-toolbar pull-right">
 			<%if(user != null){ %>
 				<!-- <div class="btn-group platforms" data-toggle="buttons"></div> -->
-			     <form action="AddCartItem" method="post" id="AddCartItem" class="btn-group platforms" data-toggle="buttons">
-      				<input type="hidden" name="gameid" value="<%=gameid%>">
-      				<input type="text" class="form-control" placeholder="Qty" id="qty" name="quantity" value="0" style="display: block">
-      			</form>
-				
-				<div class="input-group" style="width: 150px">
-      				<div class="input-group-btn">
-        				<button class="btn btn-default" type="button" onclick="changeQty(-1)"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span>&nbsp;</button>
-      				</div>
-      				<div class="input-group-btn">
-        				<button class="btn btn-default" type="button" onclick="changeQty(1)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;</button>
-      				</div>
-				</div>
-				<div class="btn-group" style="display:block" data-toggle="tooltip" data-placement="right" title="Coming Soon">
-				<form action="PurchaseItem" method="post">
-				<input type="hidden" name="gameid" value="<%=gameid%>">
-				<%-- <input type="hidden" name="userid" value="<%=user.getId()%>"> --%>
-  					<button type="submit" class="btn btn-success" id="buy">Buy New</button>
-					<button type="submit" class="btn btn-info" form="AddCartItem">Add to Cart</button>
-					<button type="button" class="btn btn-default price">$??.??</button>
-				
-				</form>
-				</div>
-				<%} else{%>
+				<form action="AddCartItem" method="post" id="AddCartItem">
+					<div class="btn-group platforms" data-toggle="buttons" style="margin-right: 20px">
+					</div>
+					
+					<input type="hidden" name="gameid" value="<%=gameid%>">
+      				<div class="input-group" style="width: 150px;margin-right: 20px">
+      					<div class="input-group-btn">
+        					<button class="btn btn-default" type="button" onclick="changeQty(-1)"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span>&nbsp;</button>
+      					</div>
+      					<input type="text" class="form-control" placeholder="Qty" id="qty" name="quantity" value="0" style="display: block">
+      					<div class="input-group-btn">
+	        				<button class="btn btn-default" type="button" onclick="changeQty(1)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;</button>
+    	  				</div>
+					</div>
+					
+					<div class="input-group">
+						<input type="hidden" name="gameid" value="<%=gameid%>">
+  						<!-- <button type="submit" class="btn btn-success" id="buy">Buy New</button> -->
+						<span class="input-group-addon price" id="basic-addon2" style="width:auto">$??.??</span>
+						<button type="submit" class="btn btn-success" id="buy">Add to Cart (New)</button>
+					</div>
+					
+				</form>				
+			<%} else{%>
 				<div class="btn-group platforms" data-toggle="buttons"></div>
-				<div class="btn-group" style="display:block" data-toggle="tooltip" data-placement="right" title="Click to login!">
-					<a href= "login.jsp" class="btn btn-success" role="button" id="buy">Buy New</a>
-					<button type="button" class="btn btn-default price">$??.??</button>
-				</div>
-				<%} %>
+					<div class="input-group">
+						<span class="input-group-addon price" id="basic-addon2" style="width:auto">$??.??</span>
+						<button type="submit" class="btn btn-success" id="buy">Add to Cart (New)</button>
+					</div>
+			<%} %>
 			</div>
 		</div>
 	</div>
@@ -242,7 +242,7 @@
 				}
 				// Change some visuals if the game is preowned
 				if (gamedata.preowned) {
-					$('#buy').text('Buy Preowned');
+					$('#buy').text('Add to Cart (Preowned)');
 					$('#buy').removeClass('btn-success');
 					$('#buy').addClass('btn-warning');
 					$("#addcomment").css("display","none");

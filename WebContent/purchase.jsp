@@ -32,20 +32,33 @@
 				<tr>
 					<th>Game Title</th>
 					<th>Price</th>
-					<th>Quantity</th>
+					<th style="text-align:right;">Quantity</th>
+					<th style="text-align:right;">Total</th>
 				</tr>
 			</thead>
 			<tbody>
 				<%
-				
+					double totalCost = 0;
 					for (ShopCartItem item : (ArrayList<ShopCartItem>) session.getAttribute("cartitems")) {
+						double cost = item.getQuantity() * item.getGame().getPrice();
+						totalCost += cost;
 				%>
+				<tr>
 					<td><%= item.getGame().getTitle() %></td>
 					<td><%= String.format("$%.2f", item.getGame().getPrice()) %></td>
-					<td><%= item.getQuantity() %></td>
+					<td style="text-align:right;"><%= item.getQuantity() %></td>
+					<td style="text-align:right;"><%= String.format("$%.2f", cost) %></td>
 				</tr>
 				<% } %>
 			</tbody>
+			<tfoot>
+				<tr>
+					<td style="border-top-width: 2px"></td>
+					<td style="border-top-width: 2px"></td>
+					<td style="text-align:right;border-top-width: 2px"><strong>Total Cost:</strong></td>
+					<td style="text-align:right;border-top-width: 2px"><strong><span id="priceTotal" class="large-bold-red"> <%=String.format("$%.2f",totalCost) %></span></strong></td>
+				</tr>
+			</tfoot>
 		</table>
 		</div>
 		<div class="col-md-5" style="border: 1">
@@ -62,13 +75,13 @@
 				<div class="form-group">
 					<label for="inputAddr1" class="col-sm-3 control-label">Address 1: </label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" id="inputAddr1" placeholder="123 Main Street" required name="addr1" value=<%=user.getMailaddr()[0]%>>
+						<input type="text" class="form-control" id="inputAddr1" placeholder="123 Main Street" required name="addr1" value="<%=user.getMailaddr()[0]%>">
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="inputAddr2" class="col-sm-3 control-label">Address 2: </label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" id="inputAddr2" placeholder="#12-345" required name="addr2" value=<%=user.getMailaddr()[1] %>>
+						<input type="text" class="form-control" id="inputAddr2" placeholder="#12-345" required name="addr2" value="<%=user.getMailaddr()[1] %>">
 					</div>
 				</div>
 				<div class="form-group">
@@ -90,9 +103,7 @@
 				<hr />
 				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-9">
-							
-				<input type="submit" class="btn btn-default" value="Purchase">
-
+						<button type="submit" class="btn btn-success" value="Purchase"><span class="glyphicon glyphicon-shopping-cart"></span> Purchase</button>
 					</div>
 				</div>
 			</form>

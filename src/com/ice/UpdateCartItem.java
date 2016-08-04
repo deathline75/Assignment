@@ -58,16 +58,14 @@ public class UpdateCartItem extends HttpServlet {
 				
 				//replace with regex.
 				if(quantityInCart <= 0){
-					request.setAttribute("error",item.getGame().getTitle() + " update cart failed you ented an invalid number");
-					RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");  
-					rd.forward(request,response);
+					session.setAttribute("error",item.getGame().getTitle() + " update cart failed you ented an invalid number");
+					response.sendRedirect("cart.jsp");
 					return;
 				}
 				
 				if(quantityInCart > (item.getGame().getQuantity())){
-					request.setAttribute("error",item.getGame().getTitle() + " update cart failed, because there's only " + item.getGame().getQuantity() + "in the stock ");
-					RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");  
-					rd.forward(request,response);
+					session.setAttribute("error", item.getGame().getTitle() + " update cart failed, because there's only " + item.getGame().getQuantity() + "in the stock ");
+					response.sendRedirect("cart.jsp");
 					return;
 				}
 				item.setQuantity(quantityInCart);
@@ -75,6 +73,7 @@ public class UpdateCartItem extends HttpServlet {
 
 		}
 		if(request.getParameter("action").equals("Update")){
+			session.setAttribute("success","Updated all the relevant quantities");
 			response.sendRedirect("cart.jsp");
 		}
 		else{
