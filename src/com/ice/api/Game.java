@@ -29,6 +29,12 @@ public class Game {
 			boolean preowned, boolean supportWin, boolean supportMac, boolean supportXbox, boolean supportLinux,
 			boolean supportPs4, boolean supportWiiu,int quantity) {
 		super();
+		updateGame(id, title, company, releaseDate,description,price,imgLocation,preowned,supportWin,supportMac,supportXbox,supportLinux,supportPs4,supportWiiu,quantity);
+	}
+	
+	public void updateGame(int id, String title, String company, Timestamp releaseDate, String description, double price, String imgLocation,
+			boolean preowned, boolean supportWin, boolean supportMac, boolean supportXbox, boolean supportLinux,
+			boolean supportPs4, boolean supportWiiu,int quantity) {
 		this.id = id;
 		this.title = title;
 		this.company = company;
@@ -165,6 +171,15 @@ public class Game {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	@Override
+	public String toString() {
+		return "Game [id=" + id + ", title=" + title + ", company=" + company + ", releaseDate=" + releaseDate
+				+ ", description=" + description + ", price=" + price + ", imgLocation=" + imgLocation + ", preowned="
+				+ preowned + ", supportWin=" + supportWin + ", supportMac=" + supportMac + ", supportXbox="
+				+ supportXbox + ", supportLinux=" + supportLinux + ", supportPs4=" + supportPs4 + ", supportWiiu="
+				+ supportWiiu + ", quantity=" + quantity + "]";
 	}
 	
 	

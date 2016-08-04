@@ -64,7 +64,9 @@
 				<hr />
 				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-9">
-						<button type="submit" class="btn btn-default" id="btnRegister">Purchase</button>
+							<form action="PurchaseItems" method="post">
+								<input type="submit" class="btn btn-default" value="Purchase">
+							</form>
 					</div>
 				</div>
 			</form>

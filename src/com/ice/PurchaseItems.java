@@ -2,6 +2,7 @@ package com.ice;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -54,27 +55,50 @@ public class PurchaseItems extends HttpServlet {
 		}
 
 		ArrayList<ShopCartItem> items = (ArrayList<ShopCartItem>) session.getAttribute("cartitems");
-		CRUDCartItem dbitem = new CRUDCartItem();
-
+		CRUDTransaction dbPurchase = new CRUDTransaction();
+		CRUDCartItem dbCart = new CRUDCartItem();  
 		for (ShopCartItem item : items) {
+			
+			int quantityInCart = Integer.parseInt(request.getParameter("qty-" + item.getShopcartID()));
+			
+			//replace with regex.
+			if(quantityInCart <= 0){
+				request.setAttribute("error",item.getGame().getTitle() + " update cart failed you ented an invalid number");
+				RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");  
+				rd.forward(request,response);
+				return;
+			}
+			
 			// Validate . see if the updated cart quantity(sum of quantity
 			// regardless on what platform) can be lower than the game quantity.
-			if (dbitem.getTotalQuantityAcrossPlatforms(user, item.getGame()) > item.getGame().getQuantity()) {
+			if (item.getQuantity() > item.getGame().getQuantity()) {
 				request.setAttribute("error", item.getGame().getTitle() + " Purchase failed. Quantity not enough. ");
 				RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");
 				rd.forward(request, response);
 				return;
 			}
-			request.setAttribute("error", item.getGame().getTitle() + " Purchase failed. Quantity not enough. ");
+
+			item.setQuantity(quantityInCart);
+			dbCart.updateItem(item);
+
+		}
+		
+		if(dbPurchase.insertTransaction(user, items, "CHEN QIURONG", 4888888888888888L, 888, "sigh,fail", "fail harder") == null){
+			request.setAttribute("error", "Purchase Failed");
 			RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");
 			rd.forward(request, response);
 			return;
-		
-			
-			//Insert shits here
-			
-
 		}
+		
+		//Delete CartItems here
+		Iterator<ShopCartItem> i = items.iterator();
+		while (i.hasNext()) {
+		   ShopCartItem item = i.next();
+		   i.remove();
+		   dbCart.deleteItem(item.getShopcartID());
+		}
+		
+		response.sendRedirect("purchase.jsp");
 
 	}
 

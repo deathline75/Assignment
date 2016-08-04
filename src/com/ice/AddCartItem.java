@@ -62,7 +62,6 @@ public class AddCartItem extends HttpServlet {
 			ArrayList<ShopCartItem> shopCartItems = null;
 			CRUDCartItem dbItem = new CRUDCartItem();
 			
-			
 			// Check if the item on the same platform exist in shop cart already, if yes, update the quantity ONLY and return.
 			if (session.getAttribute("cartitems") != null) {
 				shopCartItems = (ArrayList<ShopCartItem>) session.getAttribute("cartitems");

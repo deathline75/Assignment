@@ -137,7 +137,7 @@ public class connectToMysql {
      * @return The ResultSet with the auto-generated key
      * @deprecated Unusable. :(
      */
-    @Deprecated
+    
     public ResultSet preparedUpdateAutoKey(String sql, Object... values) {
     	try {
 			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);		

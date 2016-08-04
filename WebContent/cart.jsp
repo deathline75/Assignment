@@ -44,15 +44,14 @@
 			<tbody>
 				<%
 			if (session.getAttribute("cartitems") != null) {
-				System.out.println("----");
 				for (ShopCartItem it : (ArrayList<ShopCartItem>) session.getAttribute("cartitems")) {
-					System.out.println(it.getGame().getTitle() + ": " + it.getQuantity());
+					/* System.out.println(it.getGame().getTitle() + ": " + it.getQuantity()); */
 				%>
 				<tr>
 					<td><input class="check-one check" type="checkbox" name="shopCartId" value="<%=it.getShopcartID() %>" /></td>
 					<td class="goods"><label><%= it.getGame().getTitle()%></label></td>
 					<td class="number small-bold-red"><span><%= it.getGame().getPrice()%></span></td>
-					<td class="input-group"><span class="input-group-addon minus">-</span>				
+					<td class="input-group"><span class="input-group-addon minus">-</span>
 						<input type="text" class="number form-control input-sm" name="qty-<%=it.getShopcartID()%>" value="<%=it.getQuantity() %>" >
 						<span class="input-group-addon plus">+</span></td>
 						<td class="platforms"><label><%= it.getPlatform()%></label></td>
@@ -65,10 +64,11 @@
 						</td>
 				</tr>
 				<%
-								}
+				}
 			}
 		%>
-		<input type="submit" value="update">
+		<input type="submit" value="Update" name="action">
+		<input type="submit" value="Purchase" name="action">
 			</tbody>
 		</table>
 			</form>
@@ -88,9 +88,7 @@
 					<div class="pull-right selected" id="selected">
 						<span id="selectedTotal"></span>
 					</div>
-						<form action="PurchaseItems" method="post">
-							<input type="submit" value="purchase">
-						</form>
+					<a href="purchase.jsp" class="btn btn-success">Checkout</a>
 				</div>
 			</div>
 		</div>

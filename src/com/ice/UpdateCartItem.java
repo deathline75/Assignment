@@ -74,8 +74,12 @@ public class UpdateCartItem extends HttpServlet {
 				db.updateItem(item);
 
 		}
-		
-		response.sendRedirect("cart.jsp");
+		if(request.getParameter("action").equals("Update")){
+			response.sendRedirect("cart.jsp");
+		}
+		else{
+			response.sendRedirect("purchase.jsp");
+		}
 
 	}
 
