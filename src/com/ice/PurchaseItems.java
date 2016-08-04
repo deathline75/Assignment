@@ -46,7 +46,7 @@ public class PurchaseItems extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// Update
+
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 
@@ -59,10 +59,9 @@ public class PurchaseItems extends HttpServlet {
 		CRUDCartItem dbCart = new CRUDCartItem();  
 		for (ShopCartItem item : items) {
 			
-			int quantityInCart = Integer.parseInt(request.getParameter("qty-" + item.getShopcartID()));
-			
+		
 			//replace with regex.
-			if(quantityInCart <= 0){
+			if(item.getQuantity() <= 0){
 				request.setAttribute("error",item.getGame().getTitle() + " update cart failed you ented an invalid number");
 				RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");  
 				rd.forward(request,response);
@@ -73,17 +72,18 @@ public class PurchaseItems extends HttpServlet {
 			// regardless on what platform) can be lower than the game quantity.
 			if (item.getQuantity() > item.getGame().getQuantity()) {
 				request.setAttribute("error", item.getGame().getTitle() + " Purchase failed. Quantity not enough. ");
-				RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher("purchase.jsp");
 				rd.forward(request, response);
 				return;
 			}
 
-			item.setQuantity(quantityInCart);
-			dbCart.updateItem(item);
-
 		}
 		
-		if(dbPurchase.insertTransaction(user, items, "CHEN QIURONG", 4888888888888888L, 888, "sigh,fail", "fail harder") == null){
+		java.util.Date date = new java.util.Date();
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentTime = sdf.format(date);
+		
+		if(dbPurchase.insertTransaction(user, items, "CHEN QIURONG", 4888888888888888L, 888, "sigh,fail", "fail harder",currentTime) == null){
 			request.setAttribute("error", "Purchase Failed");
 			RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");
 			rd.forward(request, response);

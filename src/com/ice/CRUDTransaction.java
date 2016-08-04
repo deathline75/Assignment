@@ -17,9 +17,9 @@ public class CRUDTransaction {
 		connection = new connectToMysql(MyConstants.url);
 	}
 
-	public Transaction insertTransaction(User user,ArrayList<ShopCartItem> items,String cardHolderName,long creditCardNumber,int cvv,String mailaddr1,String mailaddr2) {
+	public Transaction insertTransaction(User user,ArrayList<ShopCartItem> items,String cardHolderName,long creditCardNumber,int cvv,String mailaddr1,String mailaddr2,String date) {
 		
-		ResultSet key = connection.preparedUpdateAutoKey("insert into transaction(userid,cardholdername,creditcardnumber,cvv,mailaddr1,mailaddr2) values(?,?,?,?,?,?)",user.getId(),cardHolderName,creditCardNumber,cvv,mailaddr1,mailaddr2);
+		ResultSet key = connection.preparedUpdateAutoKey("insert into transaction(userid,cardholdername,creditcardnumber,cvv,mailaddr1,mailaddr2,date) values(?,?,?,?,?,?,?)",user.getId(),cardHolderName,creditCardNumber,cvv,mailaddr1,mailaddr2,date);
 		try {
 			while(key.next()){
 				
@@ -35,7 +35,7 @@ public class CRUDTransaction {
 						dbGame.close();
 					}
 				}
-				return new Transaction(generatedKey,user, boughtItems, cardHolderName, creditCardNumber, cvv, new String[]{mailaddr1, mailaddr2});	
+				return new Transaction(generatedKey,user, boughtItems, cardHolderName, creditCardNumber, cvv, new String[]{mailaddr1, mailaddr2},date);	
 			}
 			
 		} catch (SQLException e) {

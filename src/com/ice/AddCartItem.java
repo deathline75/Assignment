@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.ice.api.*;
 
 
@@ -42,7 +44,9 @@ public class AddCartItem extends HttpServlet {
 	}
 
 	private boolean checkInput(HttpServletRequest request) {
-			return request.getParameter("gameid") != null && !request.getParameter("gameid").isEmpty();
+			return request.getParameter("gameid") != null && !request.getParameter("gameid").isEmpty()
+					&& request.getParameter("platforms") != null && !request.getParameter("platforms").isEmpty()
+					&& request.getParameter("quantity") != null && !request.getParameter("quantity").isEmpty() && Integer.parseInt(request.getParameter("quantity")) > 0;
 	}
 
 	/**
@@ -51,13 +55,12 @@ public class AddCartItem extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		String gameid = request.getParameter("gameid");
-		User user = (User) session.getAttribute("user");
-		int quantity = Integer.parseInt(request.getParameter("quantity"));
-		String platform = request.getParameter("platforms");
+		String gameid = StringEscapeUtils.escapeHtml4(request.getParameter("gameid"));
 		if (checkInput(request)) {
+			User user = (User) session.getAttribute("user");
+			int quantity = Integer.parseInt(request.getParameter("quantity"));
+			String platform = request.getParameter("platforms");
 			
 			ArrayList<ShopCartItem> shopCartItems = null;
 			CRUDCartItem dbItem = new CRUDCartItem();
@@ -105,9 +108,8 @@ public class AddCartItem extends HttpServlet {
 			response.sendRedirect("cart.jsp");
 			
 		} else {
-			RequestDispatcher rd = request.getRequestDispatcher("game.jsp?id=" + gameid);
-			System.out.println("error sia kns cannot get rs.");
-			rd.forward(request, response);
+			session.setAttribute("error", "Select your platform and add at least 1 game!");
+			response.sendRedirect("game.jsp?id=" + gameid);
 		}
 	}
 

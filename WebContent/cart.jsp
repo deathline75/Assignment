@@ -7,6 +7,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+
+	<script>
+	function changeQty(amount,inputid) {
+		if (isNaN(parseInt($(inputid).val())) || (parseInt($(inputid).val()) <= 0 && amount <= 0) || parseInt($(inputid).val()) < 0)
+			$(inputid).val(0)
+		else
+			$(inputid).val(parseInt($(inputid).val()) + amount);
+	}
+	</script>
 <%@ include file="head.html"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>| SP Games Store</title>
@@ -43,17 +52,24 @@
 			</thead>
 			<tbody>
 				<%
+
+				double total = 0;
 			if (session.getAttribute("cartitems") != null) {
 				for (ShopCartItem it : (ArrayList<ShopCartItem>) session.getAttribute("cartitems")) {
+					total += it.getQuantity() * it.getGame().getPrice();
 					/* System.out.println(it.getGame().getTitle() + ": " + it.getQuantity()); */
 				%>
 				<tr>
 					<td><input class="check-one check" type="checkbox" name="shopCartId" value="<%=it.getShopcartID() %>" /></td>
 					<td class="goods"><label><%= it.getGame().getTitle()%></label></td>
-					<td class="number small-bold-red"><span><%= it.getGame().getPrice()%></span></td>
+					<td class="number small-bold-red"><span><%= String.format("$%.2f",it.getGame().getPrice())%></span></td>
 					<td class="input-group"><span class="input-group-addon minus">-</span>
-						<input type="text" class="number form-control input-sm" name="qty-<%=it.getShopcartID()%>" value="<%=it.getQuantity() %>" >
-						<span class="input-group-addon plus">+</span></td>
+						<input type="number" class="number form-control input-sm qty" id="qty-<%=it.getShopcartID()%>" name="qty-<%=it.getShopcartID()%>" value="<%=it.getQuantity() %>" >
+						<div class="input-group-btn">
+        					<button class="btn btn-default" type="button" onclick="changeQty(1,'#qty-<%=it.getShopcartID()%>')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;</button>
+      					</div>
+						
+					</td>
 						<td class="platforms"><label><%= it.getPlatform()%></label></td>
 					<td class="subtotal number small-bold-red">101</td>
 						<td class="operation">
@@ -77,13 +93,7 @@
 				<div style="border-top: 1px solid gray; padding: 4px 10px;">
 					<div style="margin-left: 20px;" class="pull-right total">
 						<label>Total:<span class="currency">$</span><span
-							id="priceTotal" class="large-bold-red">0.00</span></label>
-					</div>
-					<div class="pull-right">
-						<label>Selected<span id="itemCount" class="large-bold-red"
-							style="margin: 0 4px;"></span>x Items .Total<span id="qtyCount"
-							class="large-bold-red" style="margin: 0 4px;"></span> x Games
-						</label>
+							id="priceTotal" class="large-bold-red"> <%=String.format("%.2f",total) %></span></label>
 					</div>
 					<div class="pull-right selected" id="selected">
 						<span id="selectedTotal"></span>

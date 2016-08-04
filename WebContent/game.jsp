@@ -83,6 +83,13 @@
 <body>
 <%@ include file="navbar.jsp"%>
 <div class="container main-content" style="padding: 30px 0">
+
+	<% if (session.getAttribute("error") != null) {%>
+	<div class="alert alert-danger" role="alert">
+		<strong>Error!</strong> <%= session.getAttribute("error") %>
+	</div>
+	<% session.removeAttribute("error");} %>
+	
 	<div class="row">
 		<div id="jumbo" class="col-sm-8">
 			<img src="http://placehold.it/1920x1080?text=No+Image+Available" alt="..." class="img-responsive"/>
@@ -305,9 +312,6 @@
 	
 </script>
 
-<script>
-
-</script>
 
 
 </body>

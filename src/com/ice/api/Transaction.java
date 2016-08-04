@@ -1,5 +1,6 @@
 package com.ice.api;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class Transaction {
@@ -11,9 +12,10 @@ public class Transaction {
 	private long creditCardNumber;
 	private int creditCardCVV;
 	private String[] mailaddr;
+	private String date;
 
 	public Transaction(int transactionid, User user, ArrayList<TransactionDetail> items, String creditCardHolder,
-			long creditCardNumber, int creditCardCVV, String[] mailaddr) {
+			long creditCardNumber, int creditCardCVV, String[] mailaddr,String date) {
 		super();
 		this.transactionid = transactionid;
 		this.user = user;
@@ -22,8 +24,19 @@ public class Transaction {
 		this.creditCardNumber = creditCardNumber;
 		this.creditCardCVV = creditCardCVV;
 		this.mailaddr = mailaddr;
+		this.date = date;
+
 	}
 
+	
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
 	public int getTransactionid() {
 		return transactionid;
 	}
@@ -123,5 +136,6 @@ public class Transaction {
 		}
 		
 	}
+
 	
 }
