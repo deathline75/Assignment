@@ -16,6 +16,13 @@
 		}
 	%>
 	
+	<% if (session.getAttribute("error") != null) {%>
+	<div class="alert alert-danger" role="alert">
+		<strong>Error!</strong> <%= session.getAttribute("error") %>
+	</div>
+	<% session.removeAttribute("error");} %>
+	
+	
 
 <div class="container main-content">
 	<h1>Confirmation Page</h1>

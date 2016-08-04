@@ -23,19 +23,18 @@
 <body>
 	<div class="container main-content">
 		<%@ include file="navbar.jsp"%>
-		<%if(request.getAttribute("error")!=null){
-			System.out.println("hello!!");
-			%>
-		<div class="panel panel-default">
-    		<div class="panel-heading">Error</div>
-    		<div class="panel-body"><%=request.getAttribute("error") %></div>
-		</div>
-		<% }%>
 		
 		<%
 			if(user == null){
 			response.sendRedirect("login.jsp");
 		} %>
+		
+	<% if (session.getAttribute("error") != null) {%>
+		<div class="alert alert-danger" role="alert">
+			<strong>Error!</strong> <%= session.getAttribute("error") %>
+		</div>
+	<% session.removeAttribute("error");} %>
+	
 			
 			
 		<form action="UpdateCartItem" method="post">
@@ -63,7 +62,10 @@
 					<td><input class="check-one check" type="checkbox" name="shopCartId" value="<%=it.getShopcartID() %>" /></td>
 					<td class="goods"><label><%= it.getGame().getTitle()%></label></td>
 					<td class="number small-bold-red"><span><%= String.format("$%.2f",it.getGame().getPrice())%></span></td>
-					<td class="input-group"><span class="input-group-addon minus">-</span>
+					<td class="input-group">
+						<div class="input-group-btn">
+        					<button class="btn btn-default" type="button" onclick="changeQty(-1,'#qty-<%=it.getShopcartID()%>')"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span>&nbsp;</button>
+      					</div>
 						<input type="number" class="number form-control input-sm qty" id="qty-<%=it.getShopcartID()%>" name="qty-<%=it.getShopcartID()%>" value="<%=it.getQuantity() %>" >
 						<div class="input-group-btn">
         					<button class="btn btn-default" type="button" onclick="changeQty(1,'#qty-<%=it.getShopcartID()%>')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;</button>
