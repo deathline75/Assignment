@@ -32,8 +32,8 @@ public class DeleteCartItem extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.sendRedirect(".");
+		response.getWriter().append("You are not supposed to be here. Use POST to send data to this page.").close();
 	}
 
 	/**
@@ -41,17 +41,25 @@ public class DeleteCartItem extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//doGet(request, response);
+
+		HttpSession session = request.getSession();
+		if (request.getParameter("shopCartId") == null || request.getParameter("shopCartId").isEmpty() || !request.getParameter("shopCartId").matches("^\\d+$")) {
+			session.setAttribute("error", "Failed to delete Shop Cart Item. Try again later.");
+			response.sendRedirect("cart.jsp");
+			return;
+		} 
+		
 		int cartid = Integer.parseInt(request.getParameter("shopCartId"));
 		CRUDCartItem db = new CRUDCartItem();
-		HttpSession session = request.getSession();
 		ArrayList<ShopCartItem> items = (ArrayList<ShopCartItem>) session.getAttribute("cartitems");
 		
-		if(db.deleteItem(cartid) != true){
+		if(!db.deleteItem(cartid)){
 			request.setAttribute("error", "Delete failed. No rows deleted");
 			response.sendRedirect("cart.jsp");
 			return;
 		}
+		
+		db.close();
 		
 		for(ShopCartItem item : items){
 			if(item.getShopcartID() == cartid){

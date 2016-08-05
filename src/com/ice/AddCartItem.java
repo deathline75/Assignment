@@ -37,26 +37,26 @@ public class AddCartItem extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect(".");
+		response.getWriter().append("You are not supposed to be here. Use POST to send data to this page.").close();
 	}
 
 	private boolean checkInput(HttpServletRequest request) {
-			return request.getParameter("gameid") != null && !request.getParameter("gameid").isEmpty()
+			return request.getParameter("gameid") != null && !request.getParameter("gameid").isEmpty() && request.getParameter("gameid").matches("^\\d+$")
 					&& request.getParameter("platforms") != null && !request.getParameter("platforms").isEmpty()
-					&& request.getParameter("quantity") != null && !request.getParameter("quantity").isEmpty() && Integer.parseInt(request.getParameter("quantity")) > 0;
+					&& request.getParameter("quantity") != null && !request.getParameter("quantity").isEmpty() 
+					&& request.getParameter("quantity").matches("^\\d+$") && Integer.parseInt(request.getParameter("quantity")) > 0;
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String gameid = StringEscapeUtils.escapeHtml4(request.getParameter("gameid"));
+		
 		if (checkInput(request)) {
 			User user = (User) session.getAttribute("user");
 			int quantity = Integer.parseInt(request.getParameter("quantity"));

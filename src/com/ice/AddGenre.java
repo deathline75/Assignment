@@ -34,6 +34,8 @@ public class AddGenre extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect(".");
+		response.getWriter().append("You are not supposed to be here. Use POST to send data to this page.").close();
 	}
 
 	/**

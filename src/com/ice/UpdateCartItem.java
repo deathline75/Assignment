@@ -54,11 +54,16 @@ public class UpdateCartItem extends HttpServlet {
 
 		
 		for (ShopCartItem item: items) {
+			if (request.getParameter("qty-" + item.getShopcartID()) == null || request.getParameter("qty-" + item.getShopcartID()).isEmpty() || !request.getParameter("qty-" + item.getShopcartID()).matches("^\\d+$")) {
+				session.setAttribute("error",item.getGame().getTitle() + ": Update cart failed because you entered an invalid number");
+				response.sendRedirect("cart.jsp");
+				return;
+			} else {
 				int quantityInCart = Integer.parseInt(request.getParameter("qty-" + item.getShopcartID()));
 				
 				//replace with regex.
 				if(quantityInCart <= 0){
-					session.setAttribute("error",item.getGame().getTitle() + " update cart failed you ented an invalid number");
+					session.setAttribute("error",item.getGame().getTitle() + ": Update cart failed because you entered an invalid number");
 					response.sendRedirect("cart.jsp");
 					return;
 				}
@@ -70,7 +75,7 @@ public class UpdateCartItem extends HttpServlet {
 				}
 				item.setQuantity(quantityInCart);
 				db.updateItem(item);
-
+			}
 		}
 		if(request.getParameter("action").equals("Update")){
 			session.setAttribute("success","Updated all the relevant quantities");

@@ -37,18 +37,16 @@ public class PurchaseItems extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect(".");
+		response.getWriter().append("You are not supposed to be here. Use POST to send data to this page.").close();
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
 
@@ -59,14 +57,13 @@ public class PurchaseItems extends HttpServlet {
 		
 		User user = (User) session.getAttribute("user");
 		
-		
 		if (request.getParameter("name") == null || request.getParameter("name").isEmpty()
-				|| request.getParameter("ccnumb") == null || request.getParameter("ccnumb").isEmpty()
-				|| request.getParameter("CVV") == null || request.getParameter("CVV").isEmpty() 
+				|| request.getParameter("ccnumb") == null || request.getParameter("ccnumb").isEmpty() || !request.getParameter("ccnumb").matches("^\\d{16}$")
+				|| request.getParameter("CVV") == null || request.getParameter("CVV").isEmpty() || !request.getParameter("CVV").matches("^\\d{3}$")
 				|| request.getParameter("addr1") == null || request.getParameter("addr1").isEmpty()
 				|| request.getParameter("addr2") == null || request.getParameter("addr2").isEmpty() 
-				|| request.getParameter("contact") == null || request.getParameter("contact").isEmpty()) {
-			session.setAttribute("error", "Please fill in all the fields.");
+				|| request.getParameter("contact") == null || request.getParameter("contact").isEmpty() || !request.getParameter("contact").matches("^\\d{8}$")) {
+			session.setAttribute("error", "Please fill in all the fields with the appropriate data.");
 			response.sendRedirect("purcahse.jsp");
 			return;
 		}
@@ -78,10 +75,9 @@ public class PurchaseItems extends HttpServlet {
 		double totalCost = 0;
 		for (ShopCartItem item : items) {
 			
-		
 			//replace with regex.
 			if(item.getQuantity() <= 0){
-				session.setAttribute("error",item.getGame().getTitle() + " update cart failed you ented an invalid number");
+				session.setAttribute("error", item.getGame().getTitle() + " update cart failed you ented an invalid number");
 				response.sendRedirect("cart.jsp");
 				return;
 			}
@@ -89,7 +85,7 @@ public class PurchaseItems extends HttpServlet {
 			// Validate . see if the updated cart quantity(sum of quantity
 			// regardless on what platform) can be lower than the game quantity.
 			if (item.getQuantity() > item.getGame().getQuantity()) {
-				session.setAttribute("error", item.getGame().getTitle() + " Purchase failed. Quantity not enough. ");
+				session.setAttribute("error", item.getGame().getTitle() + ": Purchase failed as we are out of stock for this game.");
 				response.sendRedirect("cart.jsp");
 				return;
 			}
@@ -101,7 +97,6 @@ public class PurchaseItems extends HttpServlet {
 		java.util.Date date = new java.util.Date();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(date);
-		
 		
 		//Get parameters here to dump into the database!
 		
