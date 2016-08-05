@@ -45,7 +45,7 @@ public class CRUDGame {
 	
 	public boolean updateQuantity(int gameid,int quantity) {
 		
-		if (connection.preparedUpdate("update game set quantity=? where gameid=?",quantity,gameid) != -1)
+		if (connection.preparedUpdate("update game set qty=? where gameid=?",quantity,gameid) != -1)
 			return true;
 		return false;
 	}

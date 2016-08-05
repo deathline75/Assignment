@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ice.crud.CRUDGame;
+import com.ice.crud.*;
 
 /**
  * Servlet implementation class EditStock
@@ -47,7 +47,7 @@ public class EditStock extends HttpServlet {
 			int gameid = Integer.parseInt(request.getParameter("gameid"));
 			int quantity = Integer.parseInt(request.getParameter("quantity"));
 			CRUDGame dbGame = new CRUDGame();
-			HttpSession session = request.getSession();
+
 			if(dbGame.updateQuantity(gameid, quantity)){
 				
 			}

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="com.ice.*, java.sql.*, java.util.*, com.ice.api.*,com.ice.crud.*" %>
+	pageEncoding="UTF-8" import="com.ice.crud.*, java.sql.*,java.util.*, com.ice.util.*, com.ice.api.*" %>
 <%
 	if (session.getAttribute("username") == null)
 		response.sendRedirect("login.jsp");
@@ -108,4 +108,5 @@
 	} 
 </script>
 </body>
+</html></body>
 </html>
