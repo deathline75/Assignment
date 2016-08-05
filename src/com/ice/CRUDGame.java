@@ -41,6 +41,13 @@ public class CRUDGame {
 		return false;
 	}
 	
+	public boolean updateQuantity(int gameid,int quantity) {
+		
+		if (connection.preparedUpdate("update game set quantity=? where gameid=?",quantity,gameid) != -1)
+			return true;
+		return false;
+	}
+	
 	public Game getGame(int gameid) {
 		ResultSet rs = connection.preparedQuery("SELECT * FROM game WHERE gameid=?", gameid);
 		try {

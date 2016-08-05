@@ -46,12 +46,66 @@
 					<td><%= g.getId() %></td>
 					<td><%= g.getTitle() %></td>
 					<td><%= String.format("$%.2f", g.getPrice()) %></td>
-					<td><%= g.getQuantity() %></td>
+					<td uid="<%=g.getId()%>"><%= g.getQuantity() %></td>
 				</tr>
 				<% } %>
 			</tbody>
 		</table>
 	</div>
 	<%@ include file="../footer.html"%>
+	
+	<script>
+	
+	function changeTotext(obj) //2
+	{ 
+	    var tdValue = obj.innerText; 
+	    obj.innerText = ""; 
+	    var txt = document.createElement("input"); 
+	    txt.type = "text"; 
+	    txt.value = tdValue; 
+	    txt.id = "_text_000000000_"; 
+	    txt.setAttribute("className","text"); 
+	    obj.appendChild(txt); 
+	    txt.select();
+	} 
+	function cancel(obj,tableid) //4
+	{ 
+	    var txtValue = document.getElementById("_text_000000000_").value; 
+	    obj.innerText = txtValue; 
+	    var tableid = tableid;
+	        $.ajax({
+	        	  type: "POST",
+	        	  url: "EditStock",
+	        	  data: {"gameid":tableid,
+	        			"quantity":txtValue
+
+	        	  },
+	        	  success: function(data, textStatus, jqXHR) {
+	        	    console.log("Success!!");
+	        	  }
+	        	}); 
+	  
+
+	} 
+
+	document.ondblclick = function()  //1
+	{ 
+	    if (event.srcElement.tagName.toLowerCase() == "td") 
+	    { 
+	        changeTotext(event.srcElement); 
+	    } 
+	     
+	} 
+	document.onmouseup = function() //3
+	{ 
+	    if (document.getElementById("_text_000000000_") && event.srcElement.id != "_text_000000000_") 
+	    { 
+	        var obj = document.getElementById("_text_000000000_").parentElement; 
+	        var tableid =document.getElementById("_text_000000000_").parentNode.getAttribute("uid");
+	        var tableid2 =document.getElementById("_text_000000000_").parentNode.getAttribute("uid2");
+	        cancel(obj,tableid); 
+	    }
+	} 
+</script>
 </body>
 </html>
