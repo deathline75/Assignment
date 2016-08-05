@@ -36,7 +36,7 @@ public class Settings extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.sendRedirect(".");
-		response.getWriter().append("You are not supposed to be here. Use POST to update data.").close();;
+		response.getWriter().append("You are not supposed to be here. Use POST to update data.").close();
 	}
 
 	/**

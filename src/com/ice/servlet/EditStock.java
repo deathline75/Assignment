@@ -29,13 +29,13 @@ public class EditStock extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.sendRedirect(".");
+		response.getWriter().append("You are not supposed to be here. Use POST to update data.").close();;
 	}
 	
 	private boolean checkInput(HttpServletRequest request) {
 		return request.getParameter("gameid") != null && !request.getParameter("gameid").isEmpty()
-				&& request.getParameter("quantity") != null && !request.getParameter("quantity").isEmpty();
+				&& request.getParameter("quantity") != null && !request.getParameter("quantity").isEmpty() && request.getParameter("quantity").matches("^\\d+$");
 	}
 
 	/**
@@ -49,18 +49,15 @@ public class EditStock extends HttpServlet {
 			CRUDGame dbGame = new CRUDGame();
 
 			if(dbGame.updateQuantity(gameid, quantity)){
-				
+				response.getWriter().println("Success! Updated quantity.");
+			} else {
+				response.getWriter().println("Error! Unable to update quantity. Try again later.");
 			}
-			
 			dbGame.close();
-			
-			
 		}
 		else{
-			//Print error cos no input.
+			response.getWriter().println("Error! You have entered an invalid value.");
 		}
-		
-		
 	}
 
 }

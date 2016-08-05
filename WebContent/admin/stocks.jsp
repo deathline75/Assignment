@@ -19,6 +19,15 @@
 <body>
 	<%@ include file="navbar.jsp"%>
 	<div class="container main-content">
+		<div class="alert alert-info" role="alert">
+			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Double click the Quantity field to change the quantity
+		</div>
+		<div class="alert alert-danger hidden" role="alert" id="error-message">
+			
+		</div>
+		<div class="alert alert-success hidden" role="alert" id="success-message">
+			
+		</div>
 		<h1 class="col-sm-9" style="padding: 0;">Stock Management</h1>
 		<div class="col-sm-3" style="margin: 20px 0 10px;">
 			<form class="form-inline" role="search">
@@ -81,7 +90,15 @@
 
 	        	  },
 	        	  success: function(data, textStatus, jqXHR) {
-	        	    console.log("Success!!");
+	        		  if (data.startsWith("Error!")) {
+	        			  $('#error-message').removeClass("hidden");
+	        			  $('#success-message').addClass("hidden");
+	        			  $('#error-message').text(data);
+	        		  } else {
+	        			  $('#error-message').addClass("hidden");
+	        			  $('#success-message').removeClass("hidden");
+	        			  $('#success-message').text(data);
+	        		  }
 	        	  }
 	        	}); 
 	  

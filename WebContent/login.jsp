@@ -82,13 +82,13 @@
 				<div class="form-group">
 					<label for="inputPasswordR" class="col-sm-3 control-label">Password: </label>
 					<div class="col-sm-9">
-						<input type="password" class="form-control" id="inputPasswordR" placeholder="Password" required name="password" data-toggle="tooltip" data-placement="right" title="Must contain 8 to 16 uppercase, lowercase and numbers only">
+						<input type="password" class="form-control" id="inputPasswordR" placeholder="Password" required name="password" auto-complete="new-password" data-toggle="tooltip" data-placement="right" title="Must contain 8 to 16 uppercase, lowercase and numbers only">
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="inputCfmPasswordR" class="col-sm-3 control-label">Confirm Password: </label>
 					<div class="col-sm-9">
-						<input type="password" class="form-control" id="inputCfmPasswordR" placeholder="Confirm Password" required name="cfmPassword" autocomplete="off">
+						<input type="password" class="form-control" id="inputCfmPasswordR" placeholder="Confirm Password" required name="cfmPassword" autocomplete="new-password">
 					</div>
 				</div>
 				<hr />

@@ -92,12 +92,12 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="inputContact" class="col-sm-3 control-label">Credit Card: </label>
+					<label for="inputCreditCard" class="col-sm-3 control-label">Credit Card: </label>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" id="inputCreditCard" placeholder="4628888888888888" required name="ccnumb" data-toggle="tooltip" data-placement="right" title="16 digits" autocomplete="off" maxlength="16">
+							<input type="text" class="form-control" id="inputCreditCard" placeholder="4628888888888888" required name="ccnumb" data-toggle="tooltip" data-placement="right" title="16 digits" autocomplete="cc-number" maxlength="16">
 						</div>
 						<div class="col-sm-3">
-						<input type="password" class="form-control" id="CVV" placeholder="888" required name="CVV" data-toggle="tooltip" data-placement="right" title="Must be 3 digits" autocomplete="off" maxlength="3">
+							<input type="password" class="form-control" id="CVV" placeholder="888" required name="CVV" data-toggle="tooltip" data-placement="right" title="Must be 3 digits" autocomplete="cc-csc" maxlength="3">
 						</div>
 				</div>
 				<hr />
@@ -141,13 +141,11 @@
 		matchesRegex($(this), /^\d{8}$/, null);
 	});
 	$('#inputCreditCard').on('change paste keyup', function(){
-		matchesRegex($(this), /^\d{16}$/, null);
+		matchesRegex($(this), /^\d{16}$/, $('#CVV'));
 	});
 	$('#CVV').on('change paste keyup', function(){
 		matchesRegex($(this), /^\d{3}$/, null);
 	});
-
-	
 	</script>
 </body>
 </html>

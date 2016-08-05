@@ -82,7 +82,7 @@
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
-<div class="container main-content" style="margin-top: 30px">
+<div class="container main-content">
 
 	<% if (session.getAttribute("error") != null) {%>
 	<div class="alert alert-danger" role="alert">
@@ -150,7 +150,7 @@
 				<div class="btn-group platforms" data-toggle="buttons"></div>
 					<div class="input-group">
 						<span class="input-group-addon price" id="basic-addon2" style="width:auto">$??.??</span>
-						<button type="submit" class="btn btn-success" id="buy">Add to Cart (New)</button>
+						<a class="btn btn-success" href="login.jsp" id="buy" role="button">Add to Cart (New)</a>
 					</div>
 			<%} %>
 			</div>
@@ -210,6 +210,7 @@
 <script>
 	$(document).ready(function() {
 		// Initialize all tooltips
+		
 		$(function () {
 			  $('[data-toggle="tooltip"]').tooltip()
 			})
@@ -240,6 +241,12 @@
 				} if (gamedata.supportWiiu) { 
 					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWiiu" autocomplete="off" value="wiiu"> Wii-U </label>');
 				}
+				
+				// Auto-check the platform if there is only 1 platform.
+				if ($('input[name="platforms"]').length == 1) {
+					$('input[name="platforms"]').trigger('click');
+				}
+				
 				// Change some visuals if the game is preowned
 				if (gamedata.preowned) {
 					$('#buy').text('Add to Cart (Preowned)');
