@@ -42,6 +42,7 @@
 		<div class="page-header ice-header">
 			<h1>Your Cart</h1>
 		</div>
+		<% if (session.getAttribute("cartitems") != null && !((ArrayList<ShopCartItem>) session.getAttribute("cartitems")).isEmpty()) { %>
 		<form action="DeleteCartItem" method="post" id="deleteCartItem">
 		</form>
 		<form action="UpdateCartItem" method="post">
@@ -60,7 +61,6 @@
 				<tbody>
 					<%
 					double total = 0;
-					if (session.getAttribute("cartitems") != null) {
 						for (ShopCartItem it : (ArrayList<ShopCartItem>) session.getAttribute("cartitems")) {
 							total += it.getQuantity() * it.getGame().getPrice();
 							/* System.out.println(it.getGame().getTitle() + ": " + it.getQuantity()); */
@@ -102,10 +102,7 @@
 							<%= String.format("$%.2f", it.getGame().getPrice() * it.getQuantity()) %>
 						</td>
 					</tr>
-					<%
-					}
-				}
-			%>
+				
 				</tbody>
 				<tfoot>
 					<tr>
@@ -123,6 +120,12 @@
 				<button class="btn btn-success" type="submit" value="Purchase" name="action"><span class="glyphicon glyphicon-shopping-cart"></span> Checkout</button>
 			</div>
 		</form>
+		<%
+			}
+		} else {
+		%>
+		<p>Your cart is empty!</p>
+		<% } %>
 	</div>
 	<%@ include file="footer.html"%>
 </body>

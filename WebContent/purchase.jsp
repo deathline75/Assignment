@@ -5,13 +5,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="head.html"%>
-<title>Settings | SP Games Store</title>
+<title>Confirmation Page | SP Games Store</title>
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
 	<%
 		if (user == null) {
 			response.sendRedirect("login.jsp");
+			return;
+		}
+		if (session.getAttribute("cartitems") == null || ((ArrayList<ShopCartItem>) session.getAttribute("cartitems")).isEmpty()) {
+			response.sendRedirect(".");
 			return;
 		}
 	%>
@@ -68,7 +72,7 @@
 				<div class="form-group">
 					<label for="inputName" class="col-sm-3 control-label">Name: </label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" id="inputName" placeholder="Name" required name="name" data-toggle="tooltip" data-placement="right" title="Maximum 45 alphanumberic and space characters" value=<%=user.getName() %>>
+						<input type="text" class="form-control" id="inputName" placeholder="Name" required name="name" data-toggle="tooltip" data-placement="right" title="Maximum 45 alphanumberic and space characters" value="<%=user.getName() %>">
 					</div>
 				</div>
 				<hr/>
@@ -94,10 +98,10 @@
 				<div class="form-group">
 					<label for="inputContact" class="col-sm-3 control-label">Credit Card: </label>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" id="inputCreditCard" placeholder="4628888888888888" required name="ccnumb" data-toggle="tooltip" data-placement="right" title="16 digits" >
+							<input type="text" class="form-control" id="inputCreditCard" placeholder="4628888888888888" required name="ccnumb" data-toggle="tooltip" data-placement="right" title="16 digits" autocomplete="off" maxlength="16">
 						</div>
 						<div class="col-sm-3">
-						<input type="password" class="form-control" id="CVV" placeholder="888" required name="CVV" data-toggle="tooltip" data-placement="right" title="Must be 3 digits">
+						<input type="password" class="form-control" id="CVV" placeholder="888" required name="CVV" data-toggle="tooltip" data-placement="right" title="Must be 3 digits" autocomplete="off" maxlength="3">
 						</div>
 				</div>
 				<hr />

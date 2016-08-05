@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.ice.api.ShopCartItem;
+import com.ice.api.Transaction;
 import com.ice.api.User;
 
 /**
@@ -50,15 +51,31 @@ public class PurchaseItems extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
 
-		if (user == null) {
+		if (session.getAttribute("user") == null) {
 			response.sendRedirect("login.jsp");
+			return;
 		}
+		
+		User user = (User) session.getAttribute("user");
+		
+		
+		if (request.getParameter("name") == null || request.getParameter("name").isEmpty()
+				|| request.getParameter("ccnumb") == null || request.getParameter("ccnumb").isEmpty()
+				|| request.getParameter("CVV") == null || request.getParameter("CVV").isEmpty() 
+				|| request.getParameter("addr1") == null || request.getParameter("addr1").isEmpty()
+				|| request.getParameter("addr2") == null || request.getParameter("addr2").isEmpty() 
+				|| request.getParameter("contact") == null || request.getParameter("contact").isEmpty()) {
+			session.setAttribute("error", "Please fill in all the fields.");
+			response.sendRedirect("purcahse.jsp");
+			return;
+		}
+
 
 		ArrayList<ShopCartItem> items = (ArrayList<ShopCartItem>) session.getAttribute("cartitems");
 		CRUDTransaction dbPurchase = new CRUDTransaction();
 		CRUDCartItem dbCart = new CRUDCartItem();  
+		double totalCost = 0;
 		for (ShopCartItem item : items) {
 			
 		
@@ -76,7 +93,9 @@ public class PurchaseItems extends HttpServlet {
 				response.sendRedirect("cart.jsp");
 				return;
 			}
-
+			
+			totalCost += item.getQuantity() * item.getGame().getPrice();
+			
 		}
 		
 		java.util.Date date = new java.util.Date();
@@ -91,11 +110,13 @@ public class PurchaseItems extends HttpServlet {
 		int creditCardCvv = Integer.parseInt(request.getParameter("CVV"));
 		String mailaddr1 = StringEscapeUtils.escapeHtml4(request.getParameter("addr1"));
 		String mailaddr2 = StringEscapeUtils.escapeHtml4(request.getParameter("addr2"));
-
+		int contactNo = Integer.parseInt(request.getParameter("contact"));
 		
-		if(dbPurchase.insertTransaction(user, items, creditCardHolderName, creditCardNumber, creditCardCvv, mailaddr1, mailaddr2,currentTime) == null){
-			session.setAttribute("error", "Purchase Failed");
-			response.sendRedirect("cart.jsp");
+		Transaction transaction = dbPurchase.insertTransaction(user, items, creditCardHolderName, creditCardNumber, creditCardCvv, mailaddr1, mailaddr2,currentTime,totalCost,contactNo);
+		
+		if(transaction == null){
+			session.setAttribute("error", "Purchase Failed. Please try again later.");
+			response.sendRedirect("purcahse.jsp");
 			return;
 		}
 		
@@ -107,7 +128,8 @@ public class PurchaseItems extends HttpServlet {
 		   dbCart.deleteItem(item.getShopcartID());
 		}
 		
-		response.sendRedirect("purchase.jsp");
+		session.setAttribute("transaction", transaction);
+		response.sendRedirect("completed.jsp");
 
 	}
 

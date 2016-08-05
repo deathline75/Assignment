@@ -13,9 +13,11 @@ public class Transaction {
 	private int creditCardCVV;
 	private String[] mailaddr;
 	private String date;
+	private double totalCost;
+	private int contact;
 
 	public Transaction(int transactionid, User user, ArrayList<TransactionDetail> items, String creditCardHolder,
-			long creditCardNumber, int creditCardCVV, String[] mailaddr,String date) {
+			long creditCardNumber, int creditCardCVV, String[] mailaddr,String date, double totalCost, int contact) {
 		super();
 		this.transactionid = transactionid;
 		this.user = user;
@@ -25,7 +27,8 @@ public class Transaction {
 		this.creditCardCVV = creditCardCVV;
 		this.mailaddr = mailaddr;
 		this.date = date;
-
+		this.totalCost = totalCost;
+		this.contact = contact;
 	}
 
 	
@@ -101,6 +104,22 @@ public class Transaction {
 	 */
 	public void setMailaddr(String[] mailaddr) {
 		this.mailaddr = mailaddr;
+	}
+	
+	public double getTotalCost() {
+		return totalCost;
+	}
+	
+	public void setTotalCost(double totalCost) {
+		this.totalCost = totalCost;
+	}
+	
+	public int getContact() {
+		return contact;
+	}
+	
+	public void setContact(int contact) {
+		this.contact = contact;
 	}
 	
 	public static class TransactionDetail {
