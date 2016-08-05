@@ -102,7 +102,7 @@
 							<%= String.format("$%.2f", it.getGame().getPrice() * it.getQuantity()) %>
 						</td>
 					</tr>
-				
+					<%	} %>
 				</tbody>
 				<tfoot>
 					<tr>
@@ -115,15 +115,13 @@
 					</tr>
 				</tfoot>
 			</table>
+		
 			<div class="pull-right">
 				<button class="btn btn-default" type="submit" value="Update" name="action">Update</button>
 				<button class="btn btn-success" type="submit" value="Purchase" name="action"><span class="glyphicon glyphicon-shopping-cart"></span> Checkout</button>
 			</div>
 		</form>
-		<%
-			}
-		} else {
-		%>
+		<% } else { %>
 		<p>Your cart is empty!</p>
 		<% } %>
 	</div>

@@ -29,7 +29,9 @@
 	
 
 <div class="container main-content">
-	<h1>Confirmation Page</h1>
+	<div class="page-header ice-header">
+		<h1>Confirmation Page <small>Check the details carefully</small></h1>
+	</div>
 	<div class="col-md-7" style="padding-left:0">		
 		<table class="table table-striped">
 			<thead>
@@ -66,8 +68,6 @@
 		</table>
 		</div>
 		<div class="col-md-5" style="border: 1">
-			<h3>Your Details</h3>
-			<hr/>
 			<form class="form-horizontal ice-admin-login-form" method="post" action="PurchaseItems">
 				<div class="form-group">
 					<label for="inputName" class="col-sm-3 control-label">Name: </label>
@@ -75,7 +75,6 @@
 						<input type="text" class="form-control" id="inputName" placeholder="Name" required name="name" data-toggle="tooltip" data-placement="right" title="Maximum 45 alphanumberic and space characters" value="<%=user.getName() %>">
 					</div>
 				</div>
-				<hr/>
 				<div class="form-group">
 					<label for="inputAddr1" class="col-sm-3 control-label">Address 1: </label>
 					<div class="col-sm-9">
@@ -94,7 +93,6 @@
 						<input type="number" class="form-control" id="inputContact" placeholder="91234567" required name="contact" data-toggle="tooltip" data-placement="right" title="Must be 8 digits only" value=<%=user.getContact() %>>
 					</div>
 				</div>
-				<hr>
 				<div class="form-group">
 					<label for="inputContact" class="col-sm-3 control-label">Credit Card: </label>
 						<div class="col-sm-6">
