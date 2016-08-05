@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1" import="java.sql.*, com.ice.*" %>
+	pageEncoding="ISO-8859-1" import="java.sql.*, com.ice.*,com.ice.api.*,com.ice.util.*" %>
 <%
 	if (session.getAttribute("username") != null)
 		response.sendRedirect(".");
@@ -9,7 +9,7 @@
 	} else if (request.getParameter("username") != null && request.getParameter("password") != null) {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		connectToMysql connection = new connectToMysql(MyConstants.url);
+		DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 		ResultSet rs = connection.preparedQuery("Select * from user where username=? and userpwd=?",username,password);
 		if (rs.next()) {
 			connection.close();

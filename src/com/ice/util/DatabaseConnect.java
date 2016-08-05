@@ -1,10 +1,10 @@
-package com.ice;
+package com.ice.util;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.*;
 
-public class connectToMysql {
+public class DatabaseConnect {
 	private Connection conn;
 	private String connectionURL;
 	
@@ -12,7 +12,7 @@ public class connectToMysql {
 	 * Connect to a MySQL server
 	 * @param connectionURL The connection string to connect to MySQL
 	 */
-	public connectToMysql(String connectionURL) {
+	public DatabaseConnect(String connectionURL) {
 		this.connectionURL = connectionURL;
     	try {
 			connect();

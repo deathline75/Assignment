@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="com.ice.*, java.sql.*"%>
+    <%@ page import="com.ice.*, java.sql.*,com.ice.api.*,com.ice.util.*"%>
     <% 
     	// Parameter initialization
     	String gameid = request.getParameter("id");
@@ -28,7 +28,7 @@
     	int rows = 0;
     	int totalPageNum=0;
     	int result = 0;
-    	connectToMysql connection = new connectToMysql(MyConstants.url);
+    	DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
     	ResultSet validGame = connection.preparedQuery("SELECT * FROM game WHERE gameid=?",gameid);
     	
     	if (!validGame.next()) {

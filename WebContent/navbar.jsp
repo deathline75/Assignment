@@ -1,4 +1,4 @@
-<%@page import="com.ice.api.*, com.ice.*, java.util.*" %>
+<%@page import="com.ice.api.*, com.ice.*, java.util.*,com.ice.crud.*" %>
 <%
 	User user = (User) session.getAttribute("user");
 	session.setAttribute("lastpage", request.getRequestURI());

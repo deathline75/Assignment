@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, com.ice.*, java.util.*, java.net.*, java.io.*" %>
+<%@ page import="java.sql.*, com.ice.*,com.ice.api.*,com.ice.util.*, java.util.*, java.net.*, java.io.*" %>
 <%
 
 	String action = request.getParameter("action");
 	String gameid = request.getParameter("gameid");
-	connectToMysql connection = new connectToMysql(MyConstants.url);
+	DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 	ResultSet rs = connection.preparedQuery("SELECT * FROM game WHERE gameid=?", gameid);
 	if (rs.next()) {
 		String gameTitle = rs.getString("gameTitle");

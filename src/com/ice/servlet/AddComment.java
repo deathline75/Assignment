@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.*;
 import org.jsoup.safety.Whitelist;
+
+import com.ice.MyConstants;
+import com.ice.util.DatabaseConnect;
+import com.ice.util.VerifyUtils;
 
 /**
  * Servlet implementation class AddComment
@@ -55,7 +59,7 @@ public class AddComment extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		// String commentId = request.getParameter("commentId");
-		connectToMysql connection = new connectToMysql(MyConstants.url);
+		DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 		String gameid = request.getParameter("gameid");
 		String failed = null;
 		if (request.getParameter("g-recaptcha-response") == "") {

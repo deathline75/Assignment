@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+
+import com.ice.MyConstants;
+import com.ice.util.DatabaseConnect;
 
 /**
  * Servlet implementation class EditGame
@@ -62,7 +65,7 @@ public class EditGame extends HttpServlet {
 			Part gameJumbo = request.getPart("gamejumbo");
 			Part gamePromo = request.getPart("gamepromo");
 
-			connectToMysql connection = new connectToMysql(MyConstants.url);
+			DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 
 			connection.preparedUpdate(
 					"update game set gameTitle=?,company=?,releaseDate=?,description=?,price=?,preOwned=?,supportWin=?,supportMac=?,supportXBOX=?,supportLinux=?,supportPS4=?,supportWIIU=?,qty=? where gameid=?",gameTitle,company,releaseDate,description,price,preOwned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU,quantity,gameid);

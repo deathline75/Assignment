@@ -1,18 +1,20 @@
-package com.ice;
+package com.ice.crud;
 
 import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.ice.MyConstants;
 import com.ice.api.User;
+import com.ice.util.DatabaseConnect;
 import com.ice.util.HashingUtil;
 
 public class CRUDUser {
 	
-	private connectToMysql connection;
+	private DatabaseConnect connection;
 	
 	public CRUDUser() {
-		connection = new connectToMysql(MyConstants.url);
+		connection = new DatabaseConnect(MyConstants.url);
 	}
 	
 	/**

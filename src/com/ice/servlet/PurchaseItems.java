@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +17,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import com.ice.api.ShopCartItem;
 import com.ice.api.Transaction;
 import com.ice.api.User;
+import com.ice.crud.CRUDCartItem;
+import com.ice.crud.CRUDTransaction;
 
 /**
  * Servlet implementation class PurchaseItems
@@ -64,7 +66,7 @@ public class PurchaseItems extends HttpServlet {
 				|| request.getParameter("addr2") == null || request.getParameter("addr2").isEmpty() 
 				|| request.getParameter("contact") == null || request.getParameter("contact").isEmpty() || !request.getParameter("contact").matches("^\\d{8}$")) {
 			session.setAttribute("error", "Please fill in all the fields with the appropriate data.");
-			response.sendRedirect("purcahse.jsp");
+			response.sendRedirect("purchase.jsp");
 			return;
 		}
 
@@ -111,7 +113,7 @@ public class PurchaseItems extends HttpServlet {
 		
 		if(transaction == null){
 			session.setAttribute("error", "Purchase Failed. Please try again later.");
-			response.sendRedirect("purcahse.jsp");
+			response.sendRedirect("purchase.jsp");
 			return;
 		}
 		

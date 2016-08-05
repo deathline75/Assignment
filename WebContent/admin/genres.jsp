@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="java.sql.*,com.ice.*"%>
+	pageEncoding="ISO-8859-1" import="java.sql.*,com.ice.*,com.ice.api.*,com.ice.util.*"%>
 <%
 	if (session.getAttribute("username") == null)
 		response.sendRedirect("login.jsp");
 %>
 
 <%
-connectToMysql connection = new connectToMysql(MyConstants.url);
+DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>

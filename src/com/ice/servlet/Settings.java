@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.ice.api.User;
+import com.ice.crud.CRUDUser;
 import com.ice.util.HashingUtil;
 
 /**

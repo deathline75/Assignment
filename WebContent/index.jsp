@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="com.ice.*, com.ice.api.*, java.sql.*, java.util.*, java.net.*, java.io.*" %>
-	<%! connectToMysql connection = new connectToMysql(MyConstants.url); %>
+<%@ page import="com.ice.*,com.ice.api.*,com.ice.util.*,com.ice.crud.*, java.sql.*, java.util.*, java.net.*, java.io.*" %>
+	<%! DatabaseConnect connection = new DatabaseConnect(MyConstants.url); %>
 	<%
 		// This page predates the API times, therefore everything here is a mess.
 		// Tread lightly

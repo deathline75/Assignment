@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -7,17 +7,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ice.MyConstants;
+import com.ice.util.DatabaseConnect;
+
 /**
- * Servlet implementation class DeleteGame
+ * Servlet implementation class EditGenre
  */
-@WebServlet("/admin/DeleteGame")
-public class DeleteGame extends HttpServlet {
+@WebServlet("/admin/EditGenre")
+public class EditGenre extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteGame() {
+    public EditGenre() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,16 +41,12 @@ public class DeleteGame extends HttpServlet {
 		if (request.getSession().getAttribute("username") == null)
 			response.sendRedirect("login.jsp");
 		else {
-			String gameid = request.getParameter("gameid");
-			
-			connectToMysql connection = new connectToMysql(MyConstants.url);
-			connection.preparedUpdate("delete from game_image where gameid=?",gameid);
-			connection.preparedUpdate("delete from game_genre where gameid=?",gameid);
-			connection.preparedUpdate("delete from game where gameid=?",gameid);
-			
+			String genreid = request.getParameter("genreid");
+			String genrename = request.getParameter("genrename");
+			DatabaseConnect connection  = new DatabaseConnect(MyConstants.url);
+			connection.preparedUpdate("update genre set genrename=? where genreid=?", genrename,genreid);
 			connection.close();
-			
-			response.sendRedirect("games.jsp");
+			//response.sendRedirect("genres.jsp");
 			
 		}
 	}

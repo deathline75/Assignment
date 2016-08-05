@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -16,6 +16,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.ice.api.*;
+import com.ice.crud.CRUDCartItem;
+import com.ice.crud.CRUDGame;
 
 
 /**

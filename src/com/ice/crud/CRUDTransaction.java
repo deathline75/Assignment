@@ -1,20 +1,22 @@
-package com.ice;
+package com.ice.crud;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.ice.MyConstants;
 import com.ice.api.ShopCartItem;
 import com.ice.api.Transaction;
 import com.ice.api.Transaction.TransactionDetail;
+import com.ice.util.DatabaseConnect;
 import com.ice.api.User;
 
 public class CRUDTransaction {
 
-	private connectToMysql connection;
+	private DatabaseConnect connection;
 
 	public CRUDTransaction() {
-		connection = new connectToMysql(MyConstants.url);
+		connection = new DatabaseConnect(MyConstants.url);
 	}
 
 	public ArrayList<Transaction> getTransactions(User user) {

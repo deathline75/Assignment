@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.ice.api.User;
+import com.ice.crud.CRUDUser;
+import com.ice.util.VerifyUtils;
 
 /**
  * Servlet implementation class Register

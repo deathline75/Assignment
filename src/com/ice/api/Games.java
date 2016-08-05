@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ice.MyConstants;
-import com.ice.connectToMysql;
+import com.ice.util.DatabaseConnect;
 
 /**
  * Servlet implementation class Games
@@ -42,7 +42,7 @@ public class Games extends HttpServlet {
 		// Sets the encoding to UTF-8 because Java...
 		response.setCharacterEncoding("UTF-8");
 		// Starts the connection to MySQL
-		connectToMysql connection = new connectToMysql(MyConstants.url);		
+		DatabaseConnect connection = new DatabaseConnect(MyConstants.url);		
 		String sql = "SELECT * FROM game";
 		
 		// Executes the query and returns a ResultSet

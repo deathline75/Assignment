@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="java.sql.*,com.ice.*" %>
+<%@ page import="java.sql.*,com.ice.*,com.ice.api.*,com.ice.util.*" %>
 <%
 	if (session.getAttribute("username") == null)
 		response.sendRedirect("login.jsp");
-	connectToMysql connection = new connectToMysql(MyConstants.url);
+	DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 %>
 
 

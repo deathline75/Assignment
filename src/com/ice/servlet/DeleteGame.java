@@ -1,26 +1,26 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ice.MyConstants;
+import com.ice.util.DatabaseConnect;
+
 /**
- * Servlet implementation class DeleteGenre
+ * Servlet implementation class DeleteGame
  */
-@WebServlet("/admin/DeleteGenre")
-public class DeleteGenre extends HttpServlet {
+@WebServlet("/admin/DeleteGame")
+public class DeleteGame extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteGenre() {
+    public DeleteGame() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,20 +41,16 @@ public class DeleteGenre extends HttpServlet {
 		if (request.getSession().getAttribute("username") == null)
 			response.sendRedirect("login.jsp");
 		else {
-			String genreid = request.getParameter("genreid");
-			connectToMysql connection  = new connectToMysql(MyConstants.url);
-			ResultSet rs = connection.preparedQuery("SELECT * from game_genre where genreid=?", genreid);
-			try {
-				if (!rs.next()) {
-					rs.close();
-					connection.preparedUpdate("delete from genre where genreid=?", genreid);
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			String gameid = request.getParameter("gameid");
+			
+			DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
+			connection.preparedUpdate("delete from game_image where gameid=?",gameid);
+			connection.preparedUpdate("delete from game_genre where gameid=?",gameid);
+			connection.preparedUpdate("delete from game where gameid=?",gameid);
+			
 			connection.close();
-			response.sendRedirect("genres.jsp");
+			
+			response.sendRedirect("games.jsp");
 			
 		}
 	}

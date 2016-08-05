@@ -19,6 +19,7 @@
 			return;
 		}
 	%>
+<div class="container main-content">
 	
 	<% if (session.getAttribute("error") != null) {%>
 	<div class="alert alert-danger" role="alert">
@@ -26,9 +27,6 @@
 	</div>
 	<% session.removeAttribute("error");} %>
 	
-	
-
-<div class="container main-content">
 	<div class="page-header ice-header">
 		<h1>Confirmation Page <small>Check the details carefully</small></h1>
 	</div>

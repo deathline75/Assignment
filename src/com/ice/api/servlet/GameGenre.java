@@ -1,4 +1,4 @@
-package com.ice.api;
+package com.ice.api.servlet;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ice.MyConstants;
-import com.ice.connectToMysql;
+import com.ice.api.Game;
+import com.ice.api.Genre;
+import com.ice.api.SearchResult;
+import com.ice.util.DatabaseConnect;
 
 /**
  * Servlet implementation class GameGenre
@@ -41,7 +44,7 @@ public class GameGenre extends HttpServlet {
 		// Sets the encoding to UTF-8 because Java...
 		response.setCharacterEncoding("UTF-8");
 		// Starts the connection to MySQL
-		connectToMysql connection = new connectToMysql(MyConstants.url);
+		DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 		
 		// Checks if parameters exist
 		if (request.getParameter("q-genreid") != null) {

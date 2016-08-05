@@ -1,18 +1,20 @@
-package com.ice;
+package com.ice.crud;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.ice.MyConstants;
 import com.ice.api.Game;
+import com.ice.util.DatabaseConnect;
 
 public class CRUDGame {
-	private connectToMysql connection;
+	private DatabaseConnect connection;
 	private static final HashMap<Integer, Game> masterGamesList = new HashMap<>();
 	
 	public CRUDGame() {
-		connection = new connectToMysql(MyConstants.url);
+		connection = new DatabaseConnect(MyConstants.url);
 	}
 	
 	public ArrayList<Game> getGames() {

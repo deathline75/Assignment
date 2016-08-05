@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.crud;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,13 +6,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.ice.MyConstants;
 import com.ice.api.*;
+import com.ice.util.DatabaseConnect;
 
 public class CRUDCartItem {
-	private connectToMysql connection;
+	private DatabaseConnect connection;
 	
 	public CRUDCartItem() {
-		connection = new connectToMysql(MyConstants.url);
+		connection = new DatabaseConnect(MyConstants.url);
 	}
 	
 	public boolean isItem(User user, Game game, String platform) {

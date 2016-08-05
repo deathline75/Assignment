@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.ice.api.ShopCartItem;
 import com.ice.api.User;
+import com.ice.crud.CRUDCartItem;
 
 /**
  * Servlet implementation class UpdateCartItem
