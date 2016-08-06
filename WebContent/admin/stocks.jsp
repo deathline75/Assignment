@@ -34,8 +34,12 @@
 		<div class="alert alert-info" role="alert">
 			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Double click the Quantity field to change the quantity
 		</div>
+			<% if (session.getAttribute("error") != null) {%>
+		<div class="alert alert-danger" role="alert">
+			<strong>Error!</strong> <%= session.getAttribute("error") %>
+		</div>
+			<% session.removeAttribute("error");} %>
 		<div class="alert alert-danger hidden" role="alert" id="error-message">
-			
 		</div>
 		<div class="alert alert-success hidden" role="alert" id="success-message">
 			

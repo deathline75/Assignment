@@ -112,7 +112,6 @@ public class CRUDGame {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		System.out.println(games);
 		return games;
 	}
 	

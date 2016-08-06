@@ -56,15 +56,13 @@ public class DisplayQuantity extends HttpServlet {
 		CRUDGame dbGame = new CRUDGame();
 		if(checkInput(request)){
 			int quantity = Integer.parseInt(request.getParameter("quantity"));
-			System.out.println("success" + quantity);
 			ArrayList<Game> games = dbGame.getGamesWithinQuantity(quantity);
 			session.setAttribute("stocks", games);
 			dbGame.close();
 			response.sendRedirect("stocks.jsp");
 		}
 		else{
-			session.setAttribute("error","error");
-			System.out.println("haha");
+			session.setAttribute("error","Please Input a valid value!");
 			response.sendRedirect("stocks.jsp");
 		}
 	}
