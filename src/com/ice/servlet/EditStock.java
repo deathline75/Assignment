@@ -42,12 +42,18 @@ public class EditStock extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// If you are not logged in as admin, it will not let you update the stock.
+		if (request.getSession().getAttribute("username") == null) {
+			response.sendRedirect("login.jsp");
+			return;
+		}
+		
 		if(checkInput(request)){
 			int gameid = Integer.parseInt(request.getParameter("gameid"));
 			int quantity = Integer.parseInt(request.getParameter("quantity"));
 			CRUDGame dbGame = new CRUDGame();
 
+			// Update the quantity in the database. If successful, print a nice success message.
 			if(dbGame.updateQuantity(gameid, quantity)){
 				response.getWriter().println("Success! Updated quantity.");
 			} else {

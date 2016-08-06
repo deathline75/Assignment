@@ -165,10 +165,18 @@ public class Game {
 		return supportWiiu;
 	}
 
+	/**
+	 * Gets the quantity remaining for the game
+	 * @return The quantity remaining for the game
+	 */
 	public int getQuantity() {
 		return quantity;
 	}
 
+	/**
+	 * Sets the quantity remaining for the game
+	 * @param quantity The quantity for the game
+	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}

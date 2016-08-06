@@ -44,6 +44,11 @@ public class AddCartItem extends HttpServlet {
 		response.getWriter().append("You are not supposed to be here. Use POST to send data to this page.").close();
 	}
 
+	/**
+	 * Check the user input
+	 * @param request All the parameter locations
+	 * @return A boolean of whether the input is clean and validated.
+	 */
 	private boolean checkInput(HttpServletRequest request) {
 			return request.getParameter("gameid") != null && !request.getParameter("gameid").isEmpty() && request.getParameter("gameid").matches("^\\d+$")
 					&& request.getParameter("platforms") != null && !request.getParameter("platforms").isEmpty()
@@ -59,13 +64,13 @@ public class AddCartItem extends HttpServlet {
 		HttpSession session = request.getSession();
 		String gameid = StringEscapeUtils.escapeHtml4(request.getParameter("gameid"));
 		
-		if (checkInput(request)) {
+		if (checkInput(request)) { // Check input
 			User user = (User) session.getAttribute("user");
 			int quantity = Integer.parseInt(request.getParameter("quantity"));
 			String platform = request.getParameter("platforms");
 			
 			ArrayList<ShopCartItem> shopCartItems = null;
-			CRUDCartItem dbItem = new CRUDCartItem();
+			CRUDCartItem dbItem = new CRUDCartItem(); // Create modal to get ready to update the database
 			
 			// Check if the item on the same platform exist in shop cart already, if yes, update the quantity ONLY and return.
 			if (session.getAttribute("cartitems") != null) {
@@ -87,7 +92,8 @@ public class AddCartItem extends HttpServlet {
 			dbGame.close();
 			
 			ShopCartItem item = null;
-			if (dbItem.isItem(user, game, platform)) {
+			// Check if the item already exists on the database. If it does, don't bother creating a new row.
+			if (dbItem.isItem(user, game, platform)) { 
 				item = dbItem.getItem(user, game, platform);
 				item.setQuantity(item.getQuantity() + quantity);
 				dbItem.updateItem(item);

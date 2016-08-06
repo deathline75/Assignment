@@ -52,6 +52,7 @@ public class PurchaseItems extends HttpServlet {
 
 		HttpSession session = request.getSession();
 
+		// Checks if the user is logged in.
 		if (session.getAttribute("user") == null) {
 			response.sendRedirect("login.jsp");
 			return;
@@ -59,6 +60,7 @@ public class PurchaseItems extends HttpServlet {
 		
 		User user = (User) session.getAttribute("user");
 		
+		// Input validation
 		if (request.getParameter("name") == null || request.getParameter("name").isEmpty()
 				|| request.getParameter("ccnumb") == null || request.getParameter("ccnumb").isEmpty() || !request.getParameter("ccnumb").matches("^\\d{16}$")
 				|| request.getParameter("CVV") == null || request.getParameter("CVV").isEmpty() || !request.getParameter("CVV").matches("^\\d{3}$")
@@ -70,21 +72,20 @@ public class PurchaseItems extends HttpServlet {
 			return;
 		}
 
-
 		ArrayList<ShopCartItem> items = (ArrayList<ShopCartItem>) session.getAttribute("cartitems");
 		CRUDTransaction dbPurchase = new CRUDTransaction();
 		CRUDCartItem dbCart = new CRUDCartItem();  
 		double totalCost = 0;
+		
 		for (ShopCartItem item : items) {
-			
-			//replace with regex.
+			// Checks if the user has even put in at least 1 quantity.
 			if(item.getQuantity() <= 0){
 				session.setAttribute("error", item.getGame().getTitle() + " update cart failed you ented an invalid number");
 				response.sendRedirect("cart.jsp");
 				return;
 			}
 			
-			// Validate . see if the updated cart quantity(sum of quantity
+			// Validate. see if the updated cart quantity(sum of quantity
 			// regardless on what platform) can be lower than the game quantity.
 			if (item.getQuantity() > item.getGame().getQuantity()) {
 				session.setAttribute("error", item.getGame().getTitle() + ": Purchase failed as we are out of stock for this game.");
@@ -95,13 +96,11 @@ public class PurchaseItems extends HttpServlet {
 			totalCost += item.getQuantity() * item.getGame().getPrice();
 			
 		}
-		
+
+		//Get parameters here to dump into the database!
 		java.util.Date date = new java.util.Date();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(date);
-		
-		//Get parameters here to dump into the database!
-		
 		String creditCardHolderName = StringEscapeUtils.escapeHtml4(request.getParameter("name"));
 		long creditCardNumber = Long.parseLong(request.getParameter("ccnumb"));
 		int creditCardCvv = Integer.parseInt(request.getParameter("CVV"));
@@ -111,13 +110,13 @@ public class PurchaseItems extends HttpServlet {
 		
 		Transaction transaction = dbPurchase.insertTransaction(user, items, creditCardHolderName, creditCardNumber, creditCardCvv, mailaddr1, mailaddr2,currentTime,totalCost,contactNo);
 		
-		if(transaction == null){
+		if (transaction == null) { // If the transaction failed, just redirect the user back. 
 			session.setAttribute("error", "Purchase Failed. Please try again later.");
 			response.sendRedirect("purchase.jsp");
 			return;
 		}
 		
-		//Delete CartItems here
+		// Delete CartItems here
 		Iterator<ShopCartItem> i = items.iterator();
 		while (i.hasNext()) {
 		   ShopCartItem item = i.next();

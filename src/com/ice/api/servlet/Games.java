@@ -1,4 +1,4 @@
-package com.ice.api;
+package com.ice.api.servlet;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ice.MyConstants;
+import com.ice.api.Game;
+import com.ice.api.SearchResult;
 import com.ice.util.DatabaseConnect;
 
 /**

@@ -8,7 +8,11 @@ import com.ice.MyConstants;
 import com.ice.api.User;
 import com.ice.util.DatabaseConnect;
 import com.ice.util.HashingUtil;
-
+/**
+ * This class represents the modal where it connects the database with the controller together.
+ * @author Qiurong
+ *
+ */
 public class CRUDUser {
 	
 	private DatabaseConnect connection;

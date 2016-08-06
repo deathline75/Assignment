@@ -8,7 +8,11 @@ import java.util.HashMap;
 import com.ice.MyConstants;
 import com.ice.api.Game;
 import com.ice.util.DatabaseConnect;
-
+/**
+ * This class represents the modal where it connects the database with the controller together.
+ * @author Qiurong
+ *
+ */
 public class CRUDGame {
 	private DatabaseConnect connection;
 	private static final HashMap<Integer, Game> masterGamesList = new HashMap<>();
@@ -17,6 +21,11 @@ public class CRUDGame {
 		connection = new DatabaseConnect(MyConstants.url);
 	}
 	
+	/**
+	 * Gets the whole games list.<br/>
+	 * Does not return a new object if the game is already called. Instead, it uses the internal application data.
+	 * @return The whole games list
+	 */
 	public ArrayList<Game> getGames() {
 		ResultSet rs = connection.preparedQuery("SELECT * FROM game");
 		try {
@@ -34,6 +43,11 @@ public class CRUDGame {
 		return new ArrayList<Game>(masterGamesList.values());
 	}
 	 
+	/**
+	 * Update the game data into the database
+	 * @param game The game to update
+	 * @return A boolean of whether the update was successful.
+	 */
 	public boolean updateGame(Game game) {
 		if (game == null)
 			throw new NullPointerException("Game cannot be null!");
@@ -43,13 +57,24 @@ public class CRUDGame {
 		return false;
 	}
 	
+	/**
+	 * Updates the quantity of a game based on its id.
+	 * @param gameid The game id to update from
+	 * @param quantity The quantity to update to
+	 * @return A boolean of whether the update was successful
+	 */
 	public boolean updateQuantity(int gameid,int quantity) {
-		
 		if (connection.preparedUpdate("update game set qty=? where gameid=?",quantity,gameid) != -1)
 			return true;
 		return false;
 	}
 	
+	/**
+	 * Gets a Game object based on the game id.
+	 * If the same gameid is used more than once, it will not create a new Game object. It instead uses the internal saved Game object.
+	 * @param gameid The game id to get the game from.
+	 * @return The Game object based on the id.
+	 */
 	public Game getGame(int gameid) {
 		ResultSet rs = connection.preparedQuery("SELECT * FROM game WHERE gameid=?", gameid);
 		try {
@@ -70,7 +95,10 @@ public class CRUDGame {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Closes the database connection.
+	 */
 	public void close() {
 		connection.close();
 	}

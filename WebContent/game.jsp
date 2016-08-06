@@ -114,6 +114,10 @@
 				<div class="col-md-3">Genres:</div>
 				<div class="col-md-9 genres"></div>
 			</div>
+			<div class="row">
+				<div class="col-md-3">Quantity:</div>
+				<div class="col-md-9 quantity"></div>
+			</div>
 
 		</div>
 	</div>
@@ -228,6 +232,7 @@
 				$('.releasedate').text(gamedata.releaseDate);
 				$('.description').text(gamedata.description);
 				$('.price').text('$' + gamedata.price.toFixed(2));
+				$('.quantity').text(gamedata.quantity);
 				if (gamedata.supportWin) {
 					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWin" autocomplete="off" value="win"> Windows </label>');
 				} if (gamedata.supportMac) { 

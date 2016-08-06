@@ -44,6 +44,7 @@ public class DeleteCartItem extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		HttpSession session = request.getSession();
+		// Input validation
 		if (request.getParameter("shopCartId") == null || request.getParameter("shopCartId").isEmpty() || !request.getParameter("shopCartId").matches("^\\d+$")) {
 			session.setAttribute("error", "Failed to delete Shop Cart Item. Try again later.");
 			response.sendRedirect("cart.jsp");
@@ -54,6 +55,7 @@ public class DeleteCartItem extends HttpServlet {
 		CRUDCartItem db = new CRUDCartItem();
 		ArrayList<ShopCartItem> items = (ArrayList<ShopCartItem>) session.getAttribute("cartitems");
 		
+		// Delete the cart item from the database, if it fails, throw an error to the user.
 		if(!db.deleteItem(cartid)){
 			request.setAttribute("error", "Delete failed. No rows deleted");
 			response.sendRedirect("cart.jsp");
@@ -62,6 +64,7 @@ public class DeleteCartItem extends HttpServlet {
 		
 		db.close();
 		
+		// Update the session ArrayList accordingly
 		for(ShopCartItem item : items){
 			if(item.getShopcartID() == cartid){
 				session.setAttribute("success", "Deleted: " + item.getGame().getTitle());
