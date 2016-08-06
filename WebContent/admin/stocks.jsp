@@ -4,9 +4,21 @@
 	if (session.getAttribute("username") == null)
 		response.sendRedirect("login.jsp");
 
+	ArrayList<Game> games = null;
 	CRUDGame dbGame = new CRUDGame();
-	ArrayList<Game> games = dbGame.getGames();
-	dbGame.close();
+	if(session.getAttribute("stocks")!=null){
+		games = (ArrayList<Game>) session.getAttribute("stocks");
+		session.removeAttribute("stocks");
+	}
+	
+	else{
+		games = dbGame.getGames();
+		dbGame.close();
+	}
+
+			
+			
+	
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -30,9 +42,9 @@
 		</div>
 		<h1 class="col-sm-9" style="padding: 0;">Stock Management</h1>
 		<div class="col-sm-3" style="margin: 20px 0 10px;">
-			<form class="form-inline" role="search">
+			<form class="form-inline" role="search" action="DisplayQuantity" method="post">
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Search">
+					<input type="text" class="form-control" placeholder="Search" name="quantity">
 				</div>
 				<button type="submit" class="btn btn-default">Search</button>
 			</form>
