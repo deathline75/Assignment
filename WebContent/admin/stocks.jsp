@@ -6,19 +6,14 @@
 
 	ArrayList<Game> games = null;
 	CRUDGame dbGame = new CRUDGame();
-	if(session.getAttribute("stocks")!=null){
+	if (session.getAttribute("stocks") != null) {
 		games = (ArrayList<Game>) session.getAttribute("stocks");
 		session.removeAttribute("stocks");
 	}
-	
-	else{
+	else {
 		games = dbGame.getGames();
 		dbGame.close();
 	}
-
-			
-			
-	
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -34,11 +29,11 @@
 		<div class="alert alert-info" role="alert">
 			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Double click the Quantity field to change the quantity
 		</div>
-			<% if (session.getAttribute("error") != null) {%>
+		<% if (session.getAttribute("error") != null) {%>
 		<div class="alert alert-danger" role="alert">
 			<strong>Error!</strong> <%= session.getAttribute("error") %>
 		</div>
-			<% session.removeAttribute("error");} %>
+		<% session.removeAttribute("error");} %>
 		<div class="alert alert-danger hidden" role="alert" id="error-message">
 		</div>
 		<div class="alert alert-success hidden" role="alert" id="success-message">

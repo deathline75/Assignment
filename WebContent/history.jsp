@@ -69,6 +69,7 @@
 						<thead>
 							<tr>
 								<th>Game Title</th>
+								<th>Platform</th>
 								<th>Price</th>
 								<th style="text-align:right;">Quantity</th>
 								<th style="text-align:right;">Total</th>
@@ -81,6 +82,21 @@
 							%>
 							<tr>
 								<td><%= item.getGame().getTitle() %></td>
+								<td class="platforms">
+									<% if (item.getPlatform().equals("win")) { %>
+										Windows
+									<% } else if (item.getPlatform().equals("mac")) {%>
+										OS X
+									<% } else if (item.getPlatform().equals("linux")) {%>
+										Linux
+									<% } else if (item.getPlatform().equals("xbox")) {%>
+										Xbox One
+									<% } else if (item.getPlatform().equals("ps4")) {%>
+										PS4
+									<% } else if (item.getPlatform().equals("wiiu")) {%>
+										Wii-U
+									<% } %>
+								</td>
 								<td><%= String.format("$%.2f", item.getGame().getPrice()) %></td>
 								<td style="text-align:right;"><%= item.getQuantity() %></td>
 								<td style="text-align:right;"><%= String.format("$%.2f", cost) %></td>
@@ -89,6 +105,7 @@
 						</tbody>
 						<tfoot>
 							<tr>
+								<td style="border-top-width: 2px"></td>
 								<td style="border-top-width: 2px"></td>
 								<td style="border-top-width: 2px"></td>
 								<td style="text-align:right;border-top-width: 2px"><strong>Total Cost:</strong></td>

@@ -39,6 +39,8 @@
 		<div class="page-header ice-header">
 			<h1>Your Cart</h1>
 		</div>
+		
+		<%-- Check if the user has anything in their cart --%>
 		<% if (session.getAttribute("cartitems") != null && !((ArrayList<ShopCartItem>) session.getAttribute("cartitems")).isEmpty()) { %>
 		<form action="DeleteCartItem" method="post" id="deleteCartItem">
 		</form>
@@ -67,21 +69,21 @@
 						<td class="operation">
 							<button type="submit" name="shopCartId" form="deleteCartItem" class="delete btn btn-sm btn-danger" value="<%=it.getShopcartID()%>"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
 						</td>
-						<td class="goods"><%= it.getGame().getTitle()%></td>
+						<td class="goods"><a href="game.jsp?id=<%= it.getGame().getId() %>"><%= it.getGame().getTitle()%></a></td>
 						<td class="platforms">
-								<% if (it.getPlatform().equals("win")) { %>
-									Windows
-								<% } else if (it.getPlatform().equals("mac")) {%>
-									OS X
-								<% } else if (it.getPlatform().equals("linux")) {%>
-									Linux
-								<% } else if (it.getPlatform().equals("xbox")) {%>
-									Xbox One
-								<% } else if (it.getPlatform().equals("ps4")) {%>
-									PS4
-								<% } else if (it.getPlatform().equals("wiiu")) {%>
-									Wii-U
-								<% } %>
+							<% if (it.getPlatform().equals("win")) { %>
+								Windows
+							<% } else if (it.getPlatform().equals("mac")) {%>
+								OS X
+							<% } else if (it.getPlatform().equals("linux")) {%>
+								Linux
+							<% } else if (it.getPlatform().equals("xbox")) {%>
+								Xbox One
+							<% } else if (it.getPlatform().equals("ps4")) {%>
+								PS4
+							<% } else if (it.getPlatform().equals("wiiu")) {%>
+								Wii-U
+							<% } %>
 						</td>
 						<td class="number"><span><%= String.format("$%.2f",it.getGame().getPrice())%></span></td>
 						<td>
