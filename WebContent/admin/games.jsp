@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="com.ice.*, java.sql.*" %>
+	pageEncoding="UTF-8" import="com.ice.*, java.sql.*, java.util.*, com.ice.api.*,com.ice.crud.*" %>
 <%
 	if (session.getAttribute("username") == null)
 		response.sendRedirect("login.jsp");
 
-	connectToMysql connection = new connectToMysql(MyConstants.url);
+	CRUDGame dbGame = new CRUDGame();
+	ArrayList<Game> games = dbGame.getGames();
+	dbGame.close();
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -36,26 +38,28 @@
 					<th>Game Title</th>
 					<th>Company</th>
 					<th>Price</th>
+					<th>Quantity</th>
 					<th>Edit Data</th>
 				</tr>
 			</thead>
 			<tbody>
 				<%
-					ResultSet rs = connection.preparedQuery("SELECT gameid,gametitle,company,price FROM game");
-					while (rs.next()) {
+				
+					for (Game g: games) {
 				%>
 				<tr>
-					<td><%=rs.getInt(1)%></td>
-					<td><%=rs.getString(2)%></td>
-					<td><%=rs.getString(3)%></td>
-					<td><%=rs.getDouble(4)%></td>
+					<td><%= g.getId() %></td>
+					<td><%= g.getTitle() %></td>
+					<td><%= g.getCompany() %></td>
+					<td><%= String.format("$%.2f", g.getPrice()) %></td>
+					<td><%= g.getQuantity() %></td>
 					<td>
-						<a href="#" class="btn btn-info btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="View" data-gameid="<%=rs.getInt(1)%>">Info</a> 
-						<a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="Edit" data-gameid="<%=rs.getInt(1)%>">Edit</a>
-						<a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="Delete" data-gameid="<%=rs.getInt(1)%>">Delete</a>
+						<a href="#" class="btn btn-info btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="View" data-gameid="<%=g.getId()%>">Info</a> 
+						<a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="Edit" data-gameid="<%=g.getId()%>">Edit</a>
+						<a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#ice-modal" data-action="Delete" data-gameid="<%=g.getId()%>">Delete</a>
 					</td>
 				</tr>
-				<% } connection.close(); %>
+				<% } %>
 			</tbody>
 		</table>
 		<script>

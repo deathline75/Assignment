@@ -1,4 +1,4 @@
-package com.ice.api;
+package com.ice.api.servlet;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ice.MyConstants;
-import com.ice.connectToMysql;
+import com.ice.api.Game;
+import com.ice.api.SearchResult;
+import com.ice.util.DatabaseConnect;
 
 /**
  * Servlet implementation class Games
@@ -42,7 +44,7 @@ public class Games extends HttpServlet {
 		// Sets the encoding to UTF-8 because Java...
 		response.setCharacterEncoding("UTF-8");
 		// Starts the connection to MySQL
-		connectToMysql connection = new connectToMysql(MyConstants.url);		
+		DatabaseConnect connection = new DatabaseConnect(MyConstants.url);		
 		String sql = "SELECT * FROM game";
 		
 		// Executes the query and returns a ResultSet
@@ -125,6 +127,10 @@ public class Games extends HttpServlet {
 					sql += " supportWiiu=? OR";
 					addable = true;
 					break;
+				case "q-quantity":
+					sql += " quantity=? OR";
+					addable = true;
+					break;
 				}
 				if (addable)
 					values.add(value);
@@ -165,7 +171,7 @@ public class Games extends HttpServlet {
 				List<Game> games = new ArrayList<Game>();
 				
 				while (rs.next()) {
-					games.add(new Game(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getString(5), rs.getDouble(6), rs.getString(7), rs.getBoolean(8), rs.getBoolean(9), rs.getBoolean(10), rs.getBoolean(11), rs.getBoolean(12), rs.getBoolean(13), rs.getBoolean(14)));
+					games.add(new Game(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getString(5), rs.getDouble(6), rs.getString(7), rs.getBoolean(8), rs.getBoolean(9), rs.getBoolean(10), rs.getBoolean(11), rs.getBoolean(12), rs.getBoolean(13), rs.getBoolean(14),rs.getInt(15)));
 				}
 				// Writes out everything to screen along with the appropriate response code.
 				response.getWriter().append(gson.toJson(new SearchResult(0, null, games)));

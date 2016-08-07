@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -6,6 +6,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ice.MyConstants;
+import com.ice.util.DatabaseConnect;
 
 /**
  * Servlet implementation class DeleteGame
@@ -26,8 +29,8 @@ public class DeleteGame extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.sendRedirect(".");
+		response.getWriter().append("You are not supposed to be here. Use POST to send data to this page.").close();
 	}
 
 	/**
@@ -40,7 +43,7 @@ public class DeleteGame extends HttpServlet {
 		else {
 			String gameid = request.getParameter("gameid");
 			
-			connectToMysql connection = new connectToMysql(MyConstants.url);
+			DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 			connection.preparedUpdate("delete from game_image where gameid=?",gameid);
 			connection.preparedUpdate("delete from game_genre where gameid=?",gameid);
 			connection.preparedUpdate("delete from game where gameid=?",gameid);

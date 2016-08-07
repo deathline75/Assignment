@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, com.ice.*, java.util.*"%>
+<%@ page import="java.sql.*, com.ice.*, java.util.*,com.ice.api.*,com.ice.util.*"%>
 <%
 	String action = request.getParameter("action");
 	String genreid = request.getParameter("genreid");
-	connectToMysql connection = new connectToMysql(MyConstants.url);
+	DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 	ResultSet rs = connection.preparedQuery("Select * from genre where genreid=?", genreid);
 	if (rs.next()) {
 		String genrename = rs.getString("genrename");

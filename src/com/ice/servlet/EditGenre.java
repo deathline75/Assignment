@@ -1,26 +1,26 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ice.MyConstants;
+import com.ice.util.DatabaseConnect;
+
 /**
- * Servlet implementation class DeleteGenre
+ * Servlet implementation class EditGenre
  */
-@WebServlet("/admin/DeleteGenre")
-public class DeleteGenre extends HttpServlet {
+@WebServlet("/admin/EditGenre")
+public class EditGenre extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteGenre() {
+    public EditGenre() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,8 +29,8 @@ public class DeleteGenre extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.sendRedirect(".");
+		response.getWriter().append("You are not supposed to be here. Use POST to send data to this page.").close();
 	}
 
 	/**
@@ -42,19 +42,11 @@ public class DeleteGenre extends HttpServlet {
 			response.sendRedirect("login.jsp");
 		else {
 			String genreid = request.getParameter("genreid");
-			connectToMysql connection  = new connectToMysql(MyConstants.url);
-			ResultSet rs = connection.preparedQuery("SELECT * from game_genre where genreid=?", genreid);
-			try {
-				if (!rs.next()) {
-					rs.close();
-					connection.preparedUpdate("delete from genre where genreid=?", genreid);
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			String genrename = request.getParameter("genrename");
+			DatabaseConnect connection  = new DatabaseConnect(MyConstants.url);
+			connection.preparedUpdate("update genre set genrename=? where genreid=?", genrename,genreid);
 			connection.close();
-			response.sendRedirect("genres.jsp");
+			//response.sendRedirect("genres.jsp");
 			
 		}
 	}

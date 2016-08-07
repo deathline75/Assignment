@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+
+import com.ice.MyConstants;
+import com.ice.util.DatabaseConnect;
 
 /**
  * Servlet implementation class AddGame
@@ -33,7 +36,8 @@ public class AddGame extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		response.sendRedirect(".");
+		response.getWriter().append("You are not supposed to be here. Use POST to send data to this page.").close();
 	}
 
 	private boolean checkInput(HttpServletRequest request) {
@@ -69,7 +73,7 @@ public class AddGame extends HttpServlet {
 				Part gameJumbo = request.getPart("gamejumbo");
 				Part gamePromo = request.getPart("gamepromo");
 				
-				connectToMysql connection = new connectToMysql(MyConstants.url);
+				DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 				//connection.preparedUpdate("insert into game(gametitle) values(?),",gameTitle);
 				result = connection.preparedUpdate(
 						"insert into game(gametitle,company,releaseDate,description,price,preowned,supportWin,supportMac,supportXBOX,supportLinux,supportPS4,supportWIIU) values(?,?,?,?,?,?,?,?,?,?,?,?)",

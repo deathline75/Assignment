@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.util;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -6,6 +6,7 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 import com.google.gson.Gson;
+import com.ice.MyConstants;
  
 public class VerifyUtils {
  

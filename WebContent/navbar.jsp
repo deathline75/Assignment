@@ -1,6 +1,7 @@
-<%@page import="com.ice.api.*" %>
+<%@page import="com.ice.api.*, com.ice.*, java.util.*,com.ice.crud.*" %>
 <%
 	User user = (User) session.getAttribute("user");
+	session.setAttribute("lastpage", request.getRequestURI());
 %>
 <nav class="navbar navbar-fixed-top ice-nav navbar-default">
   <div class="container">
@@ -34,7 +35,15 @@
       	<% if (user == null) { %>
       		<li><a href="login.jsp"><span class="glyphicon glyphicon-user"></span> Sign In / Register </a></li>
       	<% } else { %>
-      		<li><a href="cart.jsp"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+      	<%
+      		if (session.getAttribute("cartitems") == null) {
+      			CRUDCartItem dbItems = new CRUDCartItem();
+      			session.setAttribute("cartitems", dbItems.getItems(user));
+      			dbItems.close();
+      		}
+  			int itemsInCart = ((ArrayList<ShopCartItem>) session.getAttribute("cartitems")).size();
+      	%>
+      		<li><a href="cart.jsp"><span class="glyphicon glyphicon-shopping-cart"></span> Cart (<%= itemsInCart %>)</a></li>
       		<li class="dropdown">
       			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> <%= user.getName() %> <span class="caret"></span></a>
       			<ul class="dropdown-menu">

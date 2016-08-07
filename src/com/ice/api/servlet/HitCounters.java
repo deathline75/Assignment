@@ -1,4 +1,4 @@
-package com.ice.api;
+package com.ice.api.servlet;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ice.MyConstants;
-import com.ice.connectToMysql;
+import com.ice.api.HitCounter;
+import com.ice.api.SearchResult;
+import com.ice.util.DatabaseConnect;
 
 /**
  * Servlet implementation class HitCounters
@@ -40,7 +42,7 @@ public class HitCounters extends HttpServlet {
 		// Sets the encoding to UTF-8 because Java...
 		response.setCharacterEncoding("UTF-8");
 		// Starts the connection to MySQL
-		connectToMysql connection = new connectToMysql(MyConstants.url);
+		DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 		String sql2 = "select day,SUM(COUNT) Count from game_hitcounter gh,game g where gh.gameid = g.gameid group by day";
 		String sql = "select gametitle,SUM(COUNT) Count from game_hitcounter gh,game g where gh.gameid = g.gameid group by g.gameid order by Count DESC";
 		// Executes the query and returns a ResultSet

@@ -1,4 +1,4 @@
-package com.ice;
+package com.ice.servlet;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -12,17 +12,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ice.MyConstants;
+import com.ice.util.DatabaseConnect;
+
 /**
  * Servlet implementation class hitCounter
  */
 @WebServlet("/hitCounter")
-public class hitCounter extends HttpServlet {
+public class HitCounter extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public hitCounter() {
+    public HitCounter() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,8 +34,8 @@ public class hitCounter extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.sendRedirect(".");
+		response.getWriter().append("You are not supposed to be here. Use POST to send data to this page.").close();
 	}
 
 	/**
@@ -45,7 +48,7 @@ public class hitCounter extends HttpServlet {
 		System.out.println(request.getHeader("X-FORWARDED-FOR"));
 		Get Ip,But oh well,whatever.
 		*/
-		connectToMysql connection = new connectToMysql(MyConstants.url);
+		DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 		//Prevent mutex lock...
 		connection.preparedUpdate("insert into daily_hitcounter(day,slot,count)value(CURRENT_DATE,RAND()*100,1) on duplicate key update count=count+1");
 		//Format Time 

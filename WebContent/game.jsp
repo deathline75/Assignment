@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="com.ice.*, java.sql.*"%>
+    <%@ page import="com.ice.*, java.sql.*,com.ice.api.*,com.ice.util.*"%>
     <% 
     	// Parameter initialization
     	String gameid = request.getParameter("id");
@@ -28,7 +28,7 @@
     	int rows = 0;
     	int totalPageNum=0;
     	int result = 0;
-    	connectToMysql connection = new connectToMysql(MyConstants.url);
+    	DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
     	ResultSet validGame = connection.preparedQuery("SELECT * FROM game WHERE gameid=?",gameid);
     	
     	if (!validGame.next()) {
@@ -70,12 +70,26 @@
         $(function(){
             $('.rate').rating();
         });
+        
+        function changeQty(amount) {
+        	if (isNaN(parseInt($('#qty').val())) || (parseInt($('#qty').val()) <= 0 && amount <= 0) || parseInt($('#qty').val()) < 0)
+        		$('#qty').val(0)
+        	else
+        		$('#qty').val(parseInt($('#qty').val()) + amount);
+        }
     </script>
 <title> | SP Games Store</title>
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
-<div class="container main-content" style="padding: 30px 0">
+<div class="container main-content">
+
+	<% if (session.getAttribute("error") != null) {%>
+	<div class="alert alert-danger" role="alert">
+		<strong>Error!</strong> <%= session.getAttribute("error") %>
+	</div>
+	<% session.removeAttribute("error");} %>
+	
 	<div class="row">
 		<div id="jumbo" class="col-sm-8">
 			<img src="http://placehold.it/1920x1080?text=No+Image+Available" alt="..." class="img-responsive"/>
@@ -100,6 +114,10 @@
 				<div class="col-md-3">Genres:</div>
 				<div class="col-md-9 genres"></div>
 			</div>
+			<div class="row">
+				<div class="col-md-3">Quantity:</div>
+				<div class="col-md-9 quantity"></div>
+			</div>
 
 		</div>
 	</div>
@@ -107,11 +125,38 @@
 		<div class="panel-body">
 			<h3 id="buy-gamename" style="margin-top: 0; display: inline-block">ಠ_ಠ</h3>
 			<div class="btn-toolbar pull-right">
+			<%if(user != null){ %>
+				<!-- <div class="btn-group platforms" data-toggle="buttons"></div> -->
+				<form action="AddCartItem" method="post" id="AddCartItem">
+					<div class="btn-group platforms" data-toggle="buttons" style="margin-right: 20px">
+					</div>
+					
+					<input type="hidden" name="gameid" value="<%=gameid%>">
+      				<div class="input-group" style="width: 150px;margin-right: 20px">
+      					<div class="input-group-btn">
+        					<button class="btn btn-default" type="button" onclick="changeQty(-1)"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span>&nbsp;</button>
+      					</div>
+      					<input type="text" class="form-control" placeholder="Qty" id="qty" name="quantity" value="0" style="display: block">
+      					<div class="input-group-btn">
+	        				<button class="btn btn-default" type="button" onclick="changeQty(1)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;</button>
+    	  				</div>
+					</div>
+					
+					<div class="input-group">
+						<input type="hidden" name="gameid" value="<%=gameid%>">
+  						<!-- <button type="submit" class="btn btn-success" id="buy">Buy New</button> -->
+						<span class="input-group-addon price" id="basic-addon2" style="width:auto">$??.??</span>
+						<button type="submit" class="btn btn-success" id="buy">Add to Cart (New)</button>
+					</div>
+					
+				</form>				
+			<%} else{%>
 				<div class="btn-group platforms" data-toggle="buttons"></div>
-				<div class="btn-group" style="display:block" data-toggle="tooltip" data-placement="right" title="Coming Soon">
-  					<button type="button" class="btn btn-success" id="buy">Buy New</button>
-					<button type="button" class="btn btn-default price">$??.??</button>
-				</div>
+					<div class="input-group">
+						<span class="input-group-addon price" id="basic-addon2" style="width:auto">$??.??</span>
+						<a class="btn btn-success" href="login.jsp" id="buy" role="button">Add to Cart (New)</a>
+					</div>
+			<%} %>
 			</div>
 		</div>
 	</div>
@@ -169,6 +214,7 @@
 <script>
 	$(document).ready(function() {
 		// Initialize all tooltips
+		
 		$(function () {
 			  $('[data-toggle="tooltip"]').tooltip()
 			})
@@ -186,22 +232,29 @@
 				$('.releasedate').text(gamedata.releaseDate);
 				$('.description').text(gamedata.description);
 				$('.price').text('$' + gamedata.price.toFixed(2));
+				$('.quantity').text(gamedata.quantity);
 				if (gamedata.supportWin) {
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWin" autocomplete="off" val="win"> Windows </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWin" autocomplete="off" value="win"> Windows </label>');
 				} if (gamedata.supportMac) { 
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformMac" autocomplete="off" val="mac"> OS X </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformMac" autocomplete="off" value="mac"> OS X </label>');
 				} if (gamedata.supportLinux) { 
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformLinux" autocomplete="off" val="linux"> Linux </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformLinux" autocomplete="off" value="linux"> Linux </label>');
 				} if (gamedata.supportXbox) { 
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformXbox" autocomplete="off" val="xbox"> Xbox One </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformXbox" autocomplete="off" value="xbox"> Xbox One </label>');
 				} if (gamedata.supportPs4) { 
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformPS4" autocomplete="off" val="ps4"> PS4 </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformPS4" autocomplete="off" value="ps4"> PS4 </label>');
 				} if (gamedata.supportWiiu) { 
-					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWiiu" autocomplete="off" val="wiiu"> Wii-U </label>');
+					$('.platforms').append('<label class="btn btn-primary"><input type="radio" name="platforms" id="platformWiiu" autocomplete="off" value="wiiu"> Wii-U </label>');
 				}
+				
+				// Auto-check the platform if there is only 1 platform.
+				if ($('input[name="platforms"]').length == 1) {
+					$('input[name="platforms"]').trigger('click');
+				}
+				
 				// Change some visuals if the game is preowned
 				if (gamedata.preowned) {
-					$('#buy').text('Buy Preowned');
+					$('#buy').text('Add to Cart (Preowned)');
 					$('#buy').removeClass('btn-success');
 					$('#buy').addClass('btn-warning');
 					$("#addcomment").css("display","none");
@@ -267,7 +320,10 @@
 	        return false;
 	    }
 	}
+	
+	
 </script>
+
 
 
 </body>

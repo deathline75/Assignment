@@ -23,11 +23,18 @@ public class Game {
 	private boolean supportLinux;
 	private boolean supportPs4;
 	private boolean supportWiiu;
+	private int quantity;
 	
 	public Game(int id, String title, String company, Timestamp releaseDate, String description, double price, String imgLocation,
 			boolean preowned, boolean supportWin, boolean supportMac, boolean supportXbox, boolean supportLinux,
-			boolean supportPs4, boolean supportWiiu) {
+			boolean supportPs4, boolean supportWiiu,int quantity) {
 		super();
+		updateGame(id, title, company, releaseDate,description,price,imgLocation,preowned,supportWin,supportMac,supportXbox,supportLinux,supportPs4,supportWiiu,quantity);
+	}
+	
+	public void updateGame(int id, String title, String company, Timestamp releaseDate, String description, double price, String imgLocation,
+			boolean preowned, boolean supportWin, boolean supportMac, boolean supportXbox, boolean supportLinux,
+			boolean supportPs4, boolean supportWiiu,int quantity) {
 		this.id = id;
 		this.title = title;
 		this.company = company;
@@ -42,6 +49,7 @@ public class Game {
 		this.supportLinux = supportLinux;
 		this.supportPs4 = supportPs4;
 		this.supportWiiu = supportWiiu;
+		this.quantity = quantity;
 	}
 	
 	/**
@@ -155,6 +163,31 @@ public class Game {
 	 */
 	public boolean isSupportWiiu() {
 		return supportWiiu;
+	}
+
+	/**
+	 * Gets the quantity remaining for the game
+	 * @return The quantity remaining for the game
+	 */
+	public int getQuantity() {
+		return quantity;
+	}
+
+	/**
+	 * Sets the quantity remaining for the game
+	 * @param quantity The quantity for the game
+	 */
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	@Override
+	public String toString() {
+		return "Game [id=" + id + ", title=" + title + ", company=" + company + ", releaseDate=" + releaseDate
+				+ ", description=" + description + ", price=" + price + ", imgLocation=" + imgLocation + ", preowned="
+				+ preowned + ", supportWin=" + supportWin + ", supportMac=" + supportMac + ", supportXbox="
+				+ supportXbox + ", supportLinux=" + supportLinux + ", supportPs4=" + supportPs4 + ", supportWiiu="
+				+ supportWiiu + ", quantity=" + quantity + "]";
 	}
 	
 	

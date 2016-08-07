@@ -1,4 +1,4 @@
-package com.ice.api;
+package com.ice.api.servlet;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -13,24 +13,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ice.MyConstants;
-import com.ice.connectToMysql;
+import com.ice.api.Genre;
+import com.ice.api.SearchResult;
+import com.ice.util.DatabaseConnect;
 
 /**
- * Servlet implementation class GameSearch
+ * Servlet implementation class Genres
  */
-@WebServlet("/api/gamesearch")
-public class GameSearch extends HttpServlet {
+@WebServlet("/api/genres")
+public class Genres extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GameSearch() {
+    public Genres() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -44,18 +44,9 @@ public class GameSearch extends HttpServlet {
 		// Sets the encoding to UTF-8 because Java...
 		response.setCharacterEncoding("UTF-8");
 		// Starts the connection to MySQL
-		connectToMysql connection = new connectToMysql(MyConstants.url);		
-		String sql = "SELECT * FROM game";
-		
-		String operator = "OR";
-		
-		if (request.getParameter("inclusive") != null) {
-			if (Boolean.parseBoolean(request.getParameter("inclusive"))) {
-				operator = "AND";
-			}
-		}
-		
-		// Executes the query and returns a ResultSet
+		DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
+		String sql = "SELECT * FROM genre";
+		// Executes the query and returns the result set
 		ResultSet rs = null;
 		
 		if (request.getParameterNames().hasMoreElements()) {
@@ -66,34 +57,17 @@ public class GameSearch extends HttpServlet {
 			
 			while (queries.hasMoreElements()) {
 				String query = queries.nextElement();
-				String value = StringEscapeUtils.escapeHtml4(request.getParameter(query));
+				String value = request.getParameter(query);
 				boolean addable = false;
 				switch (query.toLowerCase()) {
-				case "q-gametitle":
-					sql += " gametitle LIKE ? " + operator;
+				case "q-genreid": 
+					sql += " genreid=? OR";
+					addable = true;
+					break;
+				case "q-name":
+					sql += " genrename LIKE ? OR";
 					value = "%" + value + "%";
 					addable = true;
-					break;
-				case "q-company":
-					sql += " company LIKE ? " + operator;
-					value = "%" + value + "%";
-					addable = true;
-					break;
-				case "q-genreid":
-					if (value.length() > 0) {
-						String[] search = value.split(",");
-						if (search.length > 0) {
-							for (int i = 0; i < search.length; i++) {
-								values.add(search[i]);
-								sql += " gameid IN (SELECT gameid FROM game_genre WHERE genreid=?) " + operator;
-							}
-						}
-					}
-					break;
-				case "q-preowned":
-					sql += " preOwned=? " + operator;
-					addable = true;
-					break;
 				}
 				if (addable)
 					values.add(value);
@@ -102,7 +76,7 @@ public class GameSearch extends HttpServlet {
 			if (sql.endsWith("WHERE"))
 				sql = sql.substring(0, sql.length() - 5);
 			else
-				sql = sql.substring(0, sql.length() - operator.length() - 1);
+				sql = sql.substring(0, sql.length() - 3);
 			
 			if (request.getParameter("limit") != null) {
 				try {
@@ -122,32 +96,30 @@ public class GameSearch extends HttpServlet {
 			}
 			
 			rs = connection.preparedQuery(sql, values.toArray());
-			
 		} else {
 			rs = connection.preparedQuery(sql);
 		}
-
+		
 		
 		try {
 			if (rs.isBeforeFirst()) {
-				
-				List<Game> games = new ArrayList<Game>();
-				
+				List<Genre> genres = new ArrayList<Genre>();
 				while (rs.next()) {
-					games.add(new Game(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getString(5), rs.getDouble(6), rs.getString(7), rs.getBoolean(8), rs.getBoolean(9), rs.getBoolean(10), rs.getBoolean(11), rs.getBoolean(12), rs.getBoolean(13), rs.getBoolean(14)));
+					// Adds all the results into the list
+					genres.add(new Genre(rs.getInt(1), rs.getString(2)));
 				}
-				// Writes out everything to screen along with the appropriate response code.
-				response.getWriter().append(gson.toJson(new SearchResult(0, null, games)));
+				// Writes out all the data along with the appropriate response code
+				response.getWriter().append(gson.toJson(new SearchResult(0, null, genres)));
 			} else {
 				response.getWriter().append(gson.toJson(new SearchResult(-1, "No results found.", null)));
 			}
-
 		} catch (SQLException e) {
 			response.getWriter().append(gson.toJson(new SearchResult(500, e.getMessage(), null)));
 		}
-		
+
 		// Close the connection
 		connection.close();
+		
 		
 	}
 
@@ -158,5 +130,5 @@ public class GameSearch extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
+	
 }

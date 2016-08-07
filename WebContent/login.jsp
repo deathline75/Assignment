@@ -6,6 +6,7 @@
     	random.nextBytes(token);
     	String tokenString = Base64.getEncoder().encodeToString(token);
     	session.setAttribute("logintoken", tokenString);
+    	String lastpage = (String) (session.getAttribute("lastpage") == null ? "." : session.getAttribute("lastpage"));
     %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -17,6 +18,7 @@
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
+<% session.setAttribute("lastpage", lastpage); %>
 <div class="container main-content">
 	<% if (session.getAttribute("error") != null) {%>
 	<div class="alert alert-danger" role="alert">
@@ -80,13 +82,13 @@
 				<div class="form-group">
 					<label for="inputPasswordR" class="col-sm-3 control-label">Password: </label>
 					<div class="col-sm-9">
-						<input type="password" class="form-control" id="inputPasswordR" placeholder="Password" required name="password" data-toggle="tooltip" data-placement="right" title="Must contain 8 to 16 uppercase, lowercase and numbers only">
+						<input type="password" class="form-control" id="inputPasswordR" placeholder="Password" required name="password" auto-complete="new-password" data-toggle="tooltip" data-placement="right" title="Must contain 8 to 16 uppercase, lowercase and numbers only">
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="inputCfmPasswordR" class="col-sm-3 control-label">Confirm Password: </label>
 					<div class="col-sm-9">
-						<input type="password" class="form-control" id="inputCfmPasswordR" placeholder="Confirm Password" required name="cfmPassword" autocomplete="off">
+						<input type="password" class="form-control" id="inputCfmPasswordR" placeholder="Confirm Password" required name="cfmPassword" autocomplete="new-password">
 					</div>
 				</div>
 				<hr />

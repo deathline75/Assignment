@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1"%>
-<%@page import="java.sql.*"%>
-<%@ page import="com.ice.*"%>
+	pageEncoding="ISO-8859-1" import ="java.sql.*, com.ice.*,com.ice.api.*,com.ice.util.*"%>
 <%
 	if (session.getAttribute("username") == null)
 		response.sendRedirect("login.jsp");
@@ -23,7 +21,7 @@
 			<h1>
 				Welcome back,
 				<%=username%>! <small>Last login: <%
-				connectToMysql connection = new connectToMysql(MyConstants.url);
+				DatabaseConnect connection = new DatabaseConnect(MyConstants.url);
 				ResultSet rs = connection.preparedQuery("Select lastLogin from user where username=?", username);
 				//ResultSet rs1 = connection.preparedQuery("select SUM(COUNT) from game_hitcounter");
 				ResultSet rs2 = connection.preparedQuery("select gametitle,SUM(COUNT) Count from game_hitcounter gh,game g where gh.gameid = g.gameid group by g.gameid order by Count DESC");
