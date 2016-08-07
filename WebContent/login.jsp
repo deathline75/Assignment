@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.util.*,java.security.*"%>
+    pageEncoding="ISO-8859-1" import="java.util.*,java.security.*,javax.xml.bind.*"%>
     <%
     	SecureRandom random = new SecureRandom();
     	byte[] token = new byte[128];
     	random.nextBytes(token);
-    	String tokenString = Base64.getEncoder().encodeToString(token);
+    	String tokenString = DatatypeConverter.printBase64Binary(token);
     	session.setAttribute("logintoken", tokenString);
     	String lastpage = (String) (session.getAttribute("lastpage") == null ? "." : session.getAttribute("lastpage"));
     %>

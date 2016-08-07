@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.*" %>
+<%@ page import="java.util.*,org.apache.commons.lang3.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -77,7 +77,7 @@
 			var q = "<%= request.getParameter("q") %>";
 			var operator = <%= request.getParameter("inclusive") == null ? false : (request.getParameter("inclusive").equalsIgnoreCase("on") ? true : false) %>;
 			var preowned = <%= request.getParameter("preowned") == null ? 0 : (request.getParameter("preowned").equalsIgnoreCase("on") ? 1 : 0) %>;
-			var genre = "<%= request.getParameterValues("genre") == null ? "" : String.join(",", request.getParameterValues("genre")) %>";
+			var genre = "<%= request.getParameterValues("genre") == null ? "" : StringUtils.join(request.getParameterValues("genre"), ",") %>";
 			
 			$('.search-bar').val(q);
 			if (!operator) {

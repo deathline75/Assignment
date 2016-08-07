@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, com.ice.*,com.ice.api.*,com.ice.util.*, java.util.*, java.net.*, java.io.*" %>
+<%@ page import="java.sql.*, com.ice.*,com.ice.api.*,com.ice.util.*, java.util.*, java.net.*, java.io.*,javax.xml.bind.*" %>
 <%
 
 	String action = request.getParameter("action");
@@ -103,7 +103,7 @@ function changeQty(amount) {
 				byte[] imageIS = imageResult.getBytes(3);
 				String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
 				if (mimeType.startsWith("image")) {
-					String b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
+					String b64encoded = DatatypeConverter.printBase64Binary(imageIS);
 		%>
 		<span class="label label-info">Image:</span> <br />
 		<img src="data:<%= mimeType %>;base64,<%= b64encoded %>" class="img-responsive"/>

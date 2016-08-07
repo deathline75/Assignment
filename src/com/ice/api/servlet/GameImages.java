@@ -6,7 +6,6 @@ import java.net.URLConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.DatatypeConverter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -68,7 +68,7 @@ public class GameImages extends HttpServlet {
 		    			String mimeType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageIS));
 		    			// Checks if the data is an image first
 		    			if (mimeType.startsWith("image")) {
-		    				b64encoded = new String(Base64.getEncoder().encode(imageIS), "UTF-8");
+		    				b64encoded = DatatypeConverter.printBase64Binary(imageIS);
 		    			}
 		    			// If it is an image, add it to the list
 		    			if (b64encoded != null)
