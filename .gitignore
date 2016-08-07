@@ -8,7 +8,6 @@
 *.war
 *.ear
 
-src/com/ice/MyConstants.java
 *img*
 
 .classpath
