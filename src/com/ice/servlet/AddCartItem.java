@@ -50,10 +50,10 @@ public class AddCartItem extends HttpServlet {
 	 * @return A boolean of whether the input is clean and validated.
 	 */
 	private boolean checkInput(HttpServletRequest request) {
-			return request.getParameter("gameid") != null && !request.getParameter("gameid").isEmpty() && request.getParameter("gameid").matches("^\\d+$")
+			return request.getParameter("gameid") != null && !request.getParameter("gameid").isEmpty() && request.getParameter("gameid").matches("^\\d{0,8}$")
 					&& request.getParameter("platforms") != null && !request.getParameter("platforms").isEmpty()
 					&& request.getParameter("quantity") != null && !request.getParameter("quantity").isEmpty() 
-					&& request.getParameter("quantity").matches("^\\d+$") && Integer.parseInt(request.getParameter("quantity")) > 0;
+					&& request.getParameter("quantity").matches("^\\d{0,8}$") && Integer.parseInt(request.getParameter("quantity")) > 0;
 	}
 
 	/**
